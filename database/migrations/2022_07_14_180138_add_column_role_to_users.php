@@ -30,4 +30,6 @@ class AddColumnRoleToUsers extends Migration
             $table->dropColumn(['role_id','status']);
         });
     }
+
+
 }
