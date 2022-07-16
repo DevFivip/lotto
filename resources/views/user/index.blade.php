@@ -11,18 +11,7 @@
                 <div class="card-header">Usuarios</div>
                 <div class="card-body">
                     <a href="{{$resource}}/create" class="btn btn-primary">Crear Nuevo</a>
-
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    asdasd
-
-
-
-
                     <table class="table">
-
                         <tr>
                             <td>Nombre</td>
                             <td>Email</td>
@@ -34,8 +23,17 @@
                             <td>{{$usuario->name}}</td>
                             <td>{{$usuario->email}}</td>
                             <td>
+                                @if($usuario->role_id === 1)
+                                <span class="badge rounded-pill bg-primary "><i class="fa-solid fa-crown"></i></span>
+                                @endif
 
-                                {{$usuario->role_id}}
+                                @if($usuario->role_id === 2)
+                                <span class="badge rounded-pill bg-warning text-dark">Admin</span>
+                                @endif
+
+                                @if($usuario->role_id === 3)
+                                <span class="badge rounded-pill bg-success">Taquilla</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="btn-group">
