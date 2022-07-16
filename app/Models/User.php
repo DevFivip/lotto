@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'parent_id',
         'status',
         'monedas'
     ];
@@ -45,4 +46,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'monedas' => 'array',
     ];
+
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 }

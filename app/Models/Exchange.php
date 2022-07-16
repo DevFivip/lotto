@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Exchanges extends Model
+class Exchange extends Model
 {
     use HasFactory;
 
@@ -13,4 +13,10 @@ class Exchanges extends Model
         "moneda_id",
         "change_usd",
     ];
+
+
+    public function moneda()
+    {
+        return $this->belongsTo(Moneda::class, 'moneda_id');
+    }
 }

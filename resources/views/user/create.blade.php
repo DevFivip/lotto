@@ -10,6 +10,11 @@
                 <div class="card-body">
                     <form method="POST" action="/{{ $resource }}">
                         @csrf
+
+                        @if(auth()->user()->role_id === 2)
+                        <input type="hidden" value="{{auth()->user()->id}}" name="parent_id">
+                        @endif
+
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">Nombre</label>
 

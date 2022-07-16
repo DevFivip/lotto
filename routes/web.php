@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CajaController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,5 @@ Route::resource('/cajas', CajaController::class);
 Route::resource('/tickets', TicketController::class);
 
 Route::resource('/animals', AnimalController::class);
+Route::resource('/customers', CustomerController::class);
 

@@ -43,9 +43,9 @@ class CreateAnimalsTable extends Migration
             $table->id();
             $table->foreignId('admin_id')->nullable()->constrained('users');
             $table->string('nombre');
-            $table->string('document');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('document')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->integer('status');
             $table->timestamps();
         });
