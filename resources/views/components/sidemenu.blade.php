@@ -5,4 +5,5 @@
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     <a href="/payments" class="list-group-item list-group-item-action">Metodos de Pago</a>
+    <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
 </div>

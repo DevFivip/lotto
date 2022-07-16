@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,4 @@ Route::resource('/tickets', TicketController::class);
 Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
-
+Route::resource('/schedules', ScheduleController::class);
