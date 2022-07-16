@@ -26,7 +26,7 @@ class CreateAnimalsTable extends Migration
         Schema::create('exchanges', function (Blueprint $table) {
             $table->id();
             $table->foreignId('moneda_id')->nullable()->constrained('monedas');
-            $table->integer('change_usd');
+            $table->float('change_usd', 12, 6);
             $table->timestamps();
         });
 
