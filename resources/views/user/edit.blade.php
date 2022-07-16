@@ -42,7 +42,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" >
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password">
                                 <span class="form-text text-muted">Rellenar para cambiar la contraseña</span>
 
                                 @error('password')
@@ -52,14 +52,14 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                             </div>
-                        </div> 
+                        </div>
 
                         <div class="row mb-3">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">Categoria de Usuario</label>
@@ -68,21 +68,21 @@
                                 <select name="role_id" class="form-select" aria-label="Default select example">
 
                                     @if($user->role_id === 1)
-                                    <option selected value="1">Administrador</option>
+                                    <option selected value="1">Super Admin</option>
                                     @else
-                                    <option value="1">Administrador</option>
+                                    <option value="1">Super Admin</option>
                                     @endif
 
                                     @if($user->role_id === 2)
-                                    <option selected value="2">Banquero</option>
+                                    <option selected value="2">Administrador</option>
                                     @else
-                                    <option value="2">Banquero</option>
+                                    <option value="2">Administrador</option>
                                     @endif
 
                                     @if($user->role_id === 3)
-                                    <option selected value="3">Cajero</option>
+                                    <option selected value="3">Tanquilla</option>
                                     @else
-                                    <option value="3">Cajero</option>
+                                    <option value="3">Tanquilla</option>
                                     @endif
 
                                 </select>

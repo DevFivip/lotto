@@ -11,6 +11,16 @@
                 <div class="card-header">Usuarios</div>
                 <div class="card-body">
                     <a href="{{$resource}}/create" class="btn btn-primary">Crear Nuevo</a>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    asdasd
+
+
+
+
                     <table class="table">
 
                         <tr>
@@ -23,7 +33,10 @@
                         <tr>
                             <td>{{$usuario->name}}</td>
                             <td>{{$usuario->email}}</td>
-                            <td>{{$usuario->role_id}}</td>
+                            <td>
+
+                                {{$usuario->role_id}}
+                            </td>
                             <td>
                                 <div class="btn-group">
                                     <a href="javascript:;" class="btn btn-danger">Eliminar</a>

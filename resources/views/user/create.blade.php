@@ -65,9 +65,9 @@
 
                             <div class="col-md-6">
                                 <select name="role_id" class="form-select" aria-label="Default select example">
-                                    <option value="1">Administrador</option>
-                                    <option selected value="2">Banquero</option>
-                                    <option value="3">Cajero</option>
+                                    <option value="1">Super Admin</option>
+                                    <option selected value="2">Administrador</option>
+                                    <option value="3">Tanquilla</option>
                                 </select>
                             </div>
                         </div>
