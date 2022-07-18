@@ -5,6 +5,7 @@ use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
 Route::resource('/tickets', TicketController::class);
-
 Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
