@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
@@ -35,3 +36,6 @@ Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
 Route::resource('/schedules', ScheduleController::class);
+
+
+Route::post('/ticket-register',[App\Http\Controllers\RegisterController::class, 'create']);

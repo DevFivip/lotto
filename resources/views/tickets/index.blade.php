@@ -2,343 +2,103 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center" x-data="sorteos()" x-init="$watch('numeros', value => choose())">
+    <div class="row justify-content-center">
         <div class="col-md-2">
             @include('components.sidemenu')
         </div>
-        <div class="col-md-10 p-0">
-            <div class="card shadow">
-                <div class="card-header d-none d-sm-block">Ticket </span></div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">Clientes</div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-9">
-
-                            <div class="row row-cols-6">
-                                <template x-for="(schedule, index) in schedules">
-                                    <div class="d-grid gap-1 mt-1">
-                                        <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <div class="mt-2">
-                                <div class="row row-cols-4">
-                                    <template x-for="(animal, index) in animals">
-                                        <div class="d-grid gap-1 mt-1">
-                                            <button :class="!!!animal.selected ? 'btn-warning': 'btn-dark' " class="btn fw-bold" @click="handleClick(animal.number,animal.selected)">
-                                                <p class="p-0 m-0" x-text="animal.number"></p>
-                                                <p class="p-0 m-0" style="font-size: 8px;" x-text="animal.nombre"></p>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <div class="row d-none">
-                                    <div class="col-md-6 mt-1">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="mt-1">
-                                                    <label for="" class="form-label">Monto</label>
-                                                    <div class="input-group mb-3">
-                                                        <input type="number" class="form-control" placeholder="Monto" aria-label="Monto" aria-describedby="basic-addon2">
-                                                        <span class="input-group-text" id="ads">S/ 89</span>
-                                                    </div>
-                                                    <button class="mt-1 btn btn-primary btn-block">Agregar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 d-none">
-                            <div class="card">
-                                <div class="card-header">Detalles del Ticket</div>
-                                <div class="card-body">
-                                    <div x-data="{show:false};" class="dropdown">
-                                        <div class="d-grid gap-2">
-                                            <button class="btn btn-dark" type="button" @click="show = ! show">
-                                                Seleccione Cliente <i class="fa-solid fa-magnifying-glass"></i>
-                                            </button>
-                                        </div>
-                                        <templete x-data="searchCustomer()">
-                                            <ul x-show="show" style="display:none;" x-transition @click.outside="show = false" class="show dropdown-menu dropdown-menu-end dropdown-menu-lg-start p-1">
-                                                <li><input x-model="search" type="search" placeholder="Buscar" class="form-control" /></li>
-                                                <template x-for="customer in filteredCustomers()" :key="customer.id">
-                                                    <li><a class="dropdown-item" href="#" x-text="customer.nombre"></a></li>
-                                                </template>
-                                            </ul>
-                                        </templete>
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <label for="exampleFormControlInput1" class="form-label">Metodo de Pago</label>
-                                        <select class="form-select">
-                                            @foreach($payments as $payment)
-                                            <option value="{{$payment->id}}">{{$payment->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <label for="exampleFormControlInput1" class="form-label">Moneda</label>
-                                        <select class="form-select">
-                                            @foreach($monedas as $moneda)
-                                            <option value="{{$moneda->id}}">{{$moneda->nombre}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <ul class="list-group">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
-                                                <span>0 Delfin <br> <span class="text-muted"> 10 AM</span> </span>
-                                                <span class="">$ 100,000.00</span>
-                                            </li>
-
-                                            <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
-                                                <span>1 Carnero <br> <span class="text-muted"> 10 AM</span> </span>
-                                                <span class="">$ 100,000.00</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="mt-2">
-                                        <div class="d-grid gap-2">
-                                            <button class="btn btn-primary">Guardar Ticket</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <a href="/tickets" class="btn btn-primary">Nuevo Ticket</a>
+                    @if($errors->any())
+                    <div class="alert alert-danger mt-2" role="alert">
+                        <span class="strong">{{$errors->first()}}</span>
                     </div>
-                </div>
-            </div>
-        </div>
+                    @endif
+                    <table class="table">
+                        <tr>
+                            <td></td>
+                            <td>Codigo</td>
+                            <td>Vendedor</td>
+                            <td>Total</td>
+                            <td></td>
+                        </tr>
+                        @foreach($tickets as $tickts)
+                        <tr>
+                            <td>
+                                @if($tickts->status === 1)
+                                <span class="badge bg-warning text-dark">Activo</span>
+                                @else
+                                <span class="badge bg-danger">Anulado</span>
+                                @endif
+                            </td>
 
+                            <td>{{$tickts->code}}</td>
+                            <td>{{$tickts->user_id}}</td>
+                            <td>{{$tickts->total}} {{$tickts->moneda}}</td>
 
+                            <td>
+                                <div x-data="listener()" class="btn-group">
+                                    <a href="/{{$tickts->id}}/edit" class="btn btn-primary">Editar</a>
+                                    @if($tickts->status === 1)
+                                    <button @click="handleLock" id="{{$tickts->id}}" class="btn btn-danger">Bloquear</button>
+                                    @else
+                                    <button @click='eliminar("{{$tickts->id}}")' class="btn btn-warning">Desbloquear</button>
+                                    @endif
 
-
-        <div class="fixed-bottom">
-            <div class="">
-                <div class="row">
-                    <div class="col-md-6 mt-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mt-1">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">#</span>
-                                        <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
-                                        <span class="input-group-text">$</span>
-                                        <input x-model="monto" type="number" class="form-control" placeholder="Monto" aria-label="Monto">
-                                        <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
-                                    </div>
-                                    <div class="d-grid gap-1 mt-1">
-                                        <button class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar $ <span x-text="total"></span></button>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-receipt"></i>Listado</button>
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</button>
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-bars"></i> Menu</button>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function searchCustomer() {
+
+<script>
+    function listener() {
+        window.CSRF_TOKEN = '{{ csrf_token() }}';
         return {
-            qq: @json($customers),
-            search: '',
-            filteredCustomers: function() {
-                return this.qq.filter(customer => customer.nombre.toLowerCase().includes(this.search.toLowerCase()))
+            handleLock: async function(e) {
+                id = e.target.id
+                if (confirm("¿Seguro deseas Bloquear?") == true) {
+                    const res = await fetch('/tickets/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-Token": window.CSRF_TOKEN
+                        },
+                    })
+
+                    alert()
+                    location.reload()
+                }
             }
         }
     }
 
 
+    // window.CSRF_TOKEN = '{{ csrf_token() }}';
+    // async function eliminar(id) {
+    //     if (confirm("¿Seguro deseas Bloquear?") == true) {
+    //         const res = await fetch('/tickets/' + id, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Accept": "application/json",
+    //                 "X-Requested-With": "XMLHttpRequest",
+    //                 "X-CSRF-Token": window.CSRF_TOKEN
+    //             },
+    //         })
 
-    function sorteos() {
-        var kk = @json($schedules);
-        var aa = @json($animals);
-        var mm = @json($monedas);
-        return {
-            ticket: {
-                detalles: [],
-            },
-            monto: '',
-            total: 0,
-            numeros: '',
-            _numeros: [],
-            schedules: kk,
-            animals: aa,
-            monedas: mm,
-            choose: function() {
-                this._numeros = this.numeros.split(' ');
-                this.animals = this.animals.filter(v => {
-                    if (this._numeros.indexOf(v.number) >= 0) {
-                        v.selected = true;
-                        return v
-                    } else {
-                        v.selected = false;
-                        return v
-                    }
-                })
-            },
-            handleClick: function(number, st) {
-                if (!st) {
-                    this.animals = this.animals.map((v, k) => {
-                        if (v.number == number) {
-                            v.selected = true;
-                            this._numeros.push(number)
-                            this.numeros = this._numeros.join(' ');
-                            return v;
-                        } else {
-                            return v
-                        }
-                    })
-                } else {
-                    this.animals = this.animals.map((v, k) => {
-                        if (v.number == number) {
-                            v.selected = false;
-                            this._numeros = this._numeros.filter(v => v !== number)
-                            this.numeros = this._numeros.join(' ');
-                            return v;
-                        } else {
-                            return v
-                        }
-                    })
-                }
-            },
-            validateItems: function() {
-                _sorteos = this.schedules.filter(v => !!v.selected)
-
-                if (_sorteos.length === 0) {
-                    this.toast('⚠ Debes Seleccionar un Horario ⏲', 1500)
-                    return false
-                }
-
-                if (this.numeros.length === 0) {
-                    this.toast('⚠ Debes Seleccionar un Animalito 🦝', 1500)
-                    return false
-                }
-
-                if (isNaN(parseFloat(this.monto))) {
-                    this.toast('⚠ Debes escribir un Monto Válido 💸', 1500)
-                    return false
-                }
-
-                return true;
-            },
-            addItem: function() {
-
-                if (!this.validateItems()) {
-                    return false
-                }
-
-                const items = [];
-
-                _sorteos = this.schedules.filter(v => !!v.selected)
-                __sorteos = _sorteos.map(v => {
-                    return {
-                        schedule: v.schedule,
-                        id: v.id
-                    }
-                })
-
-                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected)));
-                _ani = [];
-
-
-                for (let i = 0; i < __sorteos.length; i++) {
-                    const s = __sorteos[i];
-                    for (let e = 0; e < __animals.length; e++) {
-                        let a = __animals[e];
-                        a.monto = this.monto
-                        a = {
-                            ...a,
-                            ...s
-                        }
-                        _ani.push(a)
-                    }
-                }
-
-                this.ticket.detalles.push(..._ani);
-
-                this.calcularTotal()
-                this.toast('Items Agregados correctamente 👍')
-                this.clearForm()
-
-            },
-            calcularTotal: function() {
-                if (!!this.ticket.detalles.length) {
-                    this.total = this.ticket.detalles.reduce((a, b) => a + parseFloat(b.monto), 0)
-                } else {
-                    this.total = 0
-                }
-            },
-            clearForm: function() {
-                this.animals = this.animals.map(v => {
-                    v.selected = false;
-                    return v
-                });
-                this.schedules = this.schedules.map(v => {
-                    v.selected = false
-                    return v
-                });
-                this.numeros = ''
-                this.monto = ''
-            },
-            toast: function(msg, duration = 800) {
-                Toastify({
-                    text: msg,
-                    duration: duration,
-                    className: "info",
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    }
-                }).showToast();
-            }
-
-        }
-
-    }
-
-
-    function converter(q, k) {
-        date = new Date(q);
-        w = date.getTimezoneOffset()
-        yourDate = new Date(date.getTime() - (w * 60 * 1000))
-        f1 = yourDate.toLocaleDateString();
-        f2 = yourDate.toLocaleTimeString();
-
-        if (!!k) {
-            date = new Date(k);
-            r = date.getTimezoneOffset()
-            yourDate = new Date(date.getTime() - (r * 60 * 1000))
-            f3 = yourDate.toLocaleDateString();
-            f4 = yourDate.toLocaleTimeString();
-
-        } else {
-            f3 = '';
-            f4 = '';
-        }
-
-        return {
-            fecha_inicial: f1 + ' ' + f2,
-            fecha_cierre: f3 + ' ' + f4,
-        }
-    }
+    //         location.reload()
+    //     }
+    // }
 </script>
 
 @endsection

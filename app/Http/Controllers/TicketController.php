@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Customer;
 use App\Models\Moneda;
 use App\Models\Payment;
+use App\Models\Register;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,23 @@ class TicketController extends Controller
      */
     public function index()
     {
+
+
+        if (auth()->user()->role_id === 1) {
+            $tickets = Register::paginate();
+        } elseif (auth()->user()->role_id === 2) {
+            $tickets = Register::where('admin_id', auth()->user()->id)->paginate();
+        } elseif (auth()->user()->role_id === 3) {
+            $padre = auth()->user()->parent_id;
+            $tickets = Register::where('admin_id', $padre)->paginate();
+        }
+
+        return view('tickets.index', compact('tickets'));
+    }
+
+
+    public function create()
+    {
         $resource = $this->resource;
         $animals = Animal::all();
         $schedules = Schedule::where('status', 1)->get();
@@ -38,73 +56,7 @@ class TicketController extends Controller
             $customers = Customer::where('admin_id', $padre)->get();
         }
 
-        return view('tickets.index', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas'));
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+        return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas'));
         //
     }
 }

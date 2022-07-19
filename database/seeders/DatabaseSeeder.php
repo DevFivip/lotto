@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use App\Models\Animal;
 use App\Models\Exchange;
 use App\Models\Moneda;
+use App\Models\Schedule;
 use App\Models\User;
+use DateTime;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +28,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('adolfo2403'),
             'role_id' => 1,
             'status' => 1,
+            "monedas" => ['1','2']
         ]);
 
 
@@ -353,6 +356,88 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+        ]);
+
+        Schedule::create([
+            "schedule" => "9 AM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 13:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "10 AM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "11 AM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "12 AM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "01 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "02 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "03 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "04 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "05 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "06 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:00'),
+            "status" => 1
+        ]);
+
+        Schedule::create([
+            "schedule" => "07 PM",
+            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:01'),
+            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-16 00:50:00'),
+            "status" => 1
+        ]);
+
+
+        $this->call([
+            RegisterSeeder::class
         ]);
     }
 }
