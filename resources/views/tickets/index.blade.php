@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-10 p-0">
             <div class="card shadow">
-                <div class="card-header d-none d-sm-block">Ticket</div>
+                <div class="card-header d-none d-sm-block">Ticket </span></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
@@ -113,7 +113,6 @@
                                             <button class="btn btn-primary">Guardar Ticket</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -122,6 +121,9 @@
             </div>
         </div>
 
+
+
+
         <div class="fixed-bottom">
             <div class="">
                 <div class="row">
@@ -129,18 +131,20 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mt-1">
-                                    <span class="float-end">Total: <span class="fw-bold">$ 150</span></span>
-                                    <span x-text="numeros"></span>
-                                    <span>asdsad</span>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">#</span>
                                         <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
                                         <span class="input-group-text">$</span>
-                                        <input x-model="monto" type="text" class="form-control" placeholder="Monto" aria-label="Monto">
+                                        <input x-model="monto" type="number" class="form-control" placeholder="Monto" aria-label="Monto">
+                                        <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
                                     </div>
-                                    <div class="btn-group">
-                                        <button class="mt-1 btn btn-primary">Agregar</button>
-                                        <button class="mt-1 btn btn-primary">Agregar</button>
+                                    <div class="d-grid gap-1 mt-1">
+                                        <button class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar $ <span x-text="total"></span></button>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-receipt"></i>Listado</button>
+                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</button>
+                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-bars"></i> Menu</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -167,18 +171,21 @@
     function sorteos() {
         var kk = @json($schedules);
         var aa = @json($animals);
-
+        var mm = @json($monedas);
         return {
-            monto: 0,
+            ticket: {
+                detalles: [],
+            },
+            monto: '',
+            total: 0,
             numeros: '',
             _numeros: [],
             schedules: kk,
             animals: aa,
+            monedas: mm,
             choose: function() {
-                console.log('>', this.numeros);
                 this._numeros = this.numeros.split(' ');
                 this.animals = this.animals.filter(v => {
-                    console.log(this._numeros);
                     if (this._numeros.indexOf(v.number) >= 0) {
                         v.selected = true;
                         return v
@@ -212,7 +219,97 @@
                         }
                     })
                 }
+            },
+            validateItems: function() {
+                _sorteos = this.schedules.filter(v => !!v.selected)
+
+                if (_sorteos.length === 0) {
+                    this.toast('⚠ Debes Seleccionar un Horario ⏲', 1500)
+                    return false
+                }
+
+                if (this.numeros.length === 0) {
+                    this.toast('⚠ Debes Seleccionar un Animalito 🦝', 1500)
+                    return false
+                }
+
+                if (isNaN(parseFloat(this.monto))) {
+                    this.toast('⚠ Debes escribir un Monto Válido 💸', 1500)
+                    return false
+                }
+
+                return true;
+            },
+            addItem: function() {
+
+                if (!this.validateItems()) {
+                    return false
+                }
+
+                const items = [];
+
+                _sorteos = this.schedules.filter(v => !!v.selected)
+                __sorteos = _sorteos.map(v => {
+                    return {
+                        schedule: v.schedule,
+                        id: v.id
+                    }
+                })
+
+                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected)));
+                _ani = [];
+
+
+                for (let i = 0; i < __sorteos.length; i++) {
+                    const s = __sorteos[i];
+                    for (let e = 0; e < __animals.length; e++) {
+                        let a = __animals[e];
+                        a.monto = this.monto
+                        a = {
+                            ...a,
+                            ...s
+                        }
+                        _ani.push(a)
+                    }
+                }
+
+                this.ticket.detalles.push(..._ani);
+
+                this.calcularTotal()
+                this.toast('Items Agregados correctamente 👍')
+                this.clearForm()
+
+            },
+            calcularTotal: function() {
+                if (!!this.ticket.detalles.length) {
+                    this.total = this.ticket.detalles.reduce((a, b) => a + parseFloat(b.monto), 0)
+                } else {
+                    this.total = 0
+                }
+            },
+            clearForm: function() {
+                this.animals = this.animals.map(v => {
+                    v.selected = false;
+                    return v
+                });
+                this.schedules = this.schedules.map(v => {
+                    v.selected = false
+                    return v
+                });
+                this.numeros = ''
+                this.monto = ''
+            },
+            toast: function(msg, duration = 800) {
+                Toastify({
+                    text: msg,
+                    duration: duration,
+                    className: "info",
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
             }
+
         }
 
     }
@@ -236,7 +333,6 @@
             f3 = '';
             f4 = '';
         }
-
 
         return {
             fecha_inicial: f1 + ' ' + f2,
