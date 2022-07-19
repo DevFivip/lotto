@@ -32,7 +32,7 @@ class RegisterSeeder extends Seeder
             $candida_animalitos = rand(1, 12);
 
             $registro = Register::create([
-                'code' => Str::random(23),
+                'code' => Str::random(10),
                 'caja_id' => $caja->id,
                 'user_id' => 1,
                 'admin_id' => 1,
@@ -51,6 +51,7 @@ class RegisterSeeder extends Seeder
                     'schedule' => $horario->schedule,
                     'admin_id' => 1,
                     'monto' => floatval($total) / floatval($candida_animalitos),
+                    'moneda_id' => $registro->moneda_id,
                 ]);
             }
         }

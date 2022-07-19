@@ -17,5 +17,6 @@ class RegisterDetail extends Model
         "admin_id",
         "winner",
         "monto",
+        "moneda_id",
     ];
 }

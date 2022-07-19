@@ -39,3 +39,4 @@ Route::resource('/schedules', ScheduleController::class);
 
 
 Route::post('/ticket-register',[App\Http\Controllers\RegisterController::class, 'create']);
+

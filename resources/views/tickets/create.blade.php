@@ -327,6 +327,7 @@
                             ...a,
                             ...s
                         }
+                        a.id = __animals[e].id
                         _ani.push(a)
                     }
                 }

@@ -36,6 +36,7 @@ class CreateRegistersTable extends Migration
             $table->foreignId('admin_id')->constrained('users');
             $table->integer('winner')->default(0);
             $table->float('monto', 12, 6);
+            $table->foreignId('moneda_id')->constrained('monedas');
             $table->timestamps();
         });
     }

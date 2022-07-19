@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">Clientes</div>
                 <div class="card-body">
-                    <a href="/tickets" class="btn btn-primary">Nuevo Ticket</a>
+                    <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
                     @if($errors->any())
                     <div class="alert alert-danger mt-2" role="alert">
                         <span class="strong">{{$errors->first()}}</span>
@@ -36,7 +36,7 @@
 
                             <td>{{$tickts->code}}</td>
                             <td>{{$tickts->user_id}}</td>
-                            <td>{{$tickts->total}} {{$tickts->moneda}}</td>
+                            <td>{{$tickts->total}} {{$tickts->moneda_id}}</td>
 
                             <td>
                                 <div x-data="listener()" class="btn-group">

@@ -1,5 +1,6 @@
 <div class="list-group d-none d-sm-block">
-    <a href="/tickets/create" class="list-group-item list-group-item-action">Mi Tanquilla</a>
+    <a href="/tickets/create" class="list-group-item list-group-item-action">Taquilla</a>
+    <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a>
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
