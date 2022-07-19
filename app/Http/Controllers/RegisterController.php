@@ -124,7 +124,7 @@ class RegisterController extends Controller
 
 
         if (count($err) >= 1) {
-            return ['status' => false, 'messages' => $err];
+            return ['status' => false, 'messages' => $err[0]];
         } else {
             return ['status' => true];
         }
