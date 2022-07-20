@@ -25,7 +25,7 @@ class CajaController extends Controller
         // $cajas = Caja::with('usuario')->orderBy('id', 'DESC')->get();
 
         if (auth()->user()->role_id == 1) {
-            $cajas = Caja::paginate();
+            $cajas = Caja::orderBy('id', 'DESC')->paginate();
         } elseif (auth()->user()->role_id == 2) {
 
             $users = User::select('id')->where('parent_id', auth()->user()->id)->get();
@@ -42,9 +42,9 @@ class CajaController extends Controller
 
             array_push($us, auth()->user()->id);
 
-            $cajas = Caja::whereIn('user_id', $us)->paginate();
+            $cajas = Caja::whereIn('user_id', $us)->orderBy('id', 'DESC')->paginate();
         } elseif (auth()->user()->role_id == 3) {
-            $cajas = Caja::where('user_id', auth()->user()->id)->paginate();
+            $cajas = Caja::where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->paginate();
         }
         // elseif (auth()->user()->role_id == 2) {
         //     $users = User::select('id')->where('parent_id', auth()->user()->id)->get();
@@ -52,7 +52,7 @@ class CajaController extends Controller
         //     for ($y = 0; $y < $users->count(); $y++) {
         //         array_push($u, $users[$y]['id']);
         //     }
-        //     $cajas = Caja::whereIn('user_id', $u)->paginate();
+        //     $cajas = Caja::whereIn('user_id', $u)->orderBy('id','DESC')->paginate();
         // } elseif (auth()->user()->role_id == 3) {
         //     $cajas = Caja::where('user_id', auth()->user()->id)->get();
         // }
