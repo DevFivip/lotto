@@ -11,7 +11,7 @@
                     <form method="POST" action="/{{ $resource }}">
                         @csrf
 
-                        @if(auth()->user()->role_id === 2)
+                        @if(auth()->user()->role_id == 2)
                         <input type="hidden" value="{{auth()->user()->id}}" name="parent_id">
                         @endif
 

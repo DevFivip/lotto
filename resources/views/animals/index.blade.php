@@ -28,7 +28,7 @@
                         @foreach($animals as $animal)
                         <tr>
                             <td>
-                                @if($animal->status === 1)
+                                @if($animal->status == 1)
                                 <span class="badge bg-warning text-dark">Activo</span>
                                 @else
                                 <span class="badge bg-danger">Bloqueado</span>
@@ -42,7 +42,7 @@
                             <td>
                                 <div x-data="listener()" class="btn-group">
                                     <a href="/{{$resource}}/{{$animal->id}}/edit" class="btn btn-primary">Editar</a>
-                                    @if($animal->status === 1)
+                                    @if($animal->status == 1)
                                     <button @click="handleLock" id="{{$animal->id}}" class="btn btn-danger">Bloquear</button>
                                     @else
                                     <button @click='eliminar("{{$animal->id}}")' class="btn btn-warning">Desbloquear</button>

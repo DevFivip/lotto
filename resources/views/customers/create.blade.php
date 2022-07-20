@@ -11,11 +11,11 @@
                     <form method="POST" action="/{{ $resource }}">
                         @csrf
 
-                        @if(auth()->user()->role_id === 2)
+                        @if(auth()->user()->role_id == 2)
                         <input type="hidden" value="{{auth()->user()->id}}" name="admin_id">
                         @endif
 
-                        @if(auth()->user()->role_id === 1 || auth()->user()->role_id === 3)
+                        @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                         <input type="hidden" value="{{auth()->user()->parent_id}}" name="admin_id">
                         @endif
 

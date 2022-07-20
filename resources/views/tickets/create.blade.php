@@ -15,7 +15,7 @@
 
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
-                                    <div class="d-grid gap-1 mt-1" x-init="index === 0 ? schedule.selected = true : schedule.selected = false">
+                                    <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
                                         <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
                                     </div>
                                 </template>
@@ -259,7 +259,7 @@
                 this._monedaSelected = moneda
             },
             monedaSelected: function() {
-                let moneda = this.monedas.filter((v) => v.id === parseInt(this.ticket.moneda))
+                let moneda = this.monedas.filter((v) => v.id == parseInt(this.ticket.moneda))
                 this._monedaSelected = moneda[0];
                 localStorage.setItem('moneda', JSON.stringify(moneda[0]))
             },
@@ -303,12 +303,12 @@
             validateItems: function() {
                 _sorteos = this.schedules.filter(v => !!v.selected)
 
-                if (_sorteos.length === 0) {
+                if (_sorteos.length == 0) {
                     this.toast('⚠ Debes Seleccionar un Horario ⏲', 1500)
                     return false
                 }
 
-                if (this.numeros.length === 0) {
+                if (this.numeros.length == 0) {
                     this.toast('⚠ Debes Seleccionar un Animalito 🦝', 1500)
                     return false
                 }

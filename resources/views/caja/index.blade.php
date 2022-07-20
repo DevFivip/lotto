@@ -28,7 +28,7 @@
                         @foreach($cajas as $caja)
                         <tr x-data="converter('{{$caja->fecha_apertura}}','{{$caja->fecha_cierre}}')">
                             <td>
-                                @if($caja->status === 1)
+                                @if($caja->status == 1)
                                 <span class="badge bg-warning text-dark">Abierto</span>
                                 @else
                                 <span class="badge bg-danger">Cerrado</span>
@@ -48,7 +48,7 @@
 
                             <td>
                                 <div class="btn-group">
-                                    @if($caja->status === 1)
+                                    @if($caja->status == 1)
                                     <a href="/{{$resource}}/{{$caja->id}}/edit" class="btn btn-danger">Cerrar Caja</a>
                                     @endif
                                     <a href="/report-caja/{{$caja->id}}" class="btn btn-primary">Reporte</a>

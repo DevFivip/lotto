@@ -82,19 +82,19 @@
                             <div class="col-md-6">
                                 <select name="role_id" class="form-select" aria-label="Default select example">
 
-                                    @if($user->role_id === 1)
+                                    @if($user->role_id == 1)
                                     <option selected value="1">Super Admin</option>
                                     @else
                                     <option value="1">Super Admin</option>
                                     @endif
 
-                                    @if($user->role_id === 2)
+                                    @if($user->role_id == 2)
                                     <option selected value="2">Administrador</option>
                                     @else
                                     <option value="2">Administrador</option>
                                     @endif
 
-                                    @if($user->role_id === 3)
+                                    @if($user->role_id == 3)
                                     <option selected value="3">Tanquilla</option>
                                     @else
                                     <option value="3">Tanquilla</option>

@@ -36,7 +36,7 @@ class UserRequest extends FormRequest
             'monedas' => ['required'],
         ];
 
-        if ($this->method() === 'POST') {
+        if ($this->method() == 'POST') {
             $rules['passwordConfirm'] = 'sometimes|required_with:password|same:password';
             $rules['password'] = 'sometimes|required|string|min:6';
         }

@@ -28,7 +28,7 @@
                         @foreach($customers as $customer)
                         <tr>
                             <td>
-                                @if($customer->status === 1)
+                                @if($customer->status == 1)
                                 <span class="badge bg-warning text-dark">Activo</span>
                                 @else
                                 <span class="badge bg-danger">Bloqueado</span>
@@ -43,7 +43,7 @@
                             <td>
                                 <div x-data="listener()" class="btn-group">
                                     <a href="/{{$resource}}/{{$customer->id}}/edit" class="btn btn-primary">Editar</a>
-                                    @if($customer->status === 1)
+                                    @if($customer->status == 1)
                                     <button @click="handleLock" id="{{$customer->id}}" class="btn btn-danger">Bloquear</button>
                                     @else
                                     <button @click='eliminar("{{$customer->id}}")' class="btn btn-warning">Desbloquear</button>

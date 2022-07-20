@@ -25,7 +25,7 @@
                         @foreach($payments as $payment)
                         <tr>
                             <td>
-                                @if($payment->status === 1)
+                                @if($payment->status == 1)
                                 <span class="badge bg-warning text-dark">Activo</span>
                                 @else
                                 <span class="badge bg-danger">Desactivado</span>
@@ -35,7 +35,7 @@
                             <td>
                                 <div x-data="listener()" class="btn-group">
                                     <a href="/{{$resource}}/{{$payment->id}}/edit" class="btn btn-primary">Editar</a>
-                                    @if($payment->status === 1)
+                                    @if($payment->status == 1)
                                     <button @click="handleLock" id="{{$payment->id}}" class="btn btn-danger">Desactivar</button>
                                     @else
                                     <button @click='handleLock' id="{{$payment->id}}" class="btn btn-warning">Activar</button>

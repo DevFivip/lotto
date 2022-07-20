@@ -26,15 +26,15 @@
                                 <td>{{$usuario->name}}</td>
                                 <td>{{$usuario->email}}</td>
                                 <td>
-                                    @if($usuario->role_id === 1)
+                                    @if($usuario->role_id == 1)
                                     <span class="badge rounded-pill bg-primary "><i class="fa-solid fa-crown"></i></span>
                                     @endif
 
-                                    @if($usuario->role_id === 2)
+                                    @if($usuario->role_id == 2)
                                     <span class="badge rounded-pill bg-warning text-dark">Admin</span>
                                     @endif
 
-                                    @if($usuario->role_id === 3)
+                                    @if($usuario->role_id == 3)
                                     <span class="badge rounded-pill bg-success">Taquilla</span>
                                     @endif
                                 </td>

@@ -27,7 +27,7 @@
                         @foreach($schedules as $schedule)
                         <tr x-data="converter('{{$schedule->interval_start_utc}}','{{$schedule->interval_end_utc}}')">
                             <td>
-                                @if($schedule->status === 1)
+                                @if($schedule->status == 1)
                                 <span class="badge bg-warning text-dark">Activo</span>
                                 @else
                                 <span class="badge bg-danger">Desactivado</span>
@@ -39,7 +39,7 @@
                             <td>
                                 <div x-data="listener()" class="btn-group">
                                     <!-- <a href="/{{$resource}}/{{$schedule->id}}/edit" class="btn btn-primary">Editar</a> -->
-                                    @if($schedule->status === 1)
+                                    @if($schedule->status == 1)
                                     <button @click="handleLock" id="{{$schedule->id}}" class="btn btn-danger">Desactivar</button>
                                     @else
                                     <button @click='handleLock' id="{{$schedule->id}}" class="btn btn-warning">Activar</button>
