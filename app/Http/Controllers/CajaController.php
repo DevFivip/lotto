@@ -182,6 +182,30 @@ class CajaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function report(Request $request, $id)
+    {
+
+        $caja  = Caja::find($id);
+
+        if (auth()->user()->role_id == 1) {
+            return $caja;
+        } elseif (auth()->user()->role_id == 2) {
+            $us = User::find($caja->user_id);
+            if (auth()->user()->id == $us->id) {
+                return $caja;
+            }
+        } elseif (auth()->user()->role_id == 3) {
+            if (auth()->user()->id == $caja->id) {
+                return $caja;
+            }
+        } else {
+            return ['Error'];
+        }
+    }
+
+
+
     public function destroy($id)
     {
         //

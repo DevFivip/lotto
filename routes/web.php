@@ -38,6 +38,6 @@ Route::resource('/payments', PaymentController::class);
 Route::resource('/schedules', ScheduleController::class);
 
 
-Route::post('/ticket-register',[App\Http\Controllers\RegisterController::class, 'create']);
-Route::get('/print/{code}',[App\Http\Controllers\RegisterController::class, 'print']);
-
+Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class, 'create']);
+Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
+Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);

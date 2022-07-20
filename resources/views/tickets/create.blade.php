@@ -213,8 +213,8 @@
                                     <div class="d-grid gap-1 mt-1">
                                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i>Listado</a>
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</button>
+                                            <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
+                                            <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
                                     </div>

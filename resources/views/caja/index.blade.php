@@ -51,7 +51,7 @@
                                     @if($caja->status === 1)
                                     <a href="/{{$resource}}/{{$caja->id}}/edit" class="btn btn-danger">Cerrar Caja</a>
                                     @endif
-                                    <a href="javascript:;" class="btn btn-primary">Reporte</a>
+                                    <a href="/report-caja/{{$caja->id}}" class="btn btn-primary">Reporte</a>
                                 </div>
                             </td>
 

@@ -68,7 +68,7 @@ class TicketController extends Controller
                 $customers = Customer::where('admin_id', $padre)->get();
             }
 
-            return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas'));
+            return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas', 'caja'));
             //
         } else {
             return redirect('/cajas')->withErrors('⚠️ Es necesario aperturar tu caja para realizar ventas');
