@@ -11,9 +11,18 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Codedge\Fpdf\Fpdf\Fpdf;
 
 class RegisterController extends Controller
 {
+
+
+    protected $fpdf;
+
+    public function __construct()
+    {
+        $this->fpdf = new Fpdf;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -128,6 +137,19 @@ class RegisterController extends Controller
         }
     }
 
+    public function print(Request $request, $code)
+    {
+        $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();
+        $this->fpdf->SetFont('Arial', 'B', 12);
+        $this->fpdf->AddPage("P", ['100', '80']);
+        $this->fpdf->Text(25, 5, "Title Expecial");
+        $this->fpdf->Text(0, 7.5, "---------------------------------------------------------");
+        $this->fpdf->Text(2, 11, "Codigo: $code");
+
+        $this->fpdf->Output();
+
+        exit;
+    }
 
     public function destroy()
     {

@@ -237,8 +237,6 @@
             schedules: kk,
             animals: aa,
             monedas: mm,
-            errors: [],
-            handleError: false,
             handleBtnSave: false,
             amount: function() {
                 let moneda = JSON.parse(localStorage.getItem('moneda'));
@@ -392,13 +390,14 @@
                 res = await body.json()
 
                 if (res.valid) {
-
+                    window.open(
+                        `/print/${res.code}`, "_blank");
                 } else {
                     res.messages.forEach(msg => {
                         this.toast(msg, 5000)
                     });
                     // //errores
-                    // this.handleBtnSave = false;
+                    this.handleBtnSave = false;
                     // this.errors = res.messages
                     // this.handleError = true;
                 }

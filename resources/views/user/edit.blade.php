@@ -26,6 +26,21 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="taquilla_name" class="col-md-4 col-form-label text-md-end">Nombre de Taquilla</label>
+
+                            <div class="col-md-6">
+                                <input id="taquilla_name" type="text" class="form-control @error('taquilla_name') is-invalid @enderror" name="taquilla_name" value="{{ $user->taquilla_name }}" required autocomplete="taquilla_name" autofocus>
+
+                                @error('taquilla_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">Correo</label>
 
                             <div class="col-md-6">

@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-
         User::create([
+            'taquilla_name' => 'FivipLotto',
             'name' => 'Adolfo Gabazutt',
             'email' => 'adolfo.gbztt@gmail.com',
             'password' => bcrypt('adolfo2403'),
             'role_id' => 1,
             'status' => 1,
-            "monedas" => ['1','2']
+            "monedas" => ['1', '2']
         ]);
 
 

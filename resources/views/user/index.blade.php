@@ -13,6 +13,7 @@
                     <a href="{{$resource}}/create" class="btn btn-primary">Crear Nuevo</a>
                     <table class="table">
                         <tr>
+                            <td>Taquilla</td>
                             <td>Nombre</td>
                             <td>Email</td>
                             <td>Rol ID</td>
@@ -20,6 +21,7 @@
                         </tr>
                         @foreach($usuarios as $usuario)
                         <tr>
+                            <td>{{$usuario->taquilla_name}}</td>
                             <td>{{$usuario->name}}</td>
                             <td>{{$usuario->email}}</td>
                             <td>
@@ -44,11 +46,7 @@
                             </td>
                         </tr>
                         @endforeach
-
-
                     </table>
-
-
                 </div>
             </div>
         </div>

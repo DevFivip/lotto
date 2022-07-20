@@ -30,6 +30,7 @@ class UserRequest extends FormRequest
         $usu = isset($this->route()->parameters['usuario']) ? $this->route()->parameters['usuario'] : null;
 
         $rules =  [
+            'taquilla_name' => 'required|min:5|max:255',
             'name' => 'required|min:5|max:255',
             'email' => ['string', 'max:255', 'email', 'required', Rule::unique('users')->ignore($usu)],
             'monedas' => ['required'],
