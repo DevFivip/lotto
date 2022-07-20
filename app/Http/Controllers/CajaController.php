@@ -134,7 +134,7 @@ class CajaController extends Controller
     {
         $caja = Caja::find($id);
 
-        if ($caja->user_id === auth()->user()->id || auth()->user()->role_id === 2 || auth()->user()->role_id === 1) {
+        if ($caja->user_id == auth()->user()->id || auth()->user()->role_id == 2 || auth()->user()->role_id == 1) {
             $resource = $this->resource;
 
             $_fecha_apertura = new DateTime($caja->fecha_apertura);

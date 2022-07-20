@@ -24,9 +24,9 @@ class UserController extends Controller
     {
         $resource = $this->resource;
 
-        if (auth()->user()->role_id === 1) {
+        if (auth()->user()->role_id == 1) {
             $usuarios = User::all();
-        } elseif (auth()->user()->role_id === 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $usuarios = User::where('parent_id', auth()->user()->id)->get();
         }
 

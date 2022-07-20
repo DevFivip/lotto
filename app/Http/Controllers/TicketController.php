@@ -26,11 +26,11 @@ class TicketController extends Controller
     public function index()
     {
 
-        if (auth()->user()->role_id === 1) {
+        if (auth()->user()->role_id == 1) {
             $tickets = Register::with(['user', 'moneda'])->orderBy('id', 'desc')->paginate(10);
-        } elseif (auth()->user()->role_id === 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $tickets = Register::with(['user', 'moneda'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
-        } elseif (auth()->user()->role_id === 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $padre = auth()->user()->parent_id;
             $tickets = Register::with(['user', 'moneda'])->where('admin_id', $padre)->orderBy('id', 'desc')->paginate(10);
         }
@@ -59,11 +59,11 @@ class TicketController extends Controller
             $payments = Payment::where('status', '1')->get();
             $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
 
-            if (auth()->user()->role_id === 1) {
+            if (auth()->user()->role_id == 1) {
                 $customers = Customer::all();
-            } elseif (auth()->user()->role_id === 2) {
+            } elseif (auth()->user()->role_id == 2) {
                 $customers = Customer::where('admin_id', auth()->user()->id)->get();
-            } elseif (auth()->user()->role_id === 3) {
+            } elseif (auth()->user()->role_id == 3) {
                 $padre = auth()->user()->parent_id;
                 $customers = Customer::where('admin_id', $padre)->get();
             }

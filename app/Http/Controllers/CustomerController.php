@@ -19,11 +19,11 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role_id === 1) {
+        if (auth()->user()->role_id == 1) {
             $customers = Customer::all();
-        } elseif (auth()->user()->role_id === 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $customers = Customer::where('admin_id', auth()->user()->id)->get();
-        } elseif (auth()->user()->role_id === 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $padre = auth()->user()->parent_id;
             $customers = Customer::where('admin_id', $padre)->get();
         }
@@ -85,11 +85,11 @@ class CustomerController extends Controller
 
         //validar que el cliente que se vaya a editar sea de mi pertenencia
 
-        if (auth()->user()->role_id === 1) {
+        if (auth()->user()->role_id == 1) {
             $customer = Customer::find($id);
-        } elseif (auth()->user()->role_id === 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $customer = Customer::where('admin_id', auth()->user()->id)->where('id', $id)->first();
-        } elseif (auth()->user()->role_id === 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $customer = Customer::where('admin_id', auth()->user()->parent_id)->where('id', $id)->first();
         }
 

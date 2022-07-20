@@ -105,7 +105,7 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        if (auth()->user()->role_id === 1) {
+        if (auth()->user()->role_id == 1) {
             $schedule = Schedule::find($id);
             $schedule->update(['status' => !!!$schedule->status]);
             return true;
