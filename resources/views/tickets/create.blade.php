@@ -67,6 +67,13 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                <div class="mt-2" x-show="handleError" x-transition>
+                                                    <div class="alert alert-danger mt-2" role="alert">
+                                                        <template x-for="error in errors">
+                                                            <span class="strong" x-text="error"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
                                                 <br>
                                                 <br>
                                                 <br>
@@ -75,7 +82,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="button" class="btn btn-primary" @click="guardar()"><i class="fa-solid fa-floppy-disk"></i> Generar Ticket</button>
+                                                <button type="button" class="btn btn-primary" @click="guardar()" x-bind:disabled="handleBtnSave"><i class="fa-solid fa-floppy-disk"></i> Generar Ticket</button>
                                             </div>
                                         </div>
                                     </div>
@@ -230,6 +237,9 @@
             schedules: kk,
             animals: aa,
             monedas: mm,
+            errors: [],
+            handleError: false,
+            handleBtnSave: false,
             amount: function() {
                 let moneda = JSON.parse(localStorage.getItem('moneda'));
                 this.ticket.moneda = moneda.id
@@ -370,6 +380,7 @@
                 }).showToast();
             },
             guardar: async function() {
+                this.handleBtnSave = true;
                 let body = await fetch('/ticket-register', {
                     method: 'POST',
                     headers: {
@@ -379,7 +390,18 @@
                     body: JSON.stringify(this.ticket)
                 })
                 res = await body.json()
-                console.log(res);
+
+                if (res.valid) {
+
+                } else {
+                    res.messages.forEach(msg => {
+                        this.toast(msg, 5000)
+                    });
+                    // //errores
+                    // this.handleBtnSave = false;
+                    // this.errors = res.messages
+                    // this.handleError = true;
+                }
             }
 
         }

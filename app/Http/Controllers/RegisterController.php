@@ -7,6 +7,7 @@ use App\Models\Caja;
 use App\Models\Exchange;
 use App\Models\Register;
 use App\Models\RegisterDetail;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -33,7 +34,6 @@ class RegisterController extends Controller
 
     public function create(Request $request)
     {
-        //
         return DB::transaction(function () use ($request) {
             $data = $request->all();
             $user = auth()->user();
@@ -41,7 +41,6 @@ class RegisterController extends Controller
 
             //validar
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
-
                 $errors = [];
                 //validar cada item
                 for ($i = 0; $i < count($data['detalles']); $i++) {
@@ -77,10 +76,9 @@ class RegisterController extends Controller
                         'moneda_id' => $registro->moneda_id,
                     ]);
                 }
-
-                return response()->json(['valid' => true, 'message' => ['Ticket guardado']], 200);
+                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code], 200);
             } else {
-                return response()->json(["valid" => false, 'messages' => ['Seleccione Moneda y al menos un Animalito']], 403);
+                return response()->json(["valid" => false, 'messages' => ['Seleccione moneda y al menos un Animalito']], 403);
             }
         });
     }
@@ -112,16 +110,16 @@ class RegisterController extends Controller
     {
         $resp =  $this->checkItem($animal_id, $horario_id);
         $animal = Animal::find($animal_id);
+        $horario = Schedule::find($horario_id);
         $err = [];
 
         if ($resp[0] > $animal->limit_cant) {
-            array_push($err, 'el limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'ha excedido, intente para otro horario');
+            array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
         if ($resp[1] > $animal->limit_price_usd) {
-            array_push($err, 'el limite de venta de precio' . ' ' . $animal->nombre . ' ' . 'ha excedido, intente para otro horario');
+            array_push($err, 'Limite de venta de precio' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
-
 
         if (count($err) >= 1) {
             return ['status' => false, 'messages' => $err[0]];
