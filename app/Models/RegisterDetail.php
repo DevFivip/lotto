@@ -21,8 +21,6 @@ class RegisterDetail extends Model
     ];
 
 
-
-
     public function animal()
     {
 

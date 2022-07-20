@@ -15,7 +15,7 @@
 
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
-                                    <div class="d-grid gap-1 mt-1">
+                                    <div class="d-grid gap-1 mt-1" x-init="index === 0 ? schedule.selected = true : schedule.selected = false">
                                         <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
                                     </div>
                                 </template>
@@ -69,13 +69,7 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <div class="mt-2" x-show="handleError" x-transition>
-                                                    <div class="alert alert-danger mt-2" role="alert">
-                                                        <template x-for="error in errors">
-                                                            <span class="strong" x-text="error"></span>
-                                                        </template>
-                                                    </div>
-                                                </div>
+                          
                                                 <br>
                                                 <br>
                                                 <br>

@@ -5,9 +5,11 @@ use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use App\Models\Result;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +38,7 @@ Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
 Route::resource('/schedules', ScheduleController::class);
+Route::resource('/resultados', ResultController::class);
 
 
 Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class, 'create']);

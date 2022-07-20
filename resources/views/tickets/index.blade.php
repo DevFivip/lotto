@@ -58,15 +58,6 @@
                                             @endif
                                         </ul>
                                     </div>
-
-                                    <!-- <div x-data="listener()" class="btn-group">
-                                    <a href="/{{$ticket->id}}/edit" class="btn btn-primary">Editar</a>
-                                    @if($ticket->status === 1)
-                                    <button @click="handleLock" id="{{$ticket->id}}" class="btn btn-danger">Bloquear</button>
-                                    @else
-                                    <button @click='eliminar("{{$ticket->id}}")' class="btn btn-warning">Desbloquear</button>
-                                    @endif
-                                </div> -->
                                 </td>
                             </tr>
                             @endforeach
@@ -129,31 +120,11 @@
                             "X-CSRF-Token": window.CSRF_TOKEN
                         },
                     })
-
-                    alert()
                     location.reload()
                 }
             }
         }
     }
-
-
-    // window.CSRF_TOKEN = '{{ csrf_token() }}';
-    // async function eliminar(id) {
-    //     if (confirm("¿Seguro deseas Bloquear?") == true) {
-    //         const res = await fetch('/tickets/' + id, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Accept": "application/json",
-    //                 "X-Requested-With": "XMLHttpRequest",
-    //                 "X-CSRF-Token": window.CSRF_TOKEN
-    //             },
-    //         })
-
-    //         location.reload()
-    //     }
-    // }
 </script>
 
 @endsection
