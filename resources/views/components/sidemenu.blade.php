@@ -1,4 +1,4 @@
-<div class="list-group d-none d-sm-block">
+<div class="list-group">
     <a href="/tickets/create" class="list-group-item list-group-item-action">Taquilla</a>
     <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a>
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center" x-data="sorteos()" x-init="$watch('numeros', value => choose());$watch('ticket.moneda', value => monedaSelected()); amount()">
-        <div class="col-md-2">
+        <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
         </div>
         <div class="col-md-10 p-0">
@@ -55,8 +55,10 @@
                                                     <ul class="list-group">
                                                         <template x-for="(item, index) in ticket.detalles" :key="index">
                                                             <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
-                                                                <span><span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> </span>
-                                                                <span class=""><span x-text="_monedaSelected.currency"></span>&nbsp;<span x-text="_monedaSelected.simbolo"></span> <span x-text="item.monto"></span></span>
+                                                                <span> <span x-text="index"></span>as <span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> </span>
+                                                                <span class=""><span x-text="_monedaSelected.currency"></span>&nbsp;<span x-text="_monedaSelected.simbolo"></span> <span x-text="item.monto"></span>
+                                                                    <button class="btn btn-light text-danger" @click="deleteItem(item)"><i class="fa-solid fa-trash-can"></i></button>
+                                                                </span>
                                                             </li>
                                                         </template>
                                                         <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
@@ -87,6 +89,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
+                                <div class="modal fade" id="ModalMenuSettings" tabindex="-1" aria-labelledby="ModalMenuSettingsLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="ModalMenuSettingsLabel">Menú de Navegación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @include('components.sidemenu')
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                                 <br>
                                 <br>
                                 <br>
@@ -192,9 +213,9 @@
                                     <div class="d-grid gap-1 mt-1">
                                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-receipt"></i>Listado</button>
+                                            <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i>Listado</a>
                                             <button type="button" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</button>
-                                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-bars"></i> Menu</button>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
                                     </div>
                                 </div>
@@ -305,6 +326,10 @@
 
                 return true;
             },
+            deleteItem: function(item) {
+                this.ticket.detalles.splice(this.ticket.detalles.indexOf(item), 1);
+                this.calcularTotal();
+            },
             addItem: function() {
 
                 if (!this.validateItems()) {
@@ -392,7 +417,7 @@
                 if (res.valid) {
                     window.open(
                         `/print/${res.code}?timezone=${timezone}`, "_blank");
-                        location.reload();
+                    location.reload();
                 } else {
                     res.messages.forEach(msg => {
                         this.toast(msg, 5000)

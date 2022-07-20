@@ -25,14 +25,13 @@ class TicketController extends Controller
     public function index()
     {
 
-
         if (auth()->user()->role_id === 1) {
-            $tickets = Register::paginate();
+            $tickets = Register::with(['user', 'moneda'])->orderBy('id', 'desc')->paginate(10);
         } elseif (auth()->user()->role_id === 2) {
-            $tickets = Register::where('admin_id', auth()->user()->id)->paginate();
+            $tickets = Register::with(['user', 'moneda'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         } elseif (auth()->user()->role_id === 3) {
             $padre = auth()->user()->parent_id;
-            $tickets = Register::where('admin_id', $padre)->paginate();
+            $tickets = Register::with(['user', 'moneda'])->where('admin_id', $padre)->orderBy('id', 'desc')->paginate(10);
         }
 
         return view('tickets.index', compact('tickets'));

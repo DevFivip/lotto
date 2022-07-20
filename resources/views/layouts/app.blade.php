@@ -1,3 +1,8 @@
+@php
+    $l = $_SERVER['REQUEST_URI']
+@endphp
+
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -36,7 +41,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm d-none d-sm-block">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm  @if($l ==='/tickets/create') d-none d-sm-block @endif">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
