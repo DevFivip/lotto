@@ -76,9 +76,9 @@
                             </div>
                         </div>
 
+                        @if(auth()->user()->role_id == 1)
                         <div class="row mb-3">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">Categoria de Usuario</label>
-
                             <div class="col-md-6">
                                 <select name="role_id" class="form-select" aria-label="Default select example">
 
@@ -103,6 +103,20 @@
                                 </select>
                             </div>
                         </div>
+                        @endif
+
+                        @if(auth()->user()->role_id == 2)
+                        <div class="row mb-3">
+                            <label for="___categoria" class="col-md-4 col-form-label text-md-end">{{ __('Categoria de Usuario') }}</label>
+
+                            <div class="col-md-6">
+                                <input type="hidden" name="role_id" value="3">
+                                <input id="___categoria" readonly type="text" class="form-control" value="Taquilla">
+                            </div>
+                        </div>
+                        @endif
+
+
                         <div class="row mb-3">
                             <label for="monedas" class="col-md-4 col-form-label text-md-end">Monedas Usadas</label>
 

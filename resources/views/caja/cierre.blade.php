@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Apertura de Caja</div>
+                <div class="card-header">Cierre de Caja</div>
                 <div class="card-body">
                     <form x-data="converter('{{$fecha_apertura}}','{{$fecha_cierre}}')" method="POST" action="/{{ $resource }}/{{$caja->id}}">
                         @method('PUT')

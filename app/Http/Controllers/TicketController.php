@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\Caja;
 use App\Models\Customer;
 use App\Models\Moneda;
 use App\Models\Payment;
@@ -40,22 +41,37 @@ class TicketController extends Controller
 
     public function create()
     {
-        $resource = $this->resource;
-        $animals = Animal::all();
-        $schedules = Schedule::where('status', 1)->get();
-        $payments = Payment::where('status', '1')->get();
-        $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
 
-        if (auth()->user()->role_id === 1) {
-            $customers = Customer::all();
-        } elseif (auth()->user()->role_id === 2) {
-            $customers = Customer::where('admin_id', auth()->user()->id)->get();
-        } elseif (auth()->user()->role_id === 3) {
-            $padre = auth()->user()->parent_id;
-            $customers = Customer::where('admin_id', $padre)->get();
+        if (auth()->user()->role_id == 2) {
+            return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
         }
 
-        return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas'));
-        //
+
+        //validar apertura de caja
+
+        $caja = Caja::where('user_id', auth()->user()->id)->where('status', 1)->first();
+
+        if (!!$caja) {
+
+            $resource = $this->resource;
+            $animals = Animal::all();
+            $schedules = Schedule::where('status', 1)->get();
+            $payments = Payment::where('status', '1')->get();
+            $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
+
+            if (auth()->user()->role_id === 1) {
+                $customers = Customer::all();
+            } elseif (auth()->user()->role_id === 2) {
+                $customers = Customer::where('admin_id', auth()->user()->id)->get();
+            } elseif (auth()->user()->role_id === 3) {
+                $padre = auth()->user()->parent_id;
+                $customers = Customer::where('admin_id', $padre)->get();
+            }
+
+            return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas'));
+            //
+        } else {
+            return redirect('/cajas')->withErrors('⚠️ Es necesario aperturar tu caja para realizar ventas');
+        }
     }
 }

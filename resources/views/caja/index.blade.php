@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
- </div>
+        </div>
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Cajas</div>
@@ -18,6 +18,7 @@
                     @endif
                     <table class="table">
                         <tr>
+                            <td></td>
                             <td>Usuario</td>
                             <td>Apertura</td>
                             <td>Cierre</td>
@@ -28,11 +29,16 @@
                         <tr x-data="converter('{{$caja->fecha_apertura}}','{{$caja->fecha_cierre}}')">
                             <td>
                                 @if($caja->status === 1)
-                                <span class="badge bg-warning text-dark">Activo</span>
+                                <span class="badge bg-warning text-dark">Abierto</span>
                                 @else
-                                <span class="badge bg-danger">Cerrada</span>
+                                <span class="badge bg-danger">Cerrado</span>
                                 @endif
-                                {{$caja->usuario->name}}
+                            </td>
+                            <td>
+                                {{$caja->usuario->name}} <br>
+                                <span class="fw-bold">
+                                    {{$caja->usuario->taquilla_name}}
+                                </span>
                             </td>
 
                             <td x-text="fecha_inicial"></td>

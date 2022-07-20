@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\User;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
@@ -21,11 +22,41 @@ class CajaController extends Controller
     public function index()
     {
         //
-        $cajas = Caja::with('usuario')->orderBy('id', 'DESC')->get();
+        // $cajas = Caja::with('usuario')->orderBy('id', 'DESC')->get();
 
-        // $cajas = $cajas->map(function($v,$k){
-        //     dd($v);
-        // });
+        if (auth()->user()->role_id == 1) {
+            $cajas = Caja::paginate();
+        } elseif (auth()->user()->role_id == 2) {
+
+            $users = User::select('id')->where('parent_id', auth()->user()->id)->get();
+            // dd($users);
+            // dd($users);
+            // $u = $users->implode('id', ',');
+            // $ff = explode(',', $u);
+
+            $us = [];
+
+            for ($h = 0; $h < $users->count(); $h++) {
+                array_push($us, $users[$h]['id']);
+            }
+
+            array_push($us, auth()->user()->id);
+
+            $cajas = Caja::whereIn('user_id', $us)->paginate();
+        } elseif (auth()->user()->role_id == 3) {
+            $cajas = Caja::where('user_id', auth()->user()->id)->paginate();
+        }
+        // elseif (auth()->user()->role_id == 2) {
+        //     $users = User::select('id')->where('parent_id', auth()->user()->id)->get();
+        //     $u = [];
+        //     for ($y = 0; $y < $users->count(); $y++) {
+        //         array_push($u, $users[$y]['id']);
+        //     }
+        //     $cajas = Caja::whereIn('user_id', $u)->paginate();
+        // } elseif (auth()->user()->role_id == 3) {
+        //     $cajas = Caja::where('user_id', auth()->user()->id)->get();
+        // }
+
 
 
         $resource = $this->resource;
@@ -39,6 +70,11 @@ class CajaController extends Controller
      */
     public function create()
     {
+
+        if (auth()->user()->role_id == 2) {
+            return redirect('/cajas')->withErrors('⚠️ Los Administradores no pueden aperturar cajas');
+        }
+
         $user = auth()->user();
         $caja = Caja::where('user_id', $user->id)->where('status', 1)->first();
 

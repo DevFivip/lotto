@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
- </div>
+        </div>
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Tickets</div>
@@ -40,7 +40,6 @@
                                     <span class="badge bg-primary">Ganador</span>
                                     @endif
                                 </td>
-
                                 <td x-text="fecha_inicial"></td>
                                 <td>{{$ticket->code}}</td>
                                 <td> <span class="fw-bold">{{$ticket->user->taquilla_name}}</span> <br> {{$ticket->user->name}}</td>

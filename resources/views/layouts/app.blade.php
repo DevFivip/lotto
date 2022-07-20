@@ -1,5 +1,5 @@
 @php
-    $l = $_SERVER['REQUEST_URI']
+$l = $_SERVER['REQUEST_URI']
 @endphp
 
 

@@ -55,7 +55,7 @@
                                                     <ul class="list-group">
                                                         <template x-for="(item, index) in ticket.detalles" :key="index">
                                                             <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
-                                                                <span> <span x-text="index"></span>as <span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> </span>
+                                                                <span><span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> </span>
                                                                 <span class=""><span x-text="_monedaSelected.currency"></span>&nbsp;<span x-text="_monedaSelected.simbolo"></span> <span x-text="item.monto"></span>
                                                                     <button class="btn btn-light text-danger" @click="deleteItem(item)"><i class="fa-solid fa-trash-can"></i></button>
                                                                 </span>

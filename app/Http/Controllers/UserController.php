@@ -23,7 +23,14 @@ class UserController extends Controller
     public function index()
     {
         $resource = $this->resource;
-        $usuarios = User::all();
+
+        if (auth()->user()->role_id === 1) {
+            $usuarios = User::all();
+        } elseif (auth()->user()->role_id === 2) {
+            $usuarios = User::where('parent_id', auth()->user()->id)->get();
+        }
+
+
         return view('user.index', compact('usuarios', 'resource'));
     }
 
@@ -52,6 +59,7 @@ class UserController extends Controller
         // $splic = implode(',', $monedas);
         // dd($monedas,$splic,$data);
         $data['password'] = Hash::make($data['password']);
+
         User::create($data);
         return redirect('/' . $this->resource);
     }
@@ -94,7 +102,7 @@ class UserController extends Controller
         $credenciales = $request->all();
         if (isset($credenciales['password'])) {
             $credenciales['password'] = bcrypt($request->password);
-        }else{
+        } else {
             unset($credenciales['password']);
         }
 
