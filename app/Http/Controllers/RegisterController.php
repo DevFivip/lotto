@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Codedge\Fpdf\Fpdf\Fpdf;
+use DateTime;
+use DateTimeZone;
 
 class RegisterController extends Controller
 {
@@ -139,14 +141,49 @@ class RegisterController extends Controller
 
     public function print(Request $request, $code)
     {
+
+        $data = $request->all();
+
         $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();
+        $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone($data['timezone']));
+
+        $ticket_detalles = RegisterDetail::with(['animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+
+
+        $height = 100;
+
+        $cant_items = count($ticket_detalles);
+
+        if ($cant_items > 10) {
+            $sum = 4 * $cant_items;
+            $height = $height + $sum;
+        }
+
         $this->fpdf->SetFont('Arial', 'B', 12);
-        $this->fpdf->AddPage("P", ['100', '80']);
-        $this->fpdf->Text(25, 5, "Title Expecial");
+        $this->fpdf->AddPage("P", [$height, '76']);
+        $this->fpdf->Text(30, 5, $ticket->user->taquilla_name);
         $this->fpdf->Text(0, 7.5, "---------------------------------------------------------");
         $this->fpdf->Text(2, 11, "Codigo: $code");
+        $this->fpdf->Text(2, 16, $dt->format('d/m/y H:i:s'));
+        $this->fpdf->Text(2, 20.5, "Caja: " . $ticket->caja_id . " N:" . $ticket->id);
+        $this->fpdf->Text(0, 23.2, "---------------------------------------------------------");
 
-        $this->fpdf->Output();
+        $line_start = 30;
+        $spacing = 4.5;
+        for ($i = 0; $i < count($ticket_detalles); $i++) {
+            $item = $ticket_detalles[$i];
+            $this->fpdf->Text(2, $line_start, $item->animal->number . " " . $item->animal->nombre . " " . $item->schedule);
+            $this->fpdf->Text(50, $line_start, $ticket->moneda->simbolo . ' ' . number_format($item->monto, 2, ".", ","));
+            $line_start = $line_start + $spacing;
+        }
+        $this->fpdf->Text(0, $line_start + 1, "---------------------------------------------------------");
+        $this->fpdf->Text(2, $line_start + 5, 'Total');
+        $this->fpdf->Text(40, $line_start + 5, $ticket->moneda->currency . ' ' . $ticket->moneda->simbolo . ' ' . number_format($ticket->total, 2, ".", ","));
+
+        $this->fpdf->Text(13, $line_start + 12, 'Ticket caduca en 3 dias');
+
+        $this->fpdf->Output('ticket-' . $code . '.pdf', 'I');
 
         exit;
     }

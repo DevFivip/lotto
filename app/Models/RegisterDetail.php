@@ -19,4 +19,19 @@ class RegisterDetail extends Model
         "monto",
         "moneda_id",
     ];
+
+
+
+
+    public function animal()
+    {
+
+        return  $this->belongsTo(Animal::class, 'animal_id');
+    }
+
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
 }

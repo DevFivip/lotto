@@ -388,10 +388,11 @@
                     body: JSON.stringify(this.ticket)
                 })
                 res = await body.json()
-
+                timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
                 if (res.valid) {
                     window.open(
-                        `/print/${res.code}`, "_blank");
+                        `/print/${res.code}?timezone=${timezone}`, "_blank");
+                        location.reload();
                 } else {
                     res.messages.forEach(msg => {
                         this.toast(msg, 5000)

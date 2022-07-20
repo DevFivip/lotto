@@ -33,4 +33,9 @@ class Register extends Model
     {
         return $this->belongsTo(Moneda::class, 'moneda_id');
     }
+
+    public function detalles()
+    {
+        return $this->hasMany(RegisterDetail::class, 'register_id');
+    }
 }
