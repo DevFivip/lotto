@@ -16,51 +16,63 @@
                         <span class="strong">{{$errors->first()}}</span>
                     </div>
                     @endif
-                    <table class="table">
-                        <tr>
-                            <td></td>
-                            <td>Usuario</td>
-                            <td>Apertura</td>
-                            <td>Cierre</td>
-                            <td>Entrada</td>
-                            <td></td>
-                        </tr>
-                        @foreach($cajas as $caja)
-                        <tr x-data="converter('{{$caja->fecha_apertura}}','{{$caja->fecha_cierre}}')">
-                            <td>
-                                @if($caja->status == 1)
-                                <span class="badge bg-warning text-dark">Abierto</span>
-                                @else
-                                <span class="badge bg-danger">Cerrado</span>
-                                @endif
-                            </td>
-                            <td>
-                                {{$caja->usuario->name}} <br>
-                                <span class="fw-bold">
-                                    {{$caja->usuario->taquilla_name}}
-                                </span>
-                            </td>
-
-                            <td x-text="fecha_inicial"></td>
-                            <td x-text="fecha_cierre"></td>
-
-                            <td>{{$caja->entrada}}</td>
-
-                            <td>
-                                <div class="btn-group">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <td></td>
+                                <td>Usuario</td>
+                                <td>Apertura</td>
+                                <td>Cierre</td>
+                                <td>Entrada</td>
+                                <td></td>
+                            </tr>
+                            @foreach($cajas as $caja)
+                            <tr x-data="converter('{{$caja->fecha_apertura}}','{{$caja->fecha_cierre}}')">
+                                <td>
                                     @if($caja->status == 1)
-                                    <a href="/{{$resource}}/{{$caja->id}}/edit" class="btn btn-danger">Cerrar Caja</a>
+                                    <span class="badge bg-warning text-dark">Abierto</span>
+                                    @else
+                                    <span class="badge bg-danger">Cerrado</span>
                                     @endif
-                                    <a href="/report-caja/{{$caja->id}}" class="btn btn-primary">Reporte</a>
-                                </div>
-                            </td>
+                                </td>
+                                <td>
+                                    {{$caja->usuario->name}} <br>
+                                    <span class="fw-bold">
+                                        {{$caja->usuario->taquilla_name}}
+                                    </span>
+                                </td>
 
-                        </tr>
-                        @endforeach
+                                <td x-text="fecha_inicial"></td>
+                                <td x-text="fecha_cierre"></td>
+
+                                <td>{{$caja->entrada}}</td>
+
+                                <td>
+
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            @if($caja->status == 1)
+                                            <li><a class="dropdown-item" href="/{{$resource}}/{{$caja->id}}/edit">Cerrar Caja</a></li>
+                                            @endif
+                                            <li><a class="dropdown-item" href="/report-caja/{{$caja->id}}">Reporte</a></li>
+                                        </ul>
+                                    </div>
 
 
-                    </table>
-    
+                                    <div class="btn-group">
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                            @endforeach
+
+
+                        </table>
+                    </div>
 
                 </div>
             </div>

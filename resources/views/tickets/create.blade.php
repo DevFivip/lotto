@@ -20,8 +20,12 @@
                                     </div>
                                 </template>
                             </div>
-
-                            <div class="mt-2">
+                            <div class="mt-2"  x-show="!schedules.lenght" >
+                                <div class="alert alert-warning" role="alert">
+                                    Se han acabado los sorteos del dia de hoy <a href="/cajas/{{$caja->id}}/edit" class="alert-link">Realiza tu cierre de caja</a>.
+                                </div>
+                            </div>
+                            <div class="mt-2" x-show="!!schedules.lenght">
                                 <div class="row row-cols-4">
                                     <template x-for="(animal, index) in animals">
                                         <div class="d-grid gap-1 mt-1">
@@ -69,7 +73,7 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                          
+
                                                 <br>
                                                 <br>
                                                 <br>
@@ -197,7 +201,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mt-1">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" x-show="!!schedules.lenght">
                                         <span class="input-group-text">#</span>
                                         <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
                                         <span class="input-group-text" x-text="_monedaSelected.simbolo"></span>
@@ -205,7 +209,7 @@
                                         <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
                                     </div>
                                     <div class="d-grid gap-1 mt-1">
-                                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
+                                        <button x-show="!!schedules.lenght" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
                                             <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>

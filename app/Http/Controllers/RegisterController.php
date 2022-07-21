@@ -24,6 +24,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->fpdf = new Fpdf;
+        $this->middleware('auth');
     }
 
     /**
