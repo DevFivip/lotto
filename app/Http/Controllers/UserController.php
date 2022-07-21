@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+          $this->middleware('auth');
         $this->resource = 'usuarios';
     }
     /**
@@ -60,7 +60,7 @@ class UserController extends Controller
         // $splic = implode(',', $monedas);
         // dd($monedas,$splic,$data);
         $data['password'] = Hash::make($data['password']);
-        $data['parent_id'] = auth()
+        $data['parent_id'] = auth()->user()->id;
         User::create($data);
         return redirect('/' . $this->resource);
     }

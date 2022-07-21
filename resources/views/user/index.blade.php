@@ -39,11 +39,20 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group">
+
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="{{$resource}}/{{$usuario->id}}/edit" class="btn btn-primary">Editar</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- <div class="btn-group">
                                         <a href="javascript:;" class="btn btn-danger">Eliminar</a>
                                         <a href="javascript:;" class="btn btn-danger">Bloquear</a>
                                         <a href="{{$resource}}/{{$usuario->id}}/edit" class="btn btn-primary">Editar</a>
-                                    </div>
+                                    </div> -->
                                 </td>
                             </tr>
                             @endforeach
