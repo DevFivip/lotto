@@ -20,12 +20,12 @@
                                     </div>
                                 </template>
                             </div>
-                            <div class="mt-2"  x-show="!schedules.lenght" >
+                            <div class="mt-2" x-show="!turn">
                                 <div class="alert alert-warning" role="alert">
                                     Se han acabado los sorteos del dia de hoy <a href="/cajas/{{$caja->id}}/edit" class="alert-link">Realiza tu cierre de caja</a>.
                                 </div>
                             </div>
-                            <div class="mt-2" x-show="!!schedules.lenght">
+                            <div class="mt-2" x-show="turn">
                                 <div class="row row-cols-4">
                                     <template x-for="(animal, index) in animals">
                                         <div class="d-grid gap-1 mt-1">
@@ -87,25 +87,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-                                <div class="modal fade" id="ModalMenuSettings" tabindex="-1" aria-labelledby="ModalMenuSettingsLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="ModalMenuSettingsLabel">Menú de Navegación</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                @include('components.sidemenu')
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
                                 <br>
                                 <br>
                                 <br>
@@ -201,7 +182,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mt-1">
-                                    <div class="input-group mb-3" x-show="!!schedules.lenght">
+                                    <div x-data="schedules.lenght"></div>
+                                    <div class="input-group mb-3" x-show="turn">
                                         <span class="input-group-text">#</span>
                                         <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
                                         <span class="input-group-text" x-text="_monedaSelected.simbolo"></span>
@@ -209,7 +191,7 @@
                                         <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
                                     </div>
                                     <div class="d-grid gap-1 mt-1">
-                                        <button x-show="!!schedules.lenght" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
+                                        <button x-show="turn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
                                             <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
@@ -219,6 +201,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalMenuSettings" tabindex="-1" aria-labelledby="ModalMenuSettingsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalMenuSettingsLabel">Menú de Navegación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @include('components.sidemenu')
                     </div>
                 </div>
             </div>
@@ -240,9 +236,11 @@
 
     function sorteos() {
         var kk = @json($schedules);
+        console.log(kk.length, !!kk.length)
         var aa = @json($animals);
         var mm = @json($monedas);
         return {
+            turn: !!kk.length,
             ticket: {
                 moneda: 0,
                 detalles: [],
