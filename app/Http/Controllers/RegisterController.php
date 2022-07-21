@@ -193,8 +193,19 @@ class RegisterController extends Controller
         exit;
     }
 
+
     public function destroy()
     {
         //
+    }
+
+    public function payAnimalito(Request $request, $id)
+    {
+
+        $r =  RegisterDetail::find($id);
+        $r->status = 1;
+        $r->update();
+
+        return response()->json(['valid' => true], 200);
     }
 }

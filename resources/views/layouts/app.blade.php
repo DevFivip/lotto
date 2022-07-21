@@ -41,7 +41,7 @@ $l = $_SERVER['REQUEST_URI']
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm  @if($l =='/tickets/create') d-none d-sm-block @endif">
+        <nav class="mb-1 navbar navbar-expand-md navbar-light bg-white shadow-sm  @if($l =='/tickets/create') d-none d-sm-block @endif">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}

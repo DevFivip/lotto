@@ -41,8 +41,8 @@ class HomeController extends Controller
             //obtener el index de cada moneda
             $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));
-            if (!isset($totalMonedas[$key]['total'])) {
 
+            if (!isset($totalMonedas[$key]['total'])) {
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
                 $totalMonedas[$key]['total'] = $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
@@ -50,10 +50,18 @@ class HomeController extends Controller
                 $totalMonedas[$key]['total'] =  $totalMonedas[$key]['total'] + $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) + $totalMonedas[$key]['total_exchange_usd'];
             }
+
             if (!isset($totalMonedas[$key]['total_rewards'])) {
                 $totalMonedas[$key]['total_rewards'] = $animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
             } else {
                 $totalMonedas[$key]['total_rewards'] = $totalMonedas[$key]['total_rewards'] + ($animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
+            }
+            // dd($animalesvendidos->count());
+            // dd($animalvendido->status);
+            if (!isset($totalMonedas[$key]['total_pay'])) {
+                $totalMonedas[$key]['total_pay'] =  $animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
+            } else {
+                $totalMonedas[$key]['total_pay'] = $totalMonedas[$key]['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
             }
         }
 
@@ -61,20 +69,25 @@ class HomeController extends Controller
         foreach ($totalMonedas as $_key => $totales) {
             if (isset($totales['total'])) {
                 $totales['comision'] = $totales['total'] * $this->comision_vendedores;
+                $totales['comision_exchange_usd'] = ($totales['total'] * $this->comision_vendedores) / $totales['exchange_usd'];
             }
 
             if (isset($totales['total_rewards'])) {
                 $totales['total_rewards_exchange_usd'] = $totales['total_rewards'] /  $totales['exchange_usd'];
+                $totales['total_rewards_exchange_usd'] = $totales['total_rewards'] /  $totales['exchange_usd'];
             }
 
             if (isset($totales['total'])) {
-                $totales['balance'] = $totales['total'] - $totales['total_rewards'];
-                $totales['balance_exchange_usd'] = $totales['total_exchange_usd'] - $totales['total_rewards_exchange_usd'];
+                $totales['balance'] = $totales['total'] - $totales['total_rewards'] - $totales['comision'];
+                $totales['balance_exchange_usd'] = $totales['total_exchange_usd'] - $totales['total_rewards_exchange_usd'] - $totales['comision_exchange_usd'];
+            }
+
+            if (isset($totales['total_pay'])) {
+                $totales['total_pay_exchange_usd'] = $totales['total_pay'] /  $totales['exchange_usd'];
             }
 
             $totalMonedas[$_key] = $totales;
         }
-        //  dd($totalMonedas);
         return view('home', compact('totalMonedas'));
     }
 }

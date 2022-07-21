@@ -193,7 +193,7 @@
                                         <button x-show="turn" style="display: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
-                                            <a href="/register" class="btn btn-primary"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</a>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                             <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
@@ -215,6 +215,28 @@
                     </div>
                     <div class="modal-body">
                         @include('components.sidemenu')
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="payTicketModal" tabindex="-1" aria-labelledby="payTicketModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="payTicketModalLabel">Buscar ticket ganador para pagar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+                            <label for="exampleFormControlInput1" class="form-label">Código del Ticket</label>
+                            <input type="text" class="form-control" id="codetickt" x-model="ticketToSearch">
+                        </div>
+                        <div class="d-grid gap-2 mt-1">
+                            <button class="btn btn-dark" type="button" @click.prevent="handlePay">
+                                Buscar <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -255,6 +277,8 @@
             animals: aa,
             monedas: mm,
             handleBtnSave: false,
+            handleBtnPaySearch: false,
+            ticketToSearch: '',
             amount: function() {
                 let moneda = JSON.parse(localStorage.getItem('moneda'));
                 this.ticket.moneda = moneda.id
@@ -423,6 +447,20 @@
                     this.handleBtnSave = false;
                     // this.errors = res.messages
                     // this.handleError = true;
+                }
+            },
+            handlePay: async function() {
+                this.handleBtnPaySearch = true;
+                let body = await fetch('/ticket-validate/' + this.ticketToSearch, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
+                    },
+                })
+                res = await body.json()
+                if (!!res.valid) {
+                    location.replace('/tickets/pay/' + this.ticketToSearch);
                 }
             }
 

@@ -53,7 +53,7 @@
                                             <li><a class="dropdown-item" x-bind:href="'/print/{{$ticket->code}}?timezone='+timezone">Ver Ticket</a></li>
                                             <li><a class="dropdown-item" href="#">Eliminar</a></li>
                                             @if($ticket->has_winner == 1)
-                                            <li><a class="dropdown-item" href="#">Pagar</a></li>
+                                            <li><a class="dropdown-item" href="/tickets/pay/{{$ticket->code}}">Pagar</a></li>
                                             @endif
                                         </ul>
                                     </div>

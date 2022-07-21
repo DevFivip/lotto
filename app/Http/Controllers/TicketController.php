@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Moneda;
 use App\Models\Payment;
 use App\Models\Register;
+use App\Models\RegisterDetail;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
@@ -74,5 +75,48 @@ class TicketController extends Controller
         } else {
             return redirect('/cajas')->withErrors('⚠️ Es necesario aperturar tu caja para realizar ventas');
         }
+    }
+
+    public function validateToPay(Request $request, $code)
+    {
+        $u = auth()->user()->id;
+        $ticket = Register::where('user_id', $u)->where('code', $code)->first();
+
+        if (!!$ticket) {
+            return response()->json(['valid' => true], 200);
+        } else {
+            return response()->json(['valid' => false], 402);
+        }
+    }
+
+
+    public function pay(Request $request, $code)
+    {
+        if (auth()->user()->role_id == 1) {
+            $ticket = Register::with([
+                'caja',
+                'user',
+                'moneda'
+            ])->where('code', $code)->first();
+        } else {
+            $ticket = Register::with([
+                'caja',
+                'user',
+                'moneda'
+            ])->where('user_id', auth()->user()->id)->where('code', $code)->first();
+        }
+
+        if (!$ticket) {
+            return redirect('/tickets')->withErrors('⚠️ No tienes Autorización para realizar este pago');
+        }
+
+
+        $detalles = RegisterDetail::with([
+            "animal",
+            "schedule",
+        ])->where('register_id', $ticket->id)->get();
+
+
+        return view('tickets.pay', compact('ticket', 'detalles'));
     }
 }
