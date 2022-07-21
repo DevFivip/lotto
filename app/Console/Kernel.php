@@ -15,10 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sorteo:set')->everyTwoMinutes();
-
-
-
+        // $schedule->command('sorteo:set')->everyTwoMinutes();
         // $schedule->command('sorteo:set')->timezone('America/New_York')->at('2:00');
     }
 

@@ -125,6 +125,10 @@ class RegisterController extends Controller
         $horario = Schedule::find($horario_id);
         $err = [];
 
+        if ($horario->status == 0) {
+            array_push($err, '⛔ El sorteo ' . $horario->schedule . ' ya no se encuantra disponible ⛔');
+        }
+
         if ($resp[0] > $animal->limit_cant) {
             array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }

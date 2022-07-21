@@ -12,7 +12,6 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
-
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
                                     <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
@@ -20,12 +19,12 @@
                                     </div>
                                 </template>
                             </div>
-                            <div class="mt-2" x-show="!turn">
+                            <div class="mt-2" x-show="!turn" style="display: none;">
                                 <div class="alert alert-warning" role="alert">
                                     Se han acabado los sorteos del dia de hoy <a href="/cajas/{{$caja->id}}/edit" class="alert-link">Realiza tu cierre de caja</a>.Y vuelve mañana 👋
                                 </div>
                             </div>
-                            <div class="mt-2" x-show="turn">
+                            <div class="mt-2" x-show="turn" style="display: none;">
                                 <div class="row row-cols-4">
                                     <template x-for="(animal, index) in animals">
                                         <div class="d-grid gap-1 mt-1">
@@ -183,7 +182,7 @@
                             <div class="card-body">
                                 <div class="mt-1">
                                     <div x-data="schedules.lenght"></div>
-                                    <div class="input-group mb-3" x-show="turn">
+                                    <div class="input-group mb-3" x-show="turn" style="display: none;">
                                         <span class="input-group-text">#</span>
                                         <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
                                         <span class="input-group-text" x-text="_monedaSelected.simbolo"></span>
@@ -191,9 +190,10 @@
                                         <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
                                     </div>
                                     <div class="d-grid gap-1 mt-1">
-                                        <button x-show="turn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
+                                        <button x-show="turn" style="display: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
+                                            <a href="/register" class="btn btn-primary"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</a>
                                             <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
