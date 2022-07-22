@@ -15,5 +15,5 @@
     <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
     <a href="/resultados" class="list-group-item list-group-item-action">Resultados</a>
     @endif
-    <a href="/reports" class="list-group-item list-group-item-action">Reportes (Proximanente)</a>
+    <a href="/reports" class="list-group-item list-group-item-action">Reportes (Proximamente)</a>
 </div>
