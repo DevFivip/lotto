@@ -1,4 +1,5 @@
 <div class="list-group">
+    <a href="/home" class="list-group-item list-group-item-action">Inicio</a>
     @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
     <a href="/tickets/create" class="list-group-item list-group-item-action">Taquilla</a>
     @endif
