@@ -65,7 +65,7 @@
 
                             @if(auth()->user()->role_id == 2)
                             @foreach($cajas as $caja)
-                            @if(count($caja['totales'])>=1)
+                            @if(isset($caja['totales']))
                             <div class="card mt-2">
                                 <div class="card-header">
                                     Balance de hoy {{$caja['usuario']['name']}} {{$caja['usuario']['taquilla_name']}}
