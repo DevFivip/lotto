@@ -12,7 +12,7 @@
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     <a href="/payments" class="list-group-item list-group-item-action">Metodos de Pago</a>
     <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
-    @endif
     <a href="/resultados" class="list-group-item list-group-item-action">Resultados</a>
-    <a href="/reports" class="list-group-item list-group-item-action">Reportes</a>
+    @endif
+    <a href="/reports" class="list-group-item list-group-item-action">Reportes (Proximanente)</a>
 </div>

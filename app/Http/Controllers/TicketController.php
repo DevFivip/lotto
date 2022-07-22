@@ -33,8 +33,8 @@ class TicketController extends Controller
         } elseif (auth()->user()->role_id == 2) {
             $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         } elseif (auth()->user()->role_id == 3) {
-            $padre = auth()->user()->parent_id;
-            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', $padre)->orderBy('id', 'desc')->paginate(10);
+            // $padre = auth()->user()->parent_id;
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('user_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         }
 
         $ticket =  $tickets->each(function ($ticket) {

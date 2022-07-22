@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Result;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
@@ -35,8 +36,9 @@ class ResultController extends Controller
     public function create()
     {
         //
-
-
+        $animalitos = Animal::all();
+        $schedules = Schedule::all();
+        return view('results.create', compact('animalitos', 'schedules'));
     }
 
     /**
@@ -45,8 +47,12 @@ class ResultController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($schedule_id, $animal_number)
+    public function store(Request $request)
     {
+        $data = $request->all();
+
+        $schedule_id = $data['schedule_id'];
+        $animal_number = $data['animal_id'];
 
         $animal = Animal::where('number', $animal_number)->first();
 
@@ -78,8 +84,8 @@ class ResultController extends Controller
                 // $reg->update();
 
             }
-
-            return [$registers->count(), $registers_losers->count()];
+            return redirect('/resultados')->withErrors('Resultados guardados Cantidad de Ganadores ' . $registers->count() . ' cantidad de perdedores ' . $registers_losers->count());
+            // return [$registers->count(), $registers_losers->count()];
         }
     }
 

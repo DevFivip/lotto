@@ -10,6 +10,9 @@
             <div class="card">
                 <div class="card-header">Resultados</div>
                 <div class="card-body">
+
+                    <a href="/resultados/create" class="btn btn-primary">Agrager Nuevo Resultado</a>
+
                     @if($errors->any())
                     <div class="alert alert-danger mt-2" role="alert">
                         <span class="strong">{{$errors->first()}}</span>
