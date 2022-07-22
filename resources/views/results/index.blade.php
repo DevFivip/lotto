@@ -18,25 +18,41 @@
                         <span class="strong">{{$errors->first()}}</span>
                     </div>
                     @endif
-                    <table class="table">
-                        <tr>
-                            <td>Sorteo</td>
-                            <td>Fecha y Hora</td>
-                            <td>Numero</td>
-                            <td>Animalito</td>
-                        </tr>
-                        @foreach($results as $result)
-                        <tr x-data="converter('{{$result->created_at}}')">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <td>Sorteo</td>
+                                <td>Fecha y Hora</td>
+                                <td>Numero</td>
+                                <td>Animalito</td>
+                                @if(auth()->user()->role_id == 1)
+                                <td>Jugadas</td>
+                                <td>Ganadores</td>
+                                <td>Perdedores</td>
+                                <td>$ Ganadores</td>
+                                <td>$ Home</td>
+                                <td>$ Balance</td>
+                                @endif
+                            </tr>
+                            @foreach($results as $result)
+                            <tr x-data="converter('{{$result->created_at}}')">
+                                <td>{{$result->schedule->schedule}}</td>
+                                <td x-text="fecha_inicial"></td>
+                                <td>{{$result->animal->number}}</td>
+                                <td>{{$result->animal->nombre}}</td>
+                                @if(auth()->user()->role_id == 1)
+                                <td>{{$result->quantity_plays}}</td>
+                                <td>{{$result->quantity_winners}}</td>
+                                <td>{{$result->quantity_lossers}}</td>
+                                <td>$ {{number_format($result->amount_winners_usd,2,',','.')}}</td>
+                                <td>$ {{number_format($result->amount_home_usd,2,',','.')}}</td>
+                                <td>$ {{number_format($result->amount_balance_usd,2,',','.')}}</td>
+                                @endif
+                            </tr>
+                            @endforeach
 
-                            <td>{{$result->schedule->schedule}}</td>
-                            <td x-text="fecha_inicial"></td>
-                            <td>{{$result->animal->number}}</td>
-                            <td>{{$result->animal->nombre}}</td>
-
-                        </tr>
-                        @endforeach
-
-                    </table>
+                        </table>
+                    </div>
                     <div class="d-flex">
                         {!! $results->links() !!}
                     </div>

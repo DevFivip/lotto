@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\Exchange;
+use App\Models\Moneda;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Result;
 use App\Models\Schedule;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
@@ -24,7 +28,7 @@ class ResultController extends Controller
      */
     public function index()
     {
-        $results = Result::paginate(11);
+        $results = Result::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->paginate(11);
         return view('results.index', compact('results'));
     }
 
@@ -61,30 +65,71 @@ class ResultController extends Controller
             'animal_id' => $animal->id,
         ]);
 
+        $totalMonedas = Moneda::all()->toArray();
+        $change = Exchange::all()->toArray();
+
+        // dd($data);
+
+        $amount_winners = 0;
+        $amount_home_usd = 0;
+
         if ($r) {
-            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+
+
+            $all_registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->get();
+            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
+
+            // dd(date('Y-m-d'), $registers);
 
             foreach ($registers as $register) {
                 $register->winner = 1;
                 $register->update();
+
+                //calcular el monto en dolares de los premios
+
+
+
+                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
+                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
+
+
+                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
 
                 $reg = Register::find($register->register_id);
                 $reg->has_winner = 1;
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
                 $register_loser->update();
 
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = 1;
-                // $reg->update();
 
+
+                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
+                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
+
+                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
+                // $reg = Register::find($register->register_id);
+                // $reg->has_winner = -1;
+                // $reg->update();
             }
-            return redirect('/resultados')->withErrors('Resultados guardados Cantidad de Ganadores ' . $registers->count() . ' cantidad de perdedores ' . $registers_losers->count());
+
+
+
+            $st = $r->update([
+                'quantity_plays' => $all_registers->count(),
+                'quantity_winners' => $registers->count(),
+                'quantity_lossers' => $registers_losers->count(),
+                'amount_winners_usd' => $amount_winners,
+                'amount_home_usd' => $amount_home_usd,
+                'amount_balance_usd' => $amount_home_usd - $amount_winners,
+            ]);
+
+
+            return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
             // return [$registers->count(), $registers_losers->count()];
         }
     }

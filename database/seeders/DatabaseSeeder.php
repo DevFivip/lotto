@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('adolfo2403'),
             'role_id' => 1,
             'status' => 1,
-            "monedas" => ['1', '2']
+            'parent_id' => 1,
+            "monedas" => ['1', '2', '3', '4', '5']
         ]);
 
 

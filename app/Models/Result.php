@@ -12,6 +12,13 @@ class Result extends Model
     protected $fillable = [
         "schedule_id",
         "animal_id",
+        "quantity_plays",
+        "quantity_winners",
+        "quantity_lossers",
+        "amount_winners_usd",
+        "amount_home_usd",
+        "amount_balance_usd",
+
     ];
 
     public function schedule()
