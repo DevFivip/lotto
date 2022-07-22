@@ -11,6 +11,7 @@ class Caja extends Model
 
     protected $fillable = [
         "user_id",
+        "admin_id",
         "close_user_id",
         "fecha_apertura",
         "fecha_cierre",
@@ -27,10 +28,12 @@ class Caja extends Model
         'entrada' => 'array',
     ];
 
-    public function usuario(){
+    public function usuario()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-
-
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 }

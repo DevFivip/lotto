@@ -29,13 +29,33 @@ class TicketController extends Controller
     {
 
         if (auth()->user()->role_id == 1) {
-            $tickets = Register::with(['user', 'moneda'])->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->orderBy('id', 'desc')->paginate(10);
         } elseif (auth()->user()->role_id == 2) {
-            $tickets = Register::with(['user', 'moneda'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         } elseif (auth()->user()->role_id == 3) {
             $padre = auth()->user()->parent_id;
-            $tickets = Register::with(['user', 'moneda'])->where('admin_id', $padre)->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', $padre)->orderBy('id', 'desc')->paginate(10);
         }
+
+        $ticket =  $tickets->each(function ($ticket) {
+            $ticket->total_premios = $ticket->detalles->sum(function ($item) {
+                if ($item->winner == 1) {
+                    return  floatval($item->monto * 30);
+                } else {
+                    return 0;
+                }
+            });
+            $ticket->total_premios_pagados = $ticket->detalles->sum(function ($item) {
+                if ($item->winner == 1 &&  $item->status == 1) {
+                    return  floatval($item->monto * 30);
+                } else {
+                    return 0;
+                }
+            });
+
+            $ticket->total_premios_pendientes = $ticket->total_premios - $ticket->total_premios_pagados;
+            return $ticket;
+        });
 
         return view('tickets.index', compact('tickets'));
     }

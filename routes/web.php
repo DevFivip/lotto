@@ -48,3 +48,6 @@ Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class,
 Route::post('/ticket-validate/{code}', [App\Http\Controllers\TicketController::class, 'validateToPay']);
 Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);
+Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index']);
+
+Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);

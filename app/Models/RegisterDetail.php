@@ -19,6 +19,8 @@ class RegisterDetail extends Model
         "monto",
         "moneda_id",
         "status",
+        "user_id",
+        "caja_id",
     ];
 
 

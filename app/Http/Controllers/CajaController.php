@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\Exchange;
+use App\Models\Moneda;
+use App\Models\RegisterDetail;
 use App\Models\User;
 use DateTime;
 use DateTimeZone;
@@ -108,7 +111,7 @@ class CajaController extends Controller
         // dd($fecha);
         // $f = $fecha->setTimezone(new DateTimeZone("UTC"));
         // $data['fecha_apertura'] = $fecha;
-
+        $data['admin_id'] = auth()->user()->parent_id;
         Caja::create($data);
         return redirect('/' . $this->resource);
         //
@@ -170,9 +173,8 @@ class CajaController extends Controller
         $data = $request->all();
 
         $caja = Caja::find($id);
-
+        $caja->admin_id = auth()->user()->parent_id;
         $caja->update($data);
-
         return redirect('/' . $this->resource);
         //
     }
@@ -210,5 +212,74 @@ class CajaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function cajaReport(Request $request, $id)
+    {
+        $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+
+        $totalMonedas = Moneda::all()->toArray();
+        $change = Exchange::all()->toArray();
+
+        foreach ($animalesvendidos as $animalvendido) {
+
+            //obtener el index de cada moneda
+            $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
+            $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));
+            $caja_key =  array_search($animalvendido->caja_id, array_column($cajas, 'id'));
+            $cajas[$caja_key]['totales'] = [];
+
+            if (!isset($totalMonedas[$key]['total'])) {
+                $totalMonedas[$key]['caja_id'] = $animalvendido->caja_id;
+                $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
+                $totalMonedas[$key]['total'] = $animalvendido->monto;
+                $totalMonedas[$key]['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
+            } else {
+                $totalMonedas[$key]['total'] =  $totalMonedas[$key]['total'] + $animalvendido->monto;
+                $totalMonedas[$key]['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) + $totalMonedas[$key]['total_exchange_usd'];
+            }
+
+            if (!isset($totalMonedas[$key]['total_rewards'])) {
+                $totalMonedas[$key]['total_rewards'] = $animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
+            } else {
+                $totalMonedas[$key]['total_rewards'] = $totalMonedas[$key]['total_rewards'] + ($animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
+            }
+            // dd($animalesvendidos->count());
+            // dd($animalvendido->status);
+            if (!isset($totalMonedas[$key]['total_pay'])) {
+                $totalMonedas[$key]['total_pay'] =  $animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
+            } else {
+                $totalMonedas[$key]['total_pay'] = $totalMonedas[$key]['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
+            }
+        }
+
+        //calcular comisiones y perdidas
+        foreach ($totalMonedas as $_key => $totales) {
+            if (isset($totales['total'])) {
+                $totales['comision'] = $totales['total'] * $this->comision_vendedores;
+                $totales['comision_exchange_usd'] = ($totales['total'] * $this->comision_vendedores) / $totales['exchange_usd'];
+            }
+
+            if (isset($totales['total_rewards'])) {
+                $totales['total_rewards_exchange_usd'] = $totales['total_rewards'] /  $totales['exchange_usd'];
+                $totales['total_rewards_exchange_usd'] = $totales['total_rewards'] /  $totales['exchange_usd'];
+            }
+
+            if (isset($totales['total'])) {
+                $totales['balance'] = $totales['total'] - $totales['total_rewards'] - $totales['comision'];
+                $totales['balance_exchange_usd'] = $totales['total_exchange_usd'] - $totales['total_rewards_exchange_usd'] - $totales['comision_exchange_usd'];
+            }
+
+            if (isset($totales['total_pay'])) {
+                $totales['total_pay_exchange_usd'] = $totales['total_pay'] /  $totales['exchange_usd'];
+            }
+
+
+            $totalMonedas[$_key] = $totales;
+        }
+
+
+        return response()->json($totalMonedas, 200);
     }
 }

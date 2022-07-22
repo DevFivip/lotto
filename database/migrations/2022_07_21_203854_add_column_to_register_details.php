@@ -14,7 +14,13 @@ class AddColumnToRegisterDetails extends Migration
     public function up()
     {
         Schema::table('register_details', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('caja_id');
             $table->integer('status')->default(0);
+        });
+
+        Schema::table('cajas', function (Blueprint $table) {
+            $table->integer('admin_id');
         });
     }
 
@@ -26,7 +32,11 @@ class AddColumnToRegisterDetails extends Migration
     public function down()
     {
         Schema::table('register_details', function (Blueprint $table) {
-            $table->dropColumn(['status']);
+            $table->dropColumn(['status', 'user_id','caja_id']);
+        });
+
+        Schema::table('cajas', function (Blueprint $table) {
+            $table->dropColumn(['admin_id']);
         });
     }
 }

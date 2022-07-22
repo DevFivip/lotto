@@ -24,7 +24,9 @@
                                 <td>Codigo</td>
                                 <td>Vendedor</td>
                                 <td>Total</td>
-                                <td></td>
+                                <td>Premios</td>
+                                <td>Pagado</td>
+                                <td>Pendiente</td>
                             </tr>
                             @foreach($tickets as $ticket)
                             <tr x-data="converter('{{$ticket->created_at}}')">
@@ -44,6 +46,9 @@
                                 <td>{{$ticket->code}}</td>
                                 <td> <span class="fw-bold">{{$ticket->user->taquilla_name}}</span> <br> {{$ticket->user->name}}</td>
                                 <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total,'2',',','.')}}</td>
+                                <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total_premios,2,',','.')}}</td>
+                                <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total_premios_pagados,2,',','.')}}</td>
+                                <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total_premios_pendientes,2,',','.')}}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,8 +56,8 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><a class="dropdown-item" x-bind:href="'/print/{{$ticket->code}}?timezone='+timezone">Ver Ticket</a></li>
-                                            <li><a class="dropdown-item" href="#">Eliminar</a></li>
-                                            @if($ticket->has_winner == 1)
+                                            <li><button class="dropdown-item" @click="handleDelete('{{$ticket->code}}')">Eliminar</button></li>
+                                            @if($ticket->has_winner == 1 && $ticket->total_premios_pendientes > 0)
                                             <li><a class="dropdown-item" href="/tickets/pay/{{$ticket->code}}">Pagar</a></li>
                                             @endif
                                         </ul>
@@ -73,8 +78,42 @@
 
 <script>
     function mounted() {
+        window.CSRF_TOKEN = '{{ csrf_token() }}';
         return {
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            handleDelete: async function(code) {
+                if (confirm("¿Seguro deseas eliminar este tickets?") == true) {
+                    const res = await fetch('/register/' + code, {
+                        method: 'DELETE',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-Token": window.CSRF_TOKEN
+                        },
+                    })
+
+                    body = await res.json();
+                    console.log(body)
+                    if (body.valid) {
+                        location.reload()
+                    } else {
+                        this.toast(body.message,1000);
+                    }
+                    // alert()
+                }
+            },
+            toast: function(msg = 'Error al eliminar', duration = 800) {
+                Toastify({
+                    text: msg,
+                    duration: duration,
+                    className: "info",
+                    close: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            },
         }
     }
 

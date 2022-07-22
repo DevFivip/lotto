@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Caja;
 use App\Models\Exchange;
 use App\Models\Moneda;
 use App\Models\Register;
@@ -31,18 +32,35 @@ class HomeController extends Controller
     {
         // cantidad de tickets generados el dia de hoy
         // Balance 
+        $cajas = [];
+        if (auth()->user()->role_id == 1) {
+            $animalesvendidos = RegisterDetail::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        }
 
-        $animalesvendidos = RegisterDetail::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        if (auth()->user()->role_id == 2) {
+            $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $cajas = Caja::with('usuario')->where('admin_id', auth()->user()->id)->get()->toArray();
+            // dd($cajas);
+        }
+
+        if (auth()->user()->role_id == 3) {
+            $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        }
+
 
         $totalMonedas = Moneda::all()->toArray();
         $change = Exchange::all()->toArray();
 
         foreach ($animalesvendidos as $animalvendido) {
+
             //obtener el index de cada moneda
             $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));
+            $caja_key =  array_search($animalvendido->caja_id, array_column($cajas, 'id'));
+            $cajas[$caja_key]['totales'] = [];
 
             if (!isset($totalMonedas[$key]['total'])) {
+                $totalMonedas[$key]['caja_id'] = $animalvendido->caja_id;
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
                 $totalMonedas[$key]['total'] = $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
@@ -86,8 +104,15 @@ class HomeController extends Controller
                 $totales['total_pay_exchange_usd'] = $totales['total_pay'] /  $totales['exchange_usd'];
             }
 
+            
             $totalMonedas[$_key] = $totales;
+          
         }
-        return view('home', compact('totalMonedas'));
+
+
+
+
+
+        return view('home', compact('totalMonedas', 'cajas'));
     }
 }

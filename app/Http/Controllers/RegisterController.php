@@ -86,6 +86,8 @@ class RegisterController extends Controller
                         'admin_id' => $user['parent_id'],
                         'monto' => $animalito['monto'],
                         'moneda_id' => $registro->moneda_id,
+                        'user_id' => auth()->user()->id,
+                        'caja_id' => $caja->id,
                     ]);
                 }
                 return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code], 200);
@@ -155,7 +157,6 @@ class RegisterController extends Controller
 
         $ticket_detalles = RegisterDetail::with(['animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
 
-
         $height = 100;
 
         $cant_items = count($ticket_detalles);
@@ -194,14 +195,59 @@ class RegisterController extends Controller
     }
 
 
-    public function destroy()
+    public function destroy(Request $request, $code)
     {
-        //
+
+        // dd(date('Y-m-d'));
+        $register = Register::where('code', $code)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->first();
+        // $register = Register::where('code', $code)->first();
+
+        if (!!$register) {
+            return response()->json(['valid' => false, 'message' => 'No se puede eliminar fuera del rango de fecha'], 403);
+        }
+
+        $register_id = $register->id;
+
+        $detalles = RegisterDetail::where('register_id', $register_id)->get();
+
+
+        $valid = $detalles->filter(function ($item) {
+            //buscar si el sorteo está disponible
+
+            $sorteo = Schedule::where('id', $item->schedule_id)->where('status', 1)->first();
+
+            if (!!$sorteo) {
+                return $item;
+            }
+        });
+
+        // dd(
+        //     $detalles->count(),
+        //     $valid->count()
+        // );
+
+        if ($detalles->count() != $valid->count()) {
+            return response()->json(['valid' => false, 'message' => 'No se puede eliminar este ticket, ya un animalito se encuentra en sorteo'], 403);
+        } else {
+
+
+            $detalles->each(function ($item) {
+                $item->delete();
+            });
+            $register->delete();
+
+            return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
+        }
+
+        //verificar que los items esten en el horario
+
+
+
+
     }
 
     public function payAnimalito(Request $request, $id)
     {
-
         $r =  RegisterDetail::find($id);
         $r->status = 1;
         $r->update();
