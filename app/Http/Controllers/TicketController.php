@@ -12,6 +12,8 @@ use App\Models\RegisterDetail;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
+use Maatwebsite\Excel\Concerns\Excel;
+
 class TicketController extends Controller
 {
 
@@ -20,11 +22,7 @@ class TicketController extends Controller
         $this->middleware('auth');
         $this->resource = 'tickets';
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
 
@@ -59,7 +57,6 @@ class TicketController extends Controller
 
         return view('tickets.index', compact('tickets'));
     }
-
 
     public function create()
     {
@@ -108,7 +105,6 @@ class TicketController extends Controller
             return response()->json(['valid' => false], 402);
         }
     }
-
 
     public function pay(Request $request, $code)
     {

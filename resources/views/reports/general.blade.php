@@ -50,7 +50,7 @@
                                 <td class="table-responsive">
                                     <table class="table">
                                         <tr>
-                                            <td>Pais</td>
+                                            <td>ISO</td>
                                             <td class="text-end">Monto Total Jugado</td>
                                             <td class="text-end">Total Jugadas</td>
                                             <td class="text-end">Comisión</td>

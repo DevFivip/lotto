@@ -26,12 +26,12 @@ class ReportControllers extends Controller
 
         $registersdetails = new RegisterDetail;
 
-        if (auth()->user()->id == 2) {
+        if (auth()->user()->role_id == 2) {
 
             $registersdetails = $registersdetails->where('admin_id', auth()->user()->id);
         }
 
-        if (auth()->user()->id == 3) {
+        if (auth()->user()->role_id == 3) {
 
             $registersdetails = $registersdetails->where('caja_id', auth()->user()->id);
         }
