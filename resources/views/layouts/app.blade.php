@@ -52,6 +52,8 @@ $l = $_SERVER['REQUEST_URI']
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+
+                    @if(!!isset(auth()->user()->id))
                     <ul class="navbar-nav me-auto">
                         @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
                         <li class="nav-item d-block d-sm-none">
@@ -87,6 +89,7 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/reports">Reportes</a>
                         </li>
                     </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -98,11 +101,11 @@ $l = $_SERVER['REQUEST_URI']
                         </li>
                         @endif
 
-                        @if (Route::has('register'))
+                        <!-- @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                        @endif
+                        @endif -->
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
