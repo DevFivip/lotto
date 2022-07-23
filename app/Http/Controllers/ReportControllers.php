@@ -32,8 +32,7 @@ class ReportControllers extends Controller
         }
 
         if (auth()->user()->role_id == 3) {
-
-            $registersdetails = $registersdetails->where('caja_id', auth()->user()->id);
+            $registersdetails = $registersdetails->where('user_id', auth()->user()->id);
         }
 
         if ($fecha_inicio) {
@@ -43,6 +42,8 @@ class ReportControllers extends Controller
         if ($fecha_fin) {
             $registersdetails = $registersdetails->where('created_at', '<=', $fecha_fin . ' 23:59:59');
         }
+
+        // dd($registersdetails->toSql());
 
         $r = $registersdetails->get();
 
