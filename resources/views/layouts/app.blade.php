@@ -53,15 +53,23 @@ $l = $_SERVER['REQUEST_URI']
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
                         <li class="nav-item d-block d-sm-none">
-                            <a class="nav-link" href="/tickets">Ticket</a>
+                            <a class="nav-link" href="/tickets/create"> + Nuevo Ticket</a>
                         </li>
+                        @endif
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tickets">Listado de Tickets</a>
+                        </li>
+                        @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/usuarios">Usuarios</a>
                         </li>
+                        @endif
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/cajas">Caja</a>
                         </li>
+                        @if(auth()->user()->role_id == 1)
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/customers">Clientes</a>
                         </li>
@@ -73,6 +81,10 @@ $l = $_SERVER['REQUEST_URI']
                         </li>
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/schedules">Horarios</a>
+                        </li>
+                        @endif
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/reports">Reportes</a>
                         </li>
                     </ul>
 
