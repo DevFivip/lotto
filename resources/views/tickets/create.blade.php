@@ -194,7 +194,7 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
-                                            <a href="/report-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
+                                            <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
                                     </div>
@@ -278,6 +278,7 @@
             monedas: mm,
             handleBtnSave: false,
             handleBtnPaySearch: false,
+            fechaHoy: (new Date()).toISOString().split('T')[0],
             ticketToSearch: '',
             amount: function() {
                 let moneda = JSON.parse(localStorage.getItem('moneda'));

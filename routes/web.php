@@ -49,5 +49,6 @@ Route::post('/ticket-validate/{code}', [App\Http\Controllers\TicketController::c
 Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);
 Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index']);
+Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, 'general']);
 
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);

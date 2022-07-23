@@ -26,7 +26,6 @@ class RegisterDetail extends Model
 
     public function animal()
     {
-
         return  $this->belongsTo(Animal::class, 'animal_id');
     }
 
@@ -34,5 +33,10 @@ class RegisterDetail extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
+
+    public function moneda()
+    {
+        return $this->belongsTo(Moneda::class, 'moneda_id');
     }
 }
