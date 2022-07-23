@@ -10,12 +10,15 @@
     "require": {
         "php": "^7.3|^8.0",
         "codedge/laravel-fpdf": "^1.8",
+        "fabpot/goutte": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "weidner/goutte": "^2.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
