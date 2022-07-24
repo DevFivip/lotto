@@ -38,6 +38,31 @@
                         </div>
                     </form>
 
+                    <div class="row mt-1">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="text-center">Total</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="text-center">Total</h4>
+                                    <h4 class="text-center">Total</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="text-center">Total</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
