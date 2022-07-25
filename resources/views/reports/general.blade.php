@@ -38,7 +38,7 @@
                         </div>
                     </form>
 
-                    <div class="row mt-1">
+                    <!-- <div class="row mt-1">
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="table-responsive">
                         <table class="table">
