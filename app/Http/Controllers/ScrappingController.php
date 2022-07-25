@@ -51,10 +51,10 @@ class ScrappingController extends Controller
                 }
             }
 
-           
+
             return $n;
         } catch (\Throwable $th) {
-    
+
             return [];
         }
 
