@@ -25,7 +25,7 @@ Route::post('/send-results-complement', function (Request $request) {
 
     $data = $request->all();
 
-    return $data;
+    // return $data;
     $schedule = Schedule::where('id', $data['schedule_id'])->where('status', 0)->first();
     if ($schedule) {
         $response = ResultController::storeDirect($data['numero'], $data['schedule_id']);
