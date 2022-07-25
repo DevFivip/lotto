@@ -86,6 +86,9 @@ $l = $_SERVER['REQUEST_URI']
                         </li>
                         @endif
                         <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/resultados">Resultados</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/reports">Reportes</a>
                         </li>
                     </ul>

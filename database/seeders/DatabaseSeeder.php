@@ -104,63 +104,63 @@ class DatabaseSeeder extends Seeder
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '1',
+            'number' => '01',
             'nombre' => 'Carnero',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '2',
+            'number' => '02',
             'nombre' => 'Toro',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '3',
+            'number' => '03',
             'nombre' => 'Ciempies',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '4',
+            'number' => '04',
             'nombre' => 'Alacran',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '5',
+            'number' => '05',
             'nombre' => 'Leon',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '6',
+            'number' => '06',
             'nombre' => 'Rana',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '7',
+            'number' => '07',
             'nombre' => 'Perico',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '8',
+            'number' => '08',
             'nombre' => 'Raton',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
         ]);
         Animal::create([
-            'number' => '9',
+            'number' => '09',
             'nombre' => 'Aguila',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
