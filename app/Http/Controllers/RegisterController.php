@@ -206,10 +206,17 @@ class RegisterController extends Controller
         $this->fpdf->Text(2, $line_start + 5, 'Total');
         $this->fpdf->Text(40, $line_start + 5, $ticket->moneda->currency . ' ' . $ticket->moneda->simbolo . ' ' . number_format($ticket->total, 2, ".", ","));
 
-        $this->fpdf->SetFont('Arial');
 
+        $this->fpdf->SetFont('Arial', 'BU', 12);
+        $this->fpdf->Text(18, $line_start + 14, 'Verifique su ticket');
+        $this->fpdf->SetFont('Arial');
+        $line_start += 4;
         $this->fpdf->Text(14, $line_start + 14, 'Ticket caduca en 3 dias');
         $this->fpdf->Text(22, $line_start + 18, 'Buena Suerte!');
+        $this->fpdf->SetFont('Arial', 'B', 8);
+        $this->fpdf->Text(20, $line_start + 22, 'Consulta resultados en');
+        $this->fpdf->Text(22, $line_start + 26, 'www.lottoactivo.com');
+        $this->fpdf->Text(15, $line_start + 30, 'https://t.me/resultadosanimalitos');
 
         $this->fpdf->Output('ticket-' . $code . '.pdf', 'I');
 
@@ -276,5 +283,4 @@ class RegisterController extends Controller
 
         return response()->json(['valid' => true], 200);
     }
-
 }
