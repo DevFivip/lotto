@@ -33,7 +33,7 @@ Route::post('/send-results-complement', function (Request $request) {
         // dd($response);
         return response()->json($response, 200);
     } else {
-        return response()->json(['valid'=> false], 200);
+        return response()->json(['valid' => false], 200);
         // return ['sorteo realizado'];
     }
 

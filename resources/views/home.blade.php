@@ -23,9 +23,10 @@
 
                     <div class="row mt-3">
                         <div class="col">
+
                             <div class="card">
                                 <div class="card-header">
-                                    Balance General Hoy
+                                    Balance General
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -42,8 +43,10 @@
                                                 @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
                                                 @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
                                             </tr>
+
                                             @foreach($totalMonedas as $total)
                                             @if(isset($total['total']))
+
                                             <tr>
                                                 <td class="text-center">{{$total['nombre']}}</td>
                                                 <td class="text-end">{{$total['simbolo']}} {{number_format($total['total'],2,',','.')}}</td>
@@ -63,15 +66,15 @@
                                 </div>
                             </div>
 
-                            @if(auth()->user()->role_id == 2)
+
+                            @if(auth()->user()->role_id == 2 || auth()->user()->role_id == 1 )
                             @foreach($cajas as $caja)
                             @if(isset($caja['totales']))
                             <div class="card mt-2">
                                 <div class="card-header">
-                                    Balance de hoy {{$caja['usuario']['name']}} {{$caja['usuario']['taquilla_name']}}
+                                    Balance: <span class="fw-bold">{{$caja['usuario']['name']}} {{$caja['usuario']['taquilla_name']}}</span>
                                 </div>
                                 <div class="card-body">
-
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tr>
@@ -109,6 +112,13 @@
                             @endif
                             @endforeach
                             @endif
+
+
+
+
+
+
+
                         </div>
                     </div>
                 </div>
