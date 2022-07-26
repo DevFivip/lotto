@@ -34,7 +34,6 @@ class GetSorteoCommand extends Command
         $scrapping = new ScrappingController();
         $resultados = $scrapping->scrap();
 
-        dd($resultados);
         //obtener el ultimo resultado
         // dd($resultados);
         $ultimoResultado = $resultados[count($resultados) - 1];

@@ -29,9 +29,11 @@ Route::post('/send-results-complement', function (Request $request) {
     $schedule = Schedule::where('id', $data['schedule_id'])->where('status', 0)->first();
     if ($schedule) {
         $response = ResultController::storeDirect($data['numero'], $data['schedule_id']);
-        return response()->json(['valid', true], 200);
+        $response['sorteo'] = $schedule->schedule;
+        // dd($response);
+        return response()->json($response, 200);
     } else {
-        return response()->json(['valid', false], 200);
+        return response()->json(['valid'=> false], 200);
         // return ['sorteo realizado'];
     }
 

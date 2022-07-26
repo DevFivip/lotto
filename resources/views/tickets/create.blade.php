@@ -179,7 +179,7 @@
         <div class="fixed-bottom">
             <div class="">
                 <div class="row">
-                    <div class="col-md-6 mt-1">
+                    <div class="col-md-6 mt-1 offset-md-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="mt-1">

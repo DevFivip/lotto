@@ -150,7 +150,7 @@ class ResultController extends Controller
         $old = Result::orderBy('id', 'DESC')->first();
 
         if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-            return redirect('/resultados')->withErrors('ALERTA! Registros Similares, no se pueden guardar los resultados');
+            return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
         }
 
         $r =  Result::create([
@@ -209,8 +209,6 @@ class ResultController extends Controller
                 // $reg->update();
             }
 
-
-
             $st = $r->update([
                 'quantity_plays' => $all_registers->count(),
                 'quantity_winners' => $registers->count(),
@@ -232,7 +230,8 @@ class ResultController extends Controller
             //     $st->delete();
             //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
             // } else {
-            return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
+            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count()];
+            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
             // }
 
             // return [$registers->count(), $registers_losers->count()];
