@@ -26,9 +26,16 @@ class ResultController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $results = Result::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->paginate(11);
+
+        // dd(,date('Y-m-d H:i:s'));
+        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
+
+        // dd($dt->format('Y-m-d'));
+
+        $results = Result::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->paginate(11);
         return view('results.index', compact('results'));
     }
 

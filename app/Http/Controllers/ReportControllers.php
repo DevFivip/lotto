@@ -74,4 +74,10 @@ class ReportControllers extends Controller
     public function query(Request $request)
     {
     }
+
+    public function personalStarts(Request $request)
+    {
+        $data = $request->all();
+        $user_id = $data['user_id'];
+    }
 }

@@ -227,11 +227,12 @@ class RegisterController extends Controller
     public function destroy(Request $request, $code)
     {
 
-        // dd(date('Y-m-d'));
-        $register = Register::where('code', $code)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->first();
-        // $register = Register::where('code', $code)->first();
+        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
 
-        if (!!$register) {
+        $register = Register::where('code', $code)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->first();
+
+        if (!$register) {
             return response()->json(['valid' => false, 'message' => 'No se puede eliminar fuera del rango de fecha'], 403);
         }
 
@@ -250,15 +251,9 @@ class RegisterController extends Controller
             }
         });
 
-        // dd(
-        //     $detalles->count(),
-        //     $valid->count()
-        // );
-
         if ($detalles->count() != $valid->count()) {
             return response()->json(['valid' => false, 'message' => 'No se puede eliminar este ticket, ya un animalito se encuentra en sorteo'], 403);
         } else {
-
 
             $detalles->each(function ($item) {
                 $item->delete();
@@ -267,12 +262,6 @@ class RegisterController extends Controller
 
             return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
         }
-
-        //verificar que los items esten en el horario
-
-
-
-
     }
 
     public function payAnimalito(Request $request, $id)

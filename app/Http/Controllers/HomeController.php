@@ -7,6 +7,7 @@ use App\Models\Exchange;
 use App\Models\Moneda;
 use App\Models\Register;
 use App\Models\RegisterDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -32,20 +33,21 @@ class HomeController extends Controller
     {
         // cantidad de tickets generados el dia de hoy
         // Balance 
-        $cajas = [];
+        $usuarios = [];
         if (auth()->user()->role_id == 1) {
             $animalesvendidos = RegisterDetail::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-            $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
+            // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
+            $usuarios = User::all()->toArray();
         }
 
         if (auth()->user()->role_id == 2) {
             $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-            $cajas = Caja::with('usuario')->where('admin_id', auth()->user()->id)->get()->toArray();
-            // dd($cajas);
+            $usuarios = User::where('parent_id', auth()->user()->id)->get()->toArray();
         }
 
         if (auth()->user()->role_id == 3) {
             $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
 
@@ -58,10 +60,10 @@ class HomeController extends Controller
             //obtener el index de cada moneda
             $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));
-
-
+            $user_key =  array_search($animalvendido->user_id, array_column($usuarios, 'id'));
 
             if (!isset($totalMonedas[$key]['total'])) {
+                $totalMonedas[$key]['user_id'] = $animalvendido->user_id;
                 $totalMonedas[$key]['caja_id'] = $animalvendido->caja_id;
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
                 $totalMonedas[$key]['total'] = $animalvendido->monto;
@@ -82,7 +84,28 @@ class HomeController extends Controller
             } else {
                 $totalMonedas[$key]['total_pay'] = $totalMonedas[$key]['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
             }
+
+
+            // if (!isset($usuarios[$user_key]['totales'])) {
+            //     $usuarios[$user_key]['totales'] = [];
+            //     $usuarios[$user_key]['totales']['total'] = $animalvendido->monto;
+            //     $usuarios[$user_key]['totales']['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
+            //     $usuarios[$user_key]['totales']['total_rewards'] = $animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
+            //     $usuarios[$user_key]['totales']['total_pay'] = $animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
+            // } else {
+            //     $usuarios[$user_key]['totales']['total'] =   $usuarios[$user_key]['totales']['total'] + $animalvendido->monto;
+            //     $usuarios[$user_key]['totales']['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) +  $usuarios[$user_key]['totales']['total_exchange_usd'];
+            //     $usuarios[$user_key]['totales']['total_rewards'] = $usuarios[$user_key]['totales']['total_rewards'] + ($animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
+            //     $usuarios[$user_key]['totales']['total_pay'] = $usuarios[$user_key]['totales']['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
+            // }
+
+
+
+
+
         }
+
+        // dd($usuarios);
 
         //calcular comisiones y perdidas
         foreach ($totalMonedas as $_key => $totales) {
@@ -106,29 +129,26 @@ class HomeController extends Controller
                 $totales['total_pay_exchange_usd'] = $totales['total_pay'] /  $totales['exchange_usd'];
             }
 
-
-            // dd($totales['caja_id']);
-            // dd($cajas);
-
-            if (isset($totales['caja_id'])) {
-
-                $caja_key =  array_search($totales['caja_id'], array_column($cajas, 'id'));
-
-                if (!isset($cajas[$caja_key]['totales'])) {
-                    $cajas[$caja_key]['totales'] = [];
-                    array_push($cajas[$caja_key]['totales'], $totales);
-                } else {
-                    array_push($cajas[$caja_key]['totales'], $totales);
-                }
-            }
-            // $caja[$caja_key]['totales'] = [];
-
             $totalMonedas[$_key] = $totales;
         }
 
+        // dd($totalMonedas);
+
+        // foreach ($usuarios as $kkey => $usuario) {
+        //     if (!isset($usuario['totales'])) {
+        //         $usuario['totales'] = [];
+        //     } else {
+        //     }
+
+
+        //     $usuarios[$kkey] = $usuario;
+        // }
+
+        // dd($usuarios);
 
 
 
-        return view('home', compact('totalMonedas', 'cajas'));
+
+        return view('home', compact('totalMonedas', 'usuarios'));
     }
 }
