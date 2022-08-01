@@ -70,7 +70,7 @@
                             @if(auth()->user()->role_id == 2 || auth()->user()->role_id == 1 )
                             @foreach($usuarios as $index => $usuario)
                             <div x-show="handleResult" x-transition x-init="handleGetStarts('{{$usuario["id"]}}','{{$index}}')" style="display:none;">
-                                <div x-show="!!usuarios[{{$index}}]['total'].show" class="card mt-2">
+                                <div class="card mt-2" style="display:none;" x-show="!!usuarios['{{$index}}']['total'].show">
                                     <div class="card-header">
                                         Totales de {{$usuario['name']}}
                                     </div>
@@ -106,11 +106,6 @@
                                                         </tr>
                                                     </template>
                                                 </template>
-
-
-
-
-
                                             </table>
                                         </div>
                                     </div>
@@ -144,21 +139,23 @@
                     },
                 })
                 body = await res.json();
-                console.log(body)
+
                 const total = body.reduce((acumulator, object) => {
                     if (object.total) {
                         return acumulator + object.total;
                     } else {
                         return acumulator;
                     }
-                    // return acumulator + object.total
                 }, 0);
-                console.log(total)
+
                 if (total >= 1) {
                     body.show = true;
+                } else if (total <= 0) {
+                    body.show = false;
                 } else {
                     body.show = false;
                 }
+
                 this.usuarios[index]['total'] = body;
                 this.handleResult = true;
                 return body;
