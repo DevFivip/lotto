@@ -229,7 +229,7 @@ class RegisterController extends Controller
 
         $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone(session('timezone')));
-
+        // $dt->format('Y-m-d');
         $register = Register::where('code', $code)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->first();
 
         if (!$register) {

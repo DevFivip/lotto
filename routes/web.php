@@ -50,7 +50,7 @@ Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'pr
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);
 Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index']);
 Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, 'general']);
-Route::post('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);
+Route::get('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);
 
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);
 

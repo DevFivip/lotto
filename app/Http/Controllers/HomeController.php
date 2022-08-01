@@ -8,6 +8,8 @@ use App\Models\Moneda;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\User;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -31,22 +33,28 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
+
+        // dd($dt->format('Y-m-d'));
+
         // cantidad de tickets generados el dia de hoy
         // Balance 
+
         $usuarios = [];
         if (auth()->user()->role_id == 1) {
-            $animalesvendidos = RegisterDetail::where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
             $usuarios = User::all()->toArray();
         }
 
         if (auth()->user()->role_id == 2) {
-            $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('parent_id', auth()->user()->id)->get()->toArray();
         }
 
         if (auth()->user()->role_id == 3) {
-            $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+            $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
@@ -84,25 +92,6 @@ class HomeController extends Controller
             } else {
                 $totalMonedas[$key]['total_pay'] = $totalMonedas[$key]['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
             }
-
-
-            // if (!isset($usuarios[$user_key]['totales'])) {
-            //     $usuarios[$user_key]['totales'] = [];
-            //     $usuarios[$user_key]['totales']['total'] = $animalvendido->monto;
-            //     $usuarios[$user_key]['totales']['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
-            //     $usuarios[$user_key]['totales']['total_rewards'] = $animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
-            //     $usuarios[$user_key]['totales']['total_pay'] = $animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
-            // } else {
-            //     $usuarios[$user_key]['totales']['total'] =   $usuarios[$user_key]['totales']['total'] + $animalvendido->monto;
-            //     $usuarios[$user_key]['totales']['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) +  $usuarios[$user_key]['totales']['total_exchange_usd'];
-            //     $usuarios[$user_key]['totales']['total_rewards'] = $usuarios[$user_key]['totales']['total_rewards'] + ($animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
-            //     $usuarios[$user_key]['totales']['total_pay'] = $usuarios[$user_key]['totales']['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
-            // }
-
-
-
-
-
         }
 
         // dd($usuarios);
