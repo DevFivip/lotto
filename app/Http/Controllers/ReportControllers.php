@@ -31,6 +31,11 @@ class ReportControllers extends Controller
         $fecha_inicio = isset($data['fecha_inicio']) ? $data['fecha_inicio'] : null;
         $fecha_fin = isset($data['fecha_fin']) ? $data['fecha_fin'] : null;
 
+        if (is_null($fecha_inicio) && is_null($fecha_fin)) {
+            $datas = [];
+            return view('reports.general', compact('datas'));
+        }
+
         $registersdetails = new RegisterDetail;
 
         if (auth()->user()->role_id == 2) {
@@ -57,7 +62,6 @@ class ReportControllers extends Controller
         $group = $r->groupBy('schedule_id');
 
         $fff =  $group->map(function ($v, $q) {
-
             $moneda = $v->groupBy('moneda_id');
             $_moneda = $moneda->map(function ($h, $k) {
                 $m = Moneda::find($k);
