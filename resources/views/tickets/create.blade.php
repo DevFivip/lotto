@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col">
                                     <div class="form-check form-check-inline">
                                         <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="1" id="type_lotto_activo">
@@ -23,7 +23,7 @@
                                         <label class="form-check-label" for="type_granjita">La Granjita</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
                                     <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
