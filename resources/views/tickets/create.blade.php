@@ -2,16 +2,28 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center" x-data="sorteos()" x-init="$watch('numeros', value => choose());$watch('ticket.moneda', value => monedaSelected()); amount()">
+    <div class="row justify-content-center" x-data="sorteos()" x-init="$watch('numeros', value => choose());$watch('ticket.moneda', value => monedaSelected());$watch('ticket.type_sorteo_id', value => sorteoSelected()); amount()">
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
         </div>
         <div class="col-md-10 p-0">
             <div class="card shadow">
-                <div class="card-header d-none d-sm-block">Ticket </span></div>
+                <div class="card-header d-none d-sm-block">Ticket</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check form-check-inline">
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="1" id="type_lotto_activo">
+                                        <label class="form-check-label" for="type_lotto_activo">Lotto Activo</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
+                                        <label class="form-check-label" for="type_granjita">La Granjita</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
                                     <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
@@ -266,6 +278,7 @@
         return {
             turn: !!kk.length,
             ticket: {
+                type_sorteo_id: !!!localStorage.getItem('sorteo') ? 1 : localStorage.getItem('sorteo'),
                 moneda: 0,
                 detalles: [],
                 total: 0,
@@ -291,6 +304,11 @@
                 let moneda = this.monedas.filter((v) => v.id == parseInt(this.ticket.moneda))
                 this._monedaSelected = moneda[0];
                 localStorage.setItem('moneda', JSON.stringify(moneda[0]))
+            },
+            sorteoSelected: function() {
+                // let moneda = this.monedas.filter((v) => v.id == parseInt(this.ticket.moneda))
+                // this._monedaSelected = moneda[0];
+                localStorage.setItem('sorteo', this.ticket.type_sorteo_id)
             },
             choose: function() {
                 this._numeros = this.numeros.split(' ');

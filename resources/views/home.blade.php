@@ -17,6 +17,43 @@
                     @endif
 
                     Hola, {{auth()->user()->name}}
+
+                    <!-- <div class="row row-cols-4 pb-3 pt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-center">Ventas</h3>
+                                    <h5 class="text-center">10.602</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-center">Premios</h3>
+                                    <h5 class="text-center">10.602</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-center">Comisiones</h3>
+                                    <h5 class="text-center">10.602</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-center">Saldo</h3>
+                                    <h5 class="text-center">10.602</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+
                     <div class="d-grid gap-1 mt-1">
                         <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
                     </div>

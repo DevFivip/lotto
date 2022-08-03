@@ -11,6 +11,7 @@ class ScheduleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('timezone');
         $this->resource = 'schedules';
     }
     /**

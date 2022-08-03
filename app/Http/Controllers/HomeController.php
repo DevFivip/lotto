@@ -24,6 +24,7 @@ class HomeController extends Controller
         $this->comision_vendedores = 0.13;
         $this->amount_rewards = 30; //numero por que se multiplica los premios
         $this->middleware('auth');
+        $this->middleware('timezone');
     }
 
     /**
@@ -41,30 +42,37 @@ class HomeController extends Controller
         // cantidad de tickets generados el dia de hoy
         // Balance 
 
+        $reports = [];
         $usuarios = [];
+
         if (auth()->user()->role_id == 1) {
             $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
-            // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
+            $ticketsvendidos = Register::where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             $usuarios = User::all()->toArray();
         }
 
         if (auth()->user()->role_id == 2) {
             $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('parent_id', auth()->user()->id)->get()->toArray();
+            $ticketsvendidos = Register::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
         }
 
         if (auth()->user()->role_id == 3) {
             $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
+            $ticketsvendidos = Register::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
 
+        $reports['tickets_vendidos'] = $ticketsvendidos->count();
+        $reports['tickets_numeros_vendidos'] = $animalesvendidos->count();
+
+        // dd($reports);
 
         $totalMonedas = Moneda::all()->toArray();
         $change = Exchange::all()->toArray();
 
         foreach ($animalesvendidos as $animalvendido) {
-
             //obtener el index de cada moneda
             $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));

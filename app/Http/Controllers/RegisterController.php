@@ -25,6 +25,7 @@ class RegisterController extends Controller
     {
         $this->fpdf = new Fpdf;
         $this->middleware('auth');
+        $this->middleware('timezone');
     }
 
     /**
