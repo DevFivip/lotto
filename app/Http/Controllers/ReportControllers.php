@@ -16,6 +16,7 @@ class ReportControllers extends Controller
     public function __construct()
     {
         $this->comision_vendedores = 0.13;
+        $this->amount_rewards = 30;
         $this->middleware("timezone");
     }
 
