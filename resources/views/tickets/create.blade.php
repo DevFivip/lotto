@@ -209,6 +209,7 @@
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                             <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
+                                            <a href="/balance-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i> Caja</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
                                     </div>
