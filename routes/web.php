@@ -48,6 +48,9 @@ Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class,
 Route::post('/ticket-validate/{code}', [App\Http\Controllers\TicketController::class, 'validateToPay']);
 Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);
+Route::get('/balance-caja/{id}', [App\Http\Controllers\CajaController::class, 'show']);
+Route::get('/add-balance-caja/{id}', [App\Http\Controllers\CajaController::class, 'addBalance']);
+Route::post('/cash-flow/{id}', [App\Http\Controllers\CajaController::class, 'cashFlow']);
 Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index']);
 Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, 'general']);
 Route::get('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);

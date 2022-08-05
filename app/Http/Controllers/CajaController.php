@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\CashFlow;
 use App\Models\Exchange;
 use App\Models\Moneda;
+use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\User;
 use DateTime;
@@ -127,6 +129,55 @@ class CajaController extends Controller
     public function show($id)
     {
         //
+        $resource = $this->resource;
+        $caja = Caja::find($id);
+
+        $_fecha_apertura = new DateTime($caja->fecha_apertura);
+        $fecha_apertura = $_fecha_apertura->format('Y-m-d\TH:i:s');
+        $fecha_ahora = new DateTime();
+        $fecha_cierre = $fecha_ahora->format('Y-m-d\TH:i:s');
+        $_fecha_cierre = $fecha_ahora->format('Y-m-d\TH:i:s');
+
+        $tickets = Register::with('moneda', 'detalles')->where('caja_id', $caja->id)->get();
+
+        // dd(->toArray());
+        $tickets = $tickets->each(function ($item, $value) {
+
+            $total = $item->detalles->sum('monto');
+            $totalPremio = $item->detalles->sum(function ($vv) {
+                if ($vv->winner == 1) {
+                    return $vv->monto * 30;
+                } else {
+                    return 0;
+                }
+            });
+            $totalPagado = $item->detalles->sum(function ($vv) {
+                if ($vv->status == 1) {
+                    return $vv->monto * 30;
+                } else {
+                    return 0;
+                }
+            });
+
+            $item['_total'] = $total;
+            $item['_total_premio'] = $totalPremio;
+            $item['_total_pagado'] = $totalPagado;
+            return $item;
+        });
+
+
+        $monedas = $tickets->groupBy('moneda_id')->toArray();
+        $cashflow = CashFlow::with('moneda')->where('caja_id', $caja->id)->get()->toArray();
+        $temp = [];
+        foreach ($monedas as $key => $value) {
+            foreach ($cashflow as $k => $v) {
+                if ($v['moneda_id'] == $key) {
+                    array_push($monedas[$key], $v);
+                }
+            }
+        }
+        //dd($monedas);
+        return view('caja.balance', compact('resource', 'caja', 'fecha_apertura', 'fecha_cierre', '_fecha_cierre', 'monedas'));
     }
 
     /**
@@ -282,5 +333,23 @@ class CajaController extends Controller
 
 
         return response()->json($totalMonedas, 200);
+    }
+    public function addBalance(Request $request, $id)
+    {
+        $caja = Caja::with('usuario')->find($id);
+        $_monedas = $caja->usuario->monedas;
+        $monedas = Moneda::whereIn('id', $_monedas)->get();
+
+        // dd($caja,$monedas);
+        return view('caja.addbalance', compact('id', 'monedas'));
+    }
+
+    public function cashFlow(Request $request, $id)
+    {
+        $data = $request->all();
+        $data['caja_id'] = $id;
+        CashFlow::create($data);
+
+        return redirect('/balance-caja/' . $id);
     }
 }

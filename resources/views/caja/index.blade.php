@@ -54,6 +54,7 @@
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="/balance-caja/{{$caja->id}}">Balance</a></li>
                                             @if($caja->status == 1)
                                             <li><a class="dropdown-item" href="/{{$resource}}/{{$caja->id}}/edit">Cerrar Caja</a></li>
                                             @endif
