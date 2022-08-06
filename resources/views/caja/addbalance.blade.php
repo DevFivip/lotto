@@ -50,7 +50,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">Total</label>
 
                             <div class="col-md-6">
-                                <input id="total" type="number" class="form-control @error('total') is-invalid @enderror" name="total" value="" required autocomplete="total" autofocus>
+                                <input id="total" type="number" step=".01" class="form-control @error('total') is-invalid @enderror" name="total" value="" required autocomplete="total" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
