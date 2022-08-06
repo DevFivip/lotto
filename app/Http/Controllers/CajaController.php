@@ -20,6 +20,7 @@ class CajaController extends Controller
         $this->middleware('auth');
         $this->middleware('timezone');
         $this->resource = 'cajas';
+        $this->comision_vendedores = 0.13;
     }
     /**
      * Display a listing of the resource.
@@ -176,7 +177,25 @@ class CajaController extends Controller
                 }
             }
         }
-        //dd($monedas);
+
+
+        foreach ($monedas as $key => $value) {
+            $total_comision = 0;
+            foreach ($value as $k => $v) {
+                if (isset($v['code'])) {
+                    $total_comision += $v['_total'] * $this->comision_vendedores;
+                }
+            }
+            array_push($monedas[$key], [
+                "id" => 00,
+                'type' => -1,
+                'total' => $total_comision,
+                'detalle' => "Comison del vendedor",
+                "moneda_id" => $value[0]['moneda']['id'],
+                "moneda" => $value[0]['moneda'],
+            ]);
+        }
+
         return view('caja.balance', compact('resource', 'caja', 'fecha_apertura', 'fecha_cierre', '_fecha_cierre', 'monedas'));
     }
 

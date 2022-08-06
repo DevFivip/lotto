@@ -6,7 +6,7 @@
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
         </div>
-        <div class="col-md-10">
+        <div class="col-md-10" x-data="mounted()">
             <div class="card">
                 <div class="card-header">Resultados</div>
                 <div class="card-body">
@@ -47,6 +47,7 @@
                                 <td>$ {{number_format($result->amount_winners_usd,2,',','.')}}</td>
                                 <td>$ {{number_format($result->amount_home_usd,2,',','.')}}</td>
                                 <td>$ {{number_format($result->amount_balance_usd,2,',','.')}}</td>
+                                <td><button class="btn btn-danger" @click="handleDelete({{$result->id}})">Eliminar</button></td>
                                 @endif
                             </tr>
                             @endforeach
@@ -62,6 +63,46 @@
     </div>
 </div>
 <script type="text/javascript">
+    function mounted() {
+        window.CSRF_TOKEN = '{{ csrf_token() }}';
+        return {
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            handleDelete: async function(id) {
+                if (confirm("¿Seguro deseas eliminar este resultado asegurate de que se encuentre en 0 todos los valores?") == true) {
+                    const res = await fetch('/resultados/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-Token": window.CSRF_TOKEN
+                        },
+                    })
+
+                    body = await res.json();
+                    console.log(body)
+                    if (body.valid) {
+                        location.reload()
+                    } else {
+                        this.toast(body.message, 1000);
+                    }
+                    // alert()
+                }
+            },
+            toast: function(msg = 'Error al eliminar', duration = 800) {
+                Toastify({
+                    text: msg,
+                    duration: duration,
+                    className: "info",
+                    close: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            },
+        }
+    }
+
     function converter(q, k) {
         date = new Date(q);
         w = date.getTimezoneOffset()

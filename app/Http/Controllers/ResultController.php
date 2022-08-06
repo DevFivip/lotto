@@ -288,6 +288,6 @@ class ResultController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Result::find($id)->delete();
     }
 }
