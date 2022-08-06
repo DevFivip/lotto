@@ -190,7 +190,7 @@ class CajaController extends Controller
                 "id" => 00,
                 'type' => -1,
                 'total' => $total_comision,
-                'detalle' => "Comison del vendedor",
+                'detalle' => "Comisión del vendedor",
                 "moneda_id" => $value[0]['moneda']['id'],
                 "moneda" => $value[0]['moneda'],
             ]);
