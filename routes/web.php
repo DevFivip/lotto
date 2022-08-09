@@ -55,6 +55,10 @@ Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index'])
 Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, 'general']);
 Route::get('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);
 
+Route::get('/setting-impresora', function () {
+   return view('setting.impresora');
+});
+
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);
 
 Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);

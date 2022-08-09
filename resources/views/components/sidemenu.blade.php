@@ -16,4 +16,5 @@
     @endif
     <a href="/resultados" class="list-group-item list-group-item-action">Resultados</a>
     <a href="/reports" class="list-group-item list-group-item-action">Reportes</a>
+    <a href="/setting-impresora" class="list-group-item list-group-item-action">Configurar Impresora</a>
 </div>
