@@ -458,9 +458,17 @@
                 res = await body.json()
                 timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
                 if (res.valid) {
-                    window.open(
-                        `/print/${res.code}?timezone=${timezone}`, "_blank");
-                    location.reload();
+                    if (localStorage.getItem('printer') && localStorage.getItem('printer_url')) {
+                        await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), res.ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
+                        this.toast('Imprimiendo...', 5000)
+                        location.reload();
+                    } else {
+                        window.open(
+                            `/print/${res.code}?timezone=${timezone}`, "_blank");
+                        location.reload();
+                    }
+
+
                 } else {
                     res.messages.forEach(msg => {
                         this.toast(msg, 5000)
@@ -484,6 +492,28 @@
                 if (!!res.valid) {
                     location.replace('/tickets/pay/' + this.ticketToSearch);
                 }
+            },
+            printDirect: async function(printer, url, detalles, ticket, paper_width) {
+                axios(`${url}/print`, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    data: {
+                        printer,
+                        detalles,
+                        ticket,
+                        paper_width
+                    }
+                }).then(({
+                    data
+                }) => {
+                    this.toast('Al parecer todo va bien ✌', 3000)
+                    // console.log(data);
+                }).catch((e) => {
+                    this.toast('Verifica el la url del pluggin', 3000)
+                    this.toast('Asegurate que tengas instalado el pluggin de impresion en tu computadora local', 3000)
+                    console.log(e);
+                });
+
             }
 
         }

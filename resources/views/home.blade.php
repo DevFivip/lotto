@@ -58,6 +58,26 @@
                         <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
                     </div>
 
+                    <form action="/home" class="mt-2">
+                        <div class="row">
+                            <div class="col">
+                                <label for="">Fecha Inicio</label>
+                                <input name="fecha_inicio" type="date" class="form-control" placeholder="Fecha Inicio" aria-label="Fecha Inicio">
+                            </div>
+                            <div class="col">
+                                <label for="">Fecha Fin</label>
+                                <input name="fecha_fin" type="date" class="form-control" placeholder="Fecha Fin" aria-label="Fecha Fin">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <div class="d-grid gap-1">
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="row mt-3">
                         <div class="col">
 

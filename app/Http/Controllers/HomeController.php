@@ -32,12 +32,25 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-        $dt->setTimezone(new DateTimeZone(session('timezone')));
 
-        // dd($dt->format('Y-m-d'));
+        if(count($request->all()) > 1)
+        {   
+            $data = $request->all();
+            $dt = new DateTime($data['fecha_inicio']."00:00:00", new DateTimeZone('UTC'));
+
+            if(isset($data['fecha_fin'])){
+                $dt2 = new DateTime($data['fecha_fin']."00:00:00", new DateTimeZone('UTC'));
+                $dt2->setTimezone(new DateTimeZone(session('timezone')));
+            }
+      
+        }else{
+            $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+            $dt->setTimezone(new DateTimeZone(session('timezone')));
+        }
+
+        //dd($dt->format('Y-m-d'));
 
         // cantidad de tickets generados el dia de hoy
         // Balance 
@@ -45,25 +58,79 @@ class HomeController extends Controller
         $reports = [];
         $usuarios = [];
 
+        
+        
         if (auth()->user()->role_id == 1) {
-            $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+            
+            if(!isset($data['fecha_inicio']) && !isset($data['fecha_fin']) ){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && !isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
+            }
+
+            // if(isset($data['fecha_fin'])){
+            //     $animalesvendidos=    $animalesvendidos->where('created_at','>=',$dt2->format('Y-m-d').' 23:59:59');
+            // }
+            
+            $animalesvendidos = $animalesvendidos->get();
+
             $ticketsvendidos = Register::where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             $usuarios = User::all()->toArray();
         }
 
         if (auth()->user()->role_id == 2) {
-            $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+
+            if(!isset($data['fecha_inicio']) && !isset($data['fecha_fin']) ){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && !isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
+            }
+
+            $animalesvendidos = $animalesvendidos->get();
+            // $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('parent_id', auth()->user()->id)->get()->toArray();
             $ticketsvendidos = Register::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
         }
 
         if (auth()->user()->role_id == 3) {
-            $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+            if(!isset($data['fecha_inicio']) && !isset($data['fecha_fin']) ){
+                $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && !isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+            }
+            
+            if(isset($data['fecha_inicio']) && isset($data['fecha_fin'])){
+                $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
+            }
+            //$animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
             $ticketsvendidos = Register::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
-
+        $animalesvendidos = $animalesvendidos->get();
         $reports['tickets_vendidos'] = $ticketsvendidos->count();
         $reports['tickets_numeros_vendidos'] = $animalesvendidos->count();
 

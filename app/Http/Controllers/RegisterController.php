@@ -91,7 +91,17 @@ class RegisterController extends Controller
                         'caja_id' => $caja->id,
                     ]);
                 }
-                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code], 200);
+
+
+                $ticket = Register::with(['user', 'moneda', 'caja'])->where('id', $registro->id)->first();
+                $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
+                $dt->setTimezone(new DateTimeZone(session('timezone')));
+
+                $ticket_detalles = RegisterDetail::with(['animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+
+                $collection = $ticket_detalles->groupBy('schedule_id');
+
+                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $collection], 200);
             } else {
                 return response()->json(["valid" => false, 'messages' => ['Seleccione moneda y al menos un Animalito']], 403);
             }

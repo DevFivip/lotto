@@ -18,7 +18,17 @@
                                         Buscar Impresoras
                                     </a>
                                 </div>
-
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="paper_width" class="col-md-4 col-form-label text-md-end">Tamaño del Papel</label>
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <label for="paper_width" class="col-md-4 col-form-label text-md-end"></label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" x-model="paper_width">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -29,7 +39,7 @@
                                 <label for="impresora_id" class="col-md-4 col-form-label text-md-end"></label>
                                 <div class="col-md-6">
                                     <select x-model="printerSelected" name="impresora_id" class="form-select" aria-label="Mis Impresoras">
-                                        <option value="null" >Seleccione Impresora</option>
+                                        <option value="null">Seleccione Impresora</option>
                                         <template x-for="printer in printers" :key="printer.deviceId">
                                             <option :value="printer.deviceId" x-text="printer.name"></option>
                                         </template>
@@ -59,6 +69,7 @@
         function mounted() {
             return {
                 printers: [],
+                paper_width: localStorage.getItem('paper_width') || 226.772,
                 url: localStorage.getItem('printer_url') || 'http://localhost:7734',
                 printerSelected: localStorage.getItem('printer'),
                 getPrinter: async function() {
@@ -79,6 +90,7 @@
                 setPrinter: function() {
                     localStorage.setItem('printer_url', this.url)
                     localStorage.setItem('printer', this.printerSelected)
+                    localStorage.setItem('paper_width', this.paper_width)
                     this.toast('Impresora configurada correctamente 👌')
                 },
                 deletePrinter: function() {
