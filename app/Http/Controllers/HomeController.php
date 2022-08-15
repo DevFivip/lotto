@@ -38,16 +38,16 @@ class HomeController extends Controller
         if(count($request->all()) > 1)
         {   
             $data = $request->all();
-            $dt = new DateTime($data['fecha_inicio']."00:00:00", new DateTimeZone('UTC'));
+            $dt = new DateTime($data['fecha_inicio']." 00:00:00", new DateTimeZone('UTC'));
 
             if(isset($data['fecha_fin'])){
-                $dt2 = new DateTime($data['fecha_fin']."00:00:00", new DateTimeZone('UTC'));
-                $dt2->setTimezone(new DateTimeZone(session('timezone')));
+                $dt2 = new DateTime($data['fecha_fin']." 00:00:00", new DateTimeZone('UTC'));
+                // $dt2->setTimezone(new DateTimeZone(session('timezone')));
             }
       
         }else{
             $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-            $dt->setTimezone(new DateTimeZone(session('timezone')));
+            // $dt->setTimezone(new DateTimeZone(session('timezone')));
         }
 
         //dd($dt->format('Y-m-d'));
@@ -88,7 +88,7 @@ class HomeController extends Controller
 
         if (auth()->user()->role_id == 2) {
 
-            if(!isset($data['fecha_inicio']) && !isset($data['fecha_fin']) ){
+            if(!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])){
                 $animalesvendidos = RegisterDetail::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
