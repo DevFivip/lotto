@@ -130,7 +130,7 @@ class HomeController extends Controller
             $ticketsvendidos = Register::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
-        // $animalesvendidos = $animalesvendidos->get();
+        $animalesvendidos = $animalesvendidos->get();
         $reports['tickets_vendidos'] = $ticketsvendidos->count();
         $reports['tickets_numeros_vendidos'] = $animalesvendidos->count();
 
