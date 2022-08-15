@@ -82,7 +82,6 @@ class HomeController extends Controller
             // }
             
             $animalesvendidos = $animalesvendidos->get();
-
             $ticketsvendidos = Register::where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             $usuarios = User::all()->toArray();
         }
@@ -125,13 +124,13 @@ class HomeController extends Controller
                 $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
+            $animalesvendidos = $animalesvendidos->get();
             //$animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
             $ticketsvendidos = Register::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
-        // $animalesvendidos =
-        $animalesvendidos->get();
+
         $reports['tickets_vendidos'] = $ticketsvendidos->count();
         $reports['tickets_numeros_vendidos'] = $animalesvendidos->count();
 
