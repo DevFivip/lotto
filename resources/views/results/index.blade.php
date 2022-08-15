@@ -10,9 +10,9 @@
             <div class="card">
                 <div class="card-header">Resultados</div>
                 <div class="card-body">
-
+                    @if(auth()->user()->role_id == 1)
                     <a href="/resultados/create" class="btn btn-primary">Agrager Nuevo Resultado</a>
-
+                    @endif
                     @if($errors->any())
                     <div class="alert alert-danger mt-2" role="alert">
                         <span class="strong">{{$errors->first()}}</span>
