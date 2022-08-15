@@ -93,10 +93,25 @@ class ReportControllers extends Controller
         $data = $request->all();
         $user_id = $data['user_id'];
 
-        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-        $dt->setTimezone(new DateTimeZone('America/Lima'));
+        if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
+            $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+            $dt->setTimezone(new DateTimeZone(session('timezone')));
+            $animalesvendidos = RegisterDetail::where('user_id', $user_id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+        } else {
+            if (!is_null($data['fecha_inicio']) && is_null($data['fecha_fin'])) {
+                $animalesvendidos = RegisterDetail::where('user_id', $user_id)
+                    ->where('created_at', '>=', $data['fecha_inicio'] . ' 00:00:00')
+                    ->where('created_at', '<=', $data['fecha_inicio'] . ' 23:59:59')->get();
+            }
 
-        $animalesvendidos = RegisterDetail::where('user_id', $user_id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+            if (!is_null($data['fecha_inicio']) && !is_null($data['fecha_fin'])) {
+
+                $animalesvendidos = RegisterDetail::where('user_id', $user_id)
+                    ->where('created_at', '>=', $data['fecha_inicio'] . ' 00:00:00')
+                    ->where('created_at', '<=', $data['fecha_fin'] . ' 23:59:59')->get();
+            }
+        }
+
 
         $totalMonedas = Moneda::all()->toArray();
         $change = Exchange::all()->toArray();

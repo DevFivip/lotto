@@ -179,14 +179,29 @@
 </div>
 <script>
     function mounted() {
+
+
         window.CSRF_TOKEN = '{{ csrf_token() }}';
+        const params = (new URL(location)).searchParams;
+        console.log({
+            params
+        })
         let usu = @json($usuarios);
-        console.log(usu);
         return {
+            get_query: function() {
+                var url = location.search;
+                var qs = url.substring(url.indexOf('?') + 1).split('&');
+                for (var i = 0, result = {}; i < qs.length; i++) {
+                    qs[i] = qs[i].split('=');
+                    result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+                }
+                return result;
+            },
             handleResult: false,
             usuarios: usu,
             handleGetStarts: async function(userId, index) {
-                const res = await fetch('/reports/usuario?user_id=' + userId, {
+                // console.log(this.get_query())
+                const res = await fetch('/reports/usuario?user_id=' + userId + '&' + new URLSearchParams(this.get_query()), {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
@@ -195,8 +210,7 @@
                         "X-CSRF-Token": window.CSRF_TOKEN
                     },
                 })
-                body = await res.json();
-
+                const body = await res.json();
                 const total = body.reduce((acumulator, object) => {
                     if (object.total) {
                         return acumulator + object.total;
