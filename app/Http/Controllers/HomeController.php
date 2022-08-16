@@ -207,7 +207,7 @@ class HomeController extends Controller
                 return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
             });
 
-            // dd($group);
+            $g = $g->sortByDesc(2);
             return [$g, 'schedule' => $group[0]->schedule];
             // dd($g);
 
