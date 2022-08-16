@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CajaController;
+use App\Http\Controllers\CashAdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
@@ -40,6 +41,7 @@ Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
 Route::resource('/schedules', ScheduleController::class);
 Route::resource('/resultados', ResultController::class);
+Route::resource('/cash-admins', CashAdminController::class);
 
 
 Route::post('/tickets/makepay/{id}', [App\Http\Controllers\RegisterController::class, 'payAnimalito']);

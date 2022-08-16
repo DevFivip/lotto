@@ -6,7 +6,7 @@
     <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a>
     @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>
-    <a href="/admin-cash" class="list-group-item list-group-item-action">Caja Administrativa</a>
+    <a href="/cash-admins" class="list-group-item list-group-item-action">Caja Administrativa</a>
     @endif
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
     @if(auth()->user()->role_id == 1)

@@ -204,7 +204,13 @@ class HomeController extends Controller
             $animals_groups = $group->groupBy('animal_id');
 
             $g = $animals_groups->map(function ($gr) {
-                return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
+
+                if($gr[0]->schedule()->first()->status == 1){
+                    return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
+                }else{
+                    return [null, 0, 0];
+
+                }
             });
 
             $g = $g->sortByDesc(2);

@@ -77,50 +77,48 @@
                             </div>
                         </div>
                     </form>
-
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header" @click="setShowPlays()">
-                                    Jugadas
-                                </div>
-                                <div class="card-body" x-show="showPlays" x-transition style="display: none;">
-                                    @foreach($list_plays as $plays)
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <tr>
-                                                <td class="fw-bold text-center">Horario</td>
-                                                <td class="fw-bold text-end">Numeros</td>
-                                                <td class="fw-bold text-end">Cantida de Jugadas</td>
-                                            </tr>
-                                            @foreach($plays[0] as $play)
-                                            <tr>
-                                                <td class="text-center">
-                                                    {{$plays['schedule']}}
-                                                </td>
-                                                <td class="text-end">
-                                                    {{$play[0]}}
-                                                    {{$play[1]}}
-                                                </td>
-                                                <td class="text-end">
-                                                    {{$play[2]}}
-                                                </td>
-                                            </tr>
-                                            @endforeach
-
-                                        </table>
+                </div>
+            </div>
 
 
-                                        @endforeach
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header" @click="setShowPlays()">
+                            Jugadas
+                        </div>
+                        <div class="card-body" x-show="showPlays" x-transition style="display: none;">
+                            @foreach($list_plays as $plays)
+                            <div class="table-responsive">
+                                <table class="table">
 
-                                    </div>
-                                </div>
+                                    @foreach($plays[0] as $play)
+                                    @if($play[0] != null)
+                                    <tr>
+                                        <td class="text-center">
+                                            {{$plays['schedule']}}
+                                        </td>
+                                        <td class="text-end">
+                                            {{$play[0]}}
+                                            {{$play[1]}}
+                                        </td>
+                                        <td class="text-end">
+                                            {{$play[2]}}
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @endforeach
+
+                                </table>
+
+
+                                @endforeach
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="row mt-3">
                 <div class="col">
