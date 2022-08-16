@@ -18,41 +18,6 @@
 
                     Hola, {{auth()->user()->name}}
 
-                    <!-- <div class="row row-cols-4 pb-3 pt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="text-center">Ventas</h3>
-                                    <h5 class="text-center">10.602</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="text-center">Premios</h3>
-                                    <h5 class="text-center">10.602</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="text-center">Comisiones</h3>
-                                    <h5 class="text-center">10.602</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="text-center">Saldo</h3>
-                                    <h5 class="text-center">10.602</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
 
                     <div class="d-grid gap-1 mt-1">
                         <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
@@ -77,146 +42,144 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
 
 
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header" @click="setShowPlays()">
-                            Jugadas
-                        </div>
-                        <div class="card-body" x-show="showPlays" x-transition style="display: none;">
-                            @foreach($list_plays as $plays)
-                            <div class="table-responsive">
-                                <table class="table">
 
-                                    @foreach($plays[0] as $play)
-                                    @if($play[0] != null)
-                                    <tr>
-                                        <td class="text-center">
-                                            {{$plays['schedule']}}
-                                        </td>
-                                        <td class="text-end">
-                                            {{$play[0]}}
-                                            {{$play[1]}}
-                                        </td>
-                                        <td class="text-end">
-                                            {{$play[2]}}
-                                        </td>
-                                    </tr>
-                                    @endif
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header" @click="setShowPlays()">
+                                    Jugadas
+                                </div>
+                                <div class="card-body" x-show="showPlays" style="display: none;">
+                                    @foreach($list_plays as $plays)
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            @foreach($plays[0] as $play)
+                                            @if($play[0] != null)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{$plays['schedule']}}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{$play[0]}}
+                                                    {{$play[1]}}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{$play[2]}}
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </table>
+                                    </div>
                                     @endforeach
-
-                                </table>
-
-
-                                @endforeach
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col">
-
-                    <div class="card">
-                        <div class="card-header">
-                            Balance General
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                        <td class="fw-bold text-center">Moneda</td>
-                                        <td class="fw-bold text-end">Ventas</td>
-                                        <td class="fw-bold text-end">Premios</td>
-                                        <td class="fw-bold text-end">Comisión</td>
-                                        <td class="fw-bold text-end">Balance</td>
-                                        <td class="fw-bold text-end">Pagados</td>
-                                        @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Ventas (USDT)</td>@endif
-                                        @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Premios (USDT)</td>@endif
-                                        @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
-                                        @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
-                                    </tr>
-
-                                    @foreach($totalMonedas as $total)
-                                    @if(isset($total['total']))
-
-                                    <tr>
-                                        <td class="text-center">{{$total['nombre']}}</td>
-                                        <td class="text-end">{{$total['simbolo']}} {{number_format($total['total'],2,',','.')}}</td>
-                                        <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_rewards'],2,',','.')}}</td>
-                                        <td class="text-end">{{$total['simbolo']}} {{number_format($total['comision'],2,',','.')}}</td>
-                                        <td class="text-end">{{$total['simbolo']}} {{number_format($total['balance'],2,',','.')}}</td>
-                                        <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_pay'],2,',','.')}}</td>
-                                        @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['total_exchange_usd'],2,',','.')}}</td>@endif
-                                        @if(auth()->user()->role_id == 1) <td class="text-end">$ {{number_format($total['total_rewards_exchange_usd'],2,',','.')}}</td>@endif
-                                        @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['balance_exchange_usd'],2,',','.')}}</td>@endif
-                                        @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['total_pay_exchange_usd'],2,',','.')}}</td>@endif
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    @if(auth()->user()->role_id == 2 || auth()->user()->role_id == 1 )
-                    @foreach($usuarios as $index => $usuario)
-                    <div x-show="handleResult" x-transition x-init="handleGetStarts('{{$usuario["id"]}}','{{$index}}')" style="display:none;">
-                        <div class="card mt-2" style="display:none;" x-show="!!usuarios['{{$index}}']['total'].show">
-                            <div class="card-header">
-                                Totales de <span class="fw-bold">{{$usuario['name']}}</span> Comisión <span class="fw-bold">{{$usuario['comision']}}%<span>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tr>
-                                            <td class="fw-bold text-center">Moneda</td>
-                                            <td class="fw-bold text-end">Ventas </td>
-                                            <td class="fw-bold text-end">Premios</td>
-                                            <td class="fw-bold text-end">Comisión</td>
-                                            <td class="fw-bold text-end">Balance</td>
-                                            <td class="fw-bold text-end">Pagados</td>
-                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Ventas (USDT)</td>@endif
-                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Premios (USDT)</td>@endif
-                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
-                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
-                                        </tr>
-
-                                        <template x-for="item in usuarios['{{$index}}']['total']">
-                                            <template x-if="!!item.total">
-                                                <tr>
-                                                    <td class="text-center" x-text="item.nombre"></td>
-                                                    <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total,'.',',')"></span></td>
-                                                    <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total_rewards,'.',',')"></span></td>
-                                                    <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.comision,'.',',')"></span></td>
-                                                    <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.balance,'.',',')"></span></td>
-                                                    <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total_pay,'.',',')"></span></td>
-                                                    @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_exchange_usd,'.',',')"></span></td>@endif
-                                                    @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_rewards_exchange_usd,'.',',')"></span></td>@endif
-                                                    @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.balance_exchange_usd,'.',',')"></span></td>@endif
-                                                    @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_pay_exchange_usd,'.',',')"></span></td>@endif
-                                                </tr>
-                                            </template>
-                                        </template>
-                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                    @endif
+
+
+                    <div class="row mt-3">
+                        <div class="col">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    Balance General
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tr>
+                                                <td class="fw-bold text-center">Moneda</td>
+                                                <td class="fw-bold text-end">Ventas</td>
+                                                <td class="fw-bold text-end">Premios</td>
+                                                <td class="fw-bold text-end">Comisión</td>
+                                                <td class="fw-bold text-end">Balance</td>
+                                                <td class="fw-bold text-end">Pagados</td>
+                                                @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Ventas (USDT)</td>@endif
+                                                @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Premios (USDT)</td>@endif
+                                                @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
+                                                @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
+                                            </tr>
+
+                                            @foreach($totalMonedas as $total)
+                                            @if(isset($total['total']))
+
+                                            <tr>
+                                                <td class="text-center">{{$total['nombre']}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['total'],2,',','.')}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_rewards'],2,',','.')}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['comision'],2,',','.')}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['balance'],2,',','.')}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_pay'],2,',','.')}}</td>
+                                                @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['total_exchange_usd'],2,',','.')}}</td>@endif
+                                                @if(auth()->user()->role_id == 1) <td class="text-end">$ {{number_format($total['total_rewards_exchange_usd'],2,',','.')}}</td>@endif
+                                                @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['balance_exchange_usd'],2,',','.')}}</td>@endif
+                                                @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['total_pay_exchange_usd'],2,',','.')}}</td>@endif
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @if(auth()->user()->role_id == 2 || auth()->user()->role_id == 1 )
+                            @foreach($usuarios as $index => $usuario)
+                            <div x-show="handleResult" x-transition x-init="handleGetStarts('{{$usuario["id"]}}','{{$index}}')" style="display:none;">
+                                <div class="card mt-2" style="display:none;" x-show="!!usuarios['{{$index}}']['total'].show">
+                                    <div class="card-header">
+                                        Totales de <span class="fw-bold">{{$usuario['name']}}</span> Comisión <span class="fw-bold">{{$usuario['comision']}}%<span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tr>
+                                                    <td class="fw-bold text-center">Moneda</td>
+                                                    <td class="fw-bold text-end">Ventas </td>
+                                                    <td class="fw-bold text-end">Premios</td>
+                                                    <td class="fw-bold text-end">Comisión</td>
+                                                    <td class="fw-bold text-end">Balance</td>
+                                                    <td class="fw-bold text-end">Pagados</td>
+                                                    @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Ventas (USDT)</td>@endif
+                                                    @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Premios (USDT)</td>@endif
+                                                    @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
+                                                    @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
+                                                </tr>
+
+                                                <template x-for="item in usuarios['{{$index}}']['total']">
+                                                    <template x-if="!!item.total">
+                                                        <tr>
+                                                            <td class="text-center" x-text="item.nombre"></td>
+                                                            <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total,'.',',')"></span></td>
+                                                            <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total_rewards,'.',',')"></span></td>
+                                                            <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.comision,'.',',')"></span></td>
+                                                            <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.balance,'.',',')"></span></td>
+                                                            <td class="text-end"><span x-text="item.simbolo"></span>&nbsp;<span x-text="formatMoney(item.total_pay,'.',',')"></span></td>
+                                                            @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_exchange_usd,'.',',')"></span></td>@endif
+                                                            @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_rewards_exchange_usd,'.',',')"></span></td>@endif
+                                                            @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.balance_exchange_usd,'.',',')"></span></td>@endif
+                                                            @if(auth()->user()->role_id == 1)<td class="text-end"><span x-text="'$'"></span>&nbsp;<span x-text="formatMoney(item.total_pay_exchange_usd,'.',',')"></span></td>@endif
+                                                        </tr>
+                                                    </template>
+                                                </template>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 <script>

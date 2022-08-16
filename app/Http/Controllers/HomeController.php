@@ -205,16 +205,17 @@ class HomeController extends Controller
 
             $g = $animals_groups->map(function ($gr) {
 
-                if($gr[0]->schedule()->first()->status == 1){
+                if ($gr[0]->schedule()->first()->status == 1) {
                     return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
-                }else{
+                } else {
                     return [null, 0, 0];
-
                 }
             });
-
             $g = $g->sortByDesc(2);
+            $g = $g->slice(0, 7);
+
             return [$g, 'schedule' => $group[0]->schedule];
+
             // dd($g);
 
             // dd($animals_groups);
