@@ -6,10 +6,13 @@
     <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a>
     @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>
-    <a href="/cash-admins" class="list-group-item list-group-item-action">Caja Administrativa</a>
     @endif
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
+    @if(auth()->user()->role_id == 2)
+    <a href="/cash-admins/{{auth()->user()->id}}" class="list-group-item list-group-item-action">Caja Administrativa</a>
+    @endif
     @if(auth()->user()->role_id == 1)
+    <a href="/cash-admins" class="list-group-item list-group-item-action">Cajas Administrativas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     <a href="/payments" class="list-group-item list-group-item-action">Metodos de Pago</a>

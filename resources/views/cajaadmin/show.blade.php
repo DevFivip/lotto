@@ -17,7 +17,7 @@
                         <span class="strong">{{$errors->first()}}</span>
                     </div>
                     @endif
-
+                    <a href="/{{$resource}}/create?admin_id={{$id}}" class="btn btn-primary">+ Nuevo Registro</a>
                     <form action="/{{$resource}}/{{$id}}">
                         <div class="row">
                             <div class="col">
@@ -39,27 +39,28 @@
                     </form>
 
                     <div class="row mt-1">
+                        @foreach($total as $res)
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="text-center">Total</h4>
+                                    <h4 class="text-center">{{$res['moneda']->nombre}} {{$res['moneda']->currency}}</h4>
+                                    <div class="text-primary text-end"> {{$res['moneda']->simbolo}} {{number_format($res['ingresos'],2,',','.')}}</div>
+                                    <div class="text-end"> {{$res['moneda']->simbolo}} {{number_format($res['egresos'],2,',','.')}}</div>
+                                    <div class="fw-bold text-end"> {{$res['moneda']->simbolo}} {{number_format($res['total'],2,',','.')}}</div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
+
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="text-center">Total</h4>
+                                    <h4 class="text-center">Total USD</h4>
+                                    <div class="fw-bold text-primary text-end">USD $ {{number_format($total_exchange,2,',','.')}}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="text-center">Total</h4>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row mt-1">
                         <div class="col">
@@ -70,34 +71,35 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Fecha</th>
+                                            <th></th>
                                             <th>Detalle</th>
                                             <th>Ingreso</th>
                                             <th>Egreso</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($cash as $flow)
 
+                                        @foreach($cash as $flow)
                                         <tr x-data="converter('{{$flow->created_at}}')">
                                             <td>{{$flow->id}}</td>
                                             <td x-text="fecha_inicial"></td>
-                                            <td>{{$flow->detalle}}</td>
+                                            <td><a class="btn btn-primary btn-sm" href="/{{$resource}}/{{$flow->id}}/edit"><i class="fa-solid fa-pencil"></i></a> <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>&nbsp; </td>
+                                            <td><span class="fw-bold">{{$flow->detalle}}</span></td>
 
                                             @if($flow->type == 1)
 
-                                            <td>{{$flow->total}}</td>
-                                            <td>0</td>
+                                            <td>{{$flow->moneda->simbolo}} {{number_format($flow->total,2,',','.')}}</td>
+                                            <td>0,00</td>
 
                                             @elseif($flow->type == -1)
-                                            <td>0</td>
-                                            <td>{{$flow->total}}</td>
 
+                                            <td>0,00</td>
+                                            <td>{{$flow->moneda->simbolo}} {{number_format($flow->total,2,',','.')}}</td>
 
                                             @endif
-
-
                                         </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
                             </div>

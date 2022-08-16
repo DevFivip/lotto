@@ -15,6 +15,7 @@ class CashAdmin extends Model
         "type",
         "detalle",
         "total",
+        "created_at"
     ];
 
     public function moneda()
