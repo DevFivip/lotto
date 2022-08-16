@@ -15,7 +15,7 @@ class ReportControllers extends Controller
     //
     public function __construct()
     {
-        $this->comision_vendedores = 0.13;
+        // $this->comision_vendedores = 0.13;
         $this->amount_rewards = 30;
         $this->middleware("timezone");
     }
@@ -42,19 +42,19 @@ class ReportControllers extends Controller
 
         if (auth()->user()->role_id == 2) {
 
-            $registersdetails = $registersdetails->where('admin_id', auth()->user()->id);
+            $registersdetails = $registersdetails->with('usuario')->where('admin_id', auth()->user()->id);
         }
 
         if (auth()->user()->role_id == 3) {
-            $registersdetails = $registersdetails->where('user_id', auth()->user()->id);
+            $registersdetails = $registersdetails->with('usuario')->where('user_id', auth()->user()->id);
         }
 
         if ($fecha_inicio) {
-            $registersdetails = $registersdetails->where('created_at', '>=', $fecha_inicio  . ' 00:00:00');
+            $registersdetails = $registersdetails->with('usuario')->where('created_at', '>=', $fecha_inicio  . ' 00:00:00');
         }
 
         if ($fecha_fin) {
-            $registersdetails = $registersdetails->where('created_at', '<=', $fecha_fin . ' 23:59:59');
+            $registersdetails = $registersdetails->with('usuario')->where('created_at', '<=', $fecha_fin . ' 23:59:59');
         }
 
         // dd($registersdetails->toSql());
@@ -66,6 +66,7 @@ class ReportControllers extends Controller
         $fff =  $group->map(function ($v, $q) {
             $moneda = $v->groupBy('moneda_id');
             $_moneda = $moneda->map(function ($h, $k) {
+                // dd($h, $k);
                 $m = Moneda::find($k);
                 $monto = $h->sum('monto');
                 $premios = $h->sum(function ($p) {
@@ -73,7 +74,11 @@ class ReportControllers extends Controller
                         return $p->monto * 30;
                     }
                 });
-                return [$m->currency, $m->simbolo, $monto, $h->count(), $monto * 0.13, $premios];
+
+                $comision = $h->sum(function ($collection) {
+                    return $collection->monto * ($collection->usuario->comision / 100);
+                });
+                return [$m->currency, $m->simbolo, $monto, $h->count(),  $comision, $premios];
             });
             $schedule = Schedule::find($q);
             $_moneda['sorteo'] = $schedule->schedule;
@@ -105,7 +110,6 @@ class ReportControllers extends Controller
             }
 
             if (!is_null($data['fecha_inicio']) && !is_null($data['fecha_fin'])) {
-
                 $animalesvendidos = RegisterDetail::where('user_id', $user_id)
                     ->where('created_at', '>=', $data['fecha_inicio'] . ' 00:00:00')
                     ->where('created_at', '<=', $data['fecha_fin'] . ' 23:59:59')->get();
@@ -123,6 +127,7 @@ class ReportControllers extends Controller
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));
 
             if (!isset($totalMonedas[$key]['total'])) {
+                $totalMonedas[$key]['_comision'] = $animalvendido->usuario->comision / 100;
                 $totalMonedas[$key]['user_id'] = $animalvendido->user_id;
                 $totalMonedas[$key]['caja_id'] = $animalvendido->caja_id;
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
@@ -152,8 +157,8 @@ class ReportControllers extends Controller
         foreach ($totalMonedas as $_key => $totales) {
             // dd($totales);
             if (isset($totales['total'])) {
-                $totales['comision'] = $totales['total'] * $this->comision_vendedores;
-                $totales['comision_exchange_usd'] = ($totales['total'] * $this->comision_vendedores) / $totales['exchange_usd'];
+                $totales['comision'] = $totales['total'] * $totales['_comision'];
+                $totales['comision_exchange_usd'] = ($totales['total'] * $totales['_comision']) / $totales['exchange_usd'];
             }
 
             if (isset($totales['total_rewards'])) {

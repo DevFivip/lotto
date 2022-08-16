@@ -18,6 +18,7 @@
                                 <td>Nombre</td>
                                 <td>Email</td>
                                 <td>Rol ID</td>
+                                <td>Comisión</td>
                                 <td>Action</td>
                             </tr>
                             @foreach($usuarios as $usuario)
@@ -25,6 +26,7 @@
                                 <td>{{$usuario->taquilla_name}}</td>
                                 <td>{{$usuario->name}}</td>
                                 <td>{{$usuario->email}}</td>
+                                <td>% {{$usuario->comision}}</td>
                                 <td>
                                     @if($usuario->role_id == 1)
                                     <span class="badge rounded-pill bg-primary "><i class="fa-solid fa-crown"></i></span>

@@ -95,9 +95,9 @@
                                     @endif
 
                                     @if($user->role_id == 3)
-                                    <option selected value="3">Tanquilla</option>
+                                    <option selected value="3">Taquilla</option>
                                     @else
-                                    <option value="3">Tanquilla</option>
+                                    <option value="3">Taquilla</option>
                                     @endif
 
                                 </select>
@@ -131,8 +131,18 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
 
-
+                        <div class="row mb-3">
+                            <label for="comision" class="col-md-4 col-form-label text-md-end">Comisión de Ventas</label>
+                            <div class="col-md-6">
+                                <input id="comision" type="number" class="form-control @error('comision') is-invalid @enderror" name="comision" value="{{ $user->comision }}" required autocomplete="comision">
+                                @error('comision')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
 
                         @error('monedas')

@@ -39,4 +39,8 @@ class RegisterDetail extends Model
     {
         return $this->belongsTo(Moneda::class, 'moneda_id');
     }
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

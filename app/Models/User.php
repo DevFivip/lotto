@@ -25,7 +25,8 @@ class User extends Authenticatable
         'role_id',
         'parent_id',
         'status',
-        'monedas'
+        'monedas',
+        'comision'
     ];
 
     /**

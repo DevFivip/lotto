@@ -56,7 +56,7 @@ Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, '
 Route::get('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);
 
 Route::get('/setting-impresora', function () {
-   return view('setting.impresora');
+    return view('setting.impresora');
 });
 
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);

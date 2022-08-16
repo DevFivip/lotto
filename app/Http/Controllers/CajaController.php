@@ -139,7 +139,7 @@ class CajaController extends Controller
         $fecha_cierre = $fecha_ahora->format('Y-m-d\TH:i:s');
         $_fecha_cierre = $fecha_ahora->format('Y-m-d\TH:i:s');
 
-        $tickets = Register::with('moneda', 'detalles')->where('caja_id', $caja->id)->get();
+        $tickets = Register::with('user', 'moneda', 'detalles')->where('caja_id', $caja->id)->get();
 
         // dd(->toArray());
         $tickets = $tickets->each(function ($item, $value) {
@@ -163,6 +163,7 @@ class CajaController extends Controller
             $item['_total'] = $total;
             $item['_total_premio'] = $totalPremio;
             $item['_total_pagado'] = $totalPagado;
+            $item['_comision'] = $item->user->comision / 100;
             return $item;
         });
 
@@ -183,7 +184,7 @@ class CajaController extends Controller
             $total_comision = 0;
             foreach ($value as $k => $v) {
                 if (isset($v['code'])) {
-                    $total_comision += $v['_total'] * $this->comision_vendedores;
+                    $total_comision += $v['_total'] * $v['_comision'];
                 }
             }
             array_push($monedas[$key], [
@@ -288,7 +289,7 @@ class CajaController extends Controller
 
     public function cajaReport(Request $request, $id)
     {
-        $animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $animalesvendidos = RegisterDetail::with('user')->where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
         $totalMonedas = Moneda::all()->toArray();
         $change = Exchange::all()->toArray();
@@ -306,6 +307,7 @@ class CajaController extends Controller
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
                 $totalMonedas[$key]['total'] = $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
+                $totalMonedas[$key]['comision_vendedor'] = $animalvendido->usuario->comision / 100;
             } else {
                 $totalMonedas[$key]['total'] =  $totalMonedas[$key]['total'] + $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) + $totalMonedas[$key]['total_exchange_usd'];

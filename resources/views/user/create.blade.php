@@ -40,7 +40,6 @@
                                 @enderror
                             </div>
                         </div>
-
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">Correo</label>
 
@@ -121,6 +120,18 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
+
+                        <div class="row mb-3">
+                            <label for="comision" class="col-md-4 col-form-label text-md-end">Comisión de Venta</label>
+                            <div class="col-md-6">
+                                <input id="comision" type="number" class="form-control @error('comision') is-invalid @enderror" name="comision" value="{{ old('comision') }}" required autocomplete="comision" autofocus>
+                                @error('comision')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
 
 
                         <div class="row mb-0">
