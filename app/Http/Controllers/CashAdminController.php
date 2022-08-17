@@ -168,6 +168,14 @@ class CashAdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            //code...
+            $cash = CashAdmin::find($id);
+            $cash->delete();
+            return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['valid' => false, 'message' => 'No se puede eliminar este registro'], 402);
+        }
     }
 }

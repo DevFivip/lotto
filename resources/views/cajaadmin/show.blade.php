@@ -65,8 +65,7 @@
                     <div class="row mt-1">
                         <div class="col">
                             <div class="table-responsive">
-
-                                <table class="table">
+                                <table class="table" x-data="mounted()">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -83,7 +82,7 @@
                                         <tr x-data="converter('{{$flow->created_at}}')">
                                             <td>{{$flow->id}}</td>
                                             <td x-text="fecha_inicial"></td>
-                                            <td><a class="btn btn-primary btn-sm" href="/{{$resource}}/{{$flow->id}}/edit"><i class="fa-solid fa-pencil"></i></a> <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>&nbsp; </td>
+                                            <td><a class="btn btn-primary btn-sm" href="/{{$resource}}/{{$flow->id}}/edit"><i class="fa-solid fa-pencil"></i></a> <button class="btn btn-danger btn-sm" @click="handleDelete('{{$flow->id}}')"><i class="fa-solid fa-trash"></i></button>&nbsp; </td>
                                             <td><span class="fw-bold">{{$flow->detalle}}</span></td>
 
                                             @if($flow->type == 1)
@@ -113,6 +112,47 @@
 </div>
 
 <script>
+    function mounted() {
+        window.CSRF_TOKEN = '{{ csrf_token() }}';
+        return {
+            handleDelete: async function(id) {
+                if (confirm("¿Seguro deseas eliminar este movimiento de caja?") == true) {
+                    const res = await fetch('/cash-admins/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-Token": window.CSRF_TOKEN
+                        },
+                    })
+
+                    body = await res.json();
+                    console.log(body)
+                    if (body.valid) {
+                        location.reload()
+                    } else {
+                        this.toast(body.message, 1000);
+                    }
+                    // alert()
+                }
+            },
+            toast: function(msg = 'Error al eliminar', duration = 800) {
+                Toastify({
+                    text: msg,
+                    duration: duration,
+                    className: "info",
+                    close: true,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            },
+
+        }
+
+    }
+
     function converter(q, k) {
         date = new Date(q);
         console.log({
