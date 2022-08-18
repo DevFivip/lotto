@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
- </div>
+        </div>
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Animales</div>
@@ -19,6 +19,7 @@
                     <table class="table">
                         <tr>
                             <td>Estado</td>
+                            <td>Sorteo</td>
                             <td>Numero</td>
                             <td>Nombre</td>
                             <td>Cantidad Limite</td>
@@ -34,6 +35,7 @@
                                 <span class="badge bg-danger">Bloqueado</span>
                                 @endif
                             </td>
+                            <td>{{$animal->type->name}}</td>
                             <td>{{$animal->number}}</td>
                             <td>{{$animal->nombre}}</td>
                             <td>{{$animal->limit_cant}}</td>
@@ -45,7 +47,7 @@
                                     @if($animal->status == 1)
                                     <button @click="handleLock" id="{{$animal->id}}" class="btn btn-danger">Bloquear</button>
                                     @else
-                                    <button @click='eliminar("{{$animal->id}}")' class="btn btn-warning">Desbloquear</button>
+                                    <button @click="handleLock" id="{{$animal->id}}" class="btn btn-warning">Desbloquear</button>
                                     @endif
 
                                 </div>

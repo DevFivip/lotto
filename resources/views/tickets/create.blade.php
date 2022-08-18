@@ -12,18 +12,19 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
-                            <!-- <div class="row">
+                            <div class="row">
                                 <div class="col">
                                     <div class="form-check form-check-inline">
                                         <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="1" id="type_lotto_activo">
                                         <label class="form-check-label" for="type_lotto_activo">Lotto Activo</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
+                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
                                         <label class="form-check-label" for="type_granjita">La Granjita</label>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
+
                             <div class="row row-cols-6">
                                 <template x-for="(schedule, index) in schedules">
                                     <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
@@ -39,12 +40,14 @@
                             <div class="mt-2" x-show="turn" style="display: none;">
                                 <div class="row row-cols-4">
                                     <template x-for="(animal, index) in animals">
-                                        <div class="d-grid gap-1 mt-1">
-                                            <button :class="!!!animal.selected ? 'btn-warning': 'btn-dark' " class="btn fw-bold" @click="handleClick(animal.number,animal.selected)">
-                                                <p class="p-0 m-0" x-text="animal.number"></p>
-                                                <p class="p-0 m-0" style="font-size: 8px;" x-text="animal.nombre"></p>
-                                            </button>
-                                        </div>
+                                        <template x-if="animal.sorteo_type_id == ticket.type_sorteo_id">
+                                            <div class="d-grid gap-1 mt-1">
+                                                <button :class="!!!animal.selected ? 'btn-warning': 'btn-dark' " class="btn fw-bold" @click="handleClick(animal.number,animal.selected)">
+                                                    <p class="p-0 m-0" x-text="animal.number"></p>
+                                                    <p class="p-0 m-0" style="font-size: 8px;" x-text="animal.nombre"></p>
+                                                </button>
+                                            </div>
+                                        </template>
                                     </template>
                                 </div>
 
@@ -70,7 +73,7 @@
                                                     <ul class="list-group">
                                                         <template x-for="(item, index) in ticket.detalles" :key="index">
                                                             <li class="list-group-item d-flex justify-content-between align-items-center font-monospace lh-1">
-                                                                <span><span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> </span>
+                                                                <span><span x-text="item.number+' '+ item.nombre"></span> <br> <span class="text-muted" x-text="item.schedule"></span> <span class="text-muted" x-text="item.type.name"></span> </span>
                                                                 <span class=""><span x-text="_monedaSelected.currency"></span>&nbsp;<span x-text="_monedaSelected.simbolo"></span> <span x-text="item.monto"></span>
                                                                     <button class="btn btn-light text-danger" @click="deleteItem(item)"><i class="fa-solid fa-trash-can"></i></button>
                                                                 </span>
@@ -200,7 +203,7 @@
                                         <span class="input-group-text">#</span>
                                         <input x-model="numeros" type="text" class="form-control" placeholder="Numeros" aria-label="Numeros">
                                         <span class="input-group-text" x-text="_monedaSelected.simbolo"></span>
-                                        <input x-model="monto" type="number" class="form-control" placeholder="Monto" aria-label="Monto">
+                                        <input x-model="monto" type="number" class="form-control" placeholder="Monto" aria-label="Monto" min="0.10">
                                         <button class="btn btn-primary" type="button" id="button-addon2" @click="addItem()">Agregar</button>
                                     </div>
                                     <div class="d-grid gap-1 mt-1">
@@ -273,7 +276,7 @@
 
     function sorteos() {
         var kk = @json($schedules);
-        console.log(kk.length, !!kk.length)
+        // console.log(kk.length, !!kk.length)
         var aa = @json($animals);
         var mm = @json($monedas);
         return {
@@ -313,7 +316,9 @@
             },
             choose: function() {
                 this._numeros = this.numeros.split(' ');
+
                 this.animals = this.animals.filter(v => {
+
                     if (this._numeros.indexOf(v.number) >= 0) {
                         v.selected = true;
                         return v
@@ -326,22 +331,32 @@
             handleClick: function(number, st) {
                 if (!st) {
                     this.animals = this.animals.map((v, k) => {
-                        if (v.number == number) {
-                            v.selected = true;
-                            this._numeros.push(number)
-                            this.numeros = this._numeros.join(' ');
-                            return v;
+                        if (parseInt(v.type.id) == parseInt(this.ticket.type_sorteo_id)) {
+                            if (v.number == number) {
+                                v.selected = true;
+                                this._numeros.push(number)
+                                this.numeros = this._numeros.join(' ');
+                                return v;
+                            } else {
+                                return v
+                            }
                         } else {
                             return v
                         }
+
                     })
                 } else {
                     this.animals = this.animals.map((v, k) => {
-                        if (v.number == number) {
-                            v.selected = false;
-                            this._numeros = this._numeros.filter(v => v !== number)
-                            this.numeros = this._numeros.join(' ');
-                            return v;
+
+                        if (parseInt(v.type.id) == parseInt(this.ticket.type_sorteo_id)) {
+                            if (v.number == number) {
+                                v.selected = false;
+                                this._numeros = this._numeros.filter(v => v !== number)
+                                this.numeros = this._numeros.join(' ');
+                                return v;
+                            } else {
+                                return v
+                            }
                         } else {
                             return v
                         }
@@ -351,18 +366,28 @@
             validateItems: function() {
                 _sorteos = this.schedules.filter(v => !!v.selected)
 
+                if (!this.ticket.type_sorteo_id) {
+                    this.toast('⚠ Debes Seleccionar Sorteo 🦝', 2500)
+                    return false
+                }
+
                 if (_sorteos.length == 0) {
-                    this.toast('⚠ Debes Seleccionar un Horario ⏲', 1500)
+                    this.toast('⚠ Debes Seleccionar un Horario ⏲', 2500)
                     return false
                 }
 
                 if (this.numeros.length == 0) {
-                    this.toast('⚠ Debes Seleccionar un Animalito 🦝', 1500)
+                    this.toast('⚠ Debes Seleccionar un Animalito 🦝', 2500)
                     return false
                 }
 
                 if (isNaN(parseFloat(this.monto))) {
-                    this.toast('⚠ Debes escribir un Monto Válido 💸', 1500)
+                    this.toast('⚠ Debes escribir un Monto Válido 💸', 2500)
+                    return false
+                }
+
+                if (parseFloat(this.monto) < 0.10) {
+                    this.toast('⚠ El monto debe ser mayor a 0.10 💸', 2500)
                     return false
                 }
 
@@ -380,7 +405,8 @@
 
                 const items = [];
 
-                _sorteos = this.schedules.filter(v => !!v.selected)
+                _sorteos = this.schedules.filter(v => !!v.selected);
+                //    _sorteos = this.sorteos.filter(v => parseInt(v.type.id) === parseInt(this.ticket.type_sorteo_id));
                 __sorteos = _sorteos.map(v => {
                     return {
                         schedule: v.schedule,
@@ -388,7 +414,7 @@
                     }
                 })
 
-                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected)));
+                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected && parseInt(v.type.id) === parseInt(this.ticket.type_sorteo_id))));
                 _ani = [];
 
 
@@ -511,7 +537,7 @@
                 }).catch((e) => {
                     this.toast('Verifica el la url del pluggin', 3000)
                     this.toast('Asegurate que tengas instalado el pluggin de impresion en tu computadora local', 3000)
-                    console.log(e);
+                    // console.log(e);
                 });
 
             }

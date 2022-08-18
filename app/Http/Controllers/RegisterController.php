@@ -51,7 +51,6 @@ class RegisterController extends Controller
             $data = $request->all();
             $user = auth()->user();
             $caja = Caja::where('user_id', $user->id)->where('status', 1)->first();
-
             //validar
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
                 $errors = [];
@@ -66,7 +65,6 @@ class RegisterController extends Controller
                 if (!!count($errors)) {
                     return response()->json(["valid" => false, 'messages' => $errors], 403);
                 }
-
                 $registro = Register::create([
                     'code' => Str::random(10),
                     'caja_id' => $caja->id,
@@ -79,6 +77,7 @@ class RegisterController extends Controller
 
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $animalito = $data['detalles'][$i];
+
                     RegisterDetail::create([
                         'register_id' => $registro->id,
                         'animal_id' => $animalito['id'],
@@ -89,6 +88,7 @@ class RegisterController extends Controller
                         'moneda_id' => $registro->moneda_id,
                         'user_id' => auth()->user()->id,
                         'caja_id' => $caja->id,
+                        "sorteo_type_id" => $animalito['type']['id'],
                     ]);
                 }
 
@@ -97,11 +97,17 @@ class RegisterController extends Controller
                 $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
                 $dt->setTimezone(new DateTimeZone(session('timezone')));
 
-                $ticket_detalles = RegisterDetail::with(['animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+                $ticket_detalles = RegisterDetail::with(['type', 'animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
 
-                $collection = $ticket_detalles->groupBy('schedule_id');
+                $ticket_detalles = $ticket_detalles->groupBy('sorteo_type_id');
 
-                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $collection], 200);
+                $ticket_detalles = $ticket_detalles->map(function ($sorteo) {
+                    return $sorteo->groupBy('schedule_id');
+                });
+
+                // $collection = $ticket_detalles->groupBy('schedule_id');
+
+                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles], 200);
             } else {
                 return response()->json(["valid" => false, 'messages' => ['Seleccione moneda y al menos un Animalito']], 403);
             }
@@ -166,17 +172,37 @@ class RegisterController extends Controller
         $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone($data['timezone']));
 
-        $ticket_detalles = RegisterDetail::with(['animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
 
-        $collection = $ticket_detalles->groupBy('schedule_id');
-        // dd($collection->toArray());
+        $ticket_detalles = RegisterDetail::with(['type', 'animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+
+        $ticket_detalles = $ticket_detalles->groupBy('sorteo_type_id');
+
+        $ticket_detalles = $ticket_detalles->map(function ($sorteo) {
+            return $sorteo->groupBy('schedule_id');
+        });
+
+        $sorteos_keys = array_keys($ticket_detalles->toArray());
+        // dd($sorteos_keys);
 
         $height = 100;
 
         $cant_items = count($ticket_detalles);
 
+
+        $cant_items = $ticket_detalles->sum(function ($sorteo) {
+            return  $sorteo->sum(function ($item) {
+                return count($item->toArray());
+            });
+            // ($cant);
+            // return count($cant->toArray());
+        });
+
+        // dd($tot);
+
+
+
         if ($cant_items > 6) {
-            $sum = 5 * $cant_items;
+            $sum = 3 * $cant_items;
             $height = $height + $sum;
         }
 
@@ -193,23 +219,50 @@ class RegisterController extends Controller
         $this->fpdf->Text(0, 23.2, "---------------------------------------------------------");
 
         $line_start = 26;
-        $spacing = 4.5;
+        $spacing = 3.5;
 
 
-        foreach ($collection as $grupo) {
-            //  dd($grupo);
-            $line_start += 3;
-            $this->fpdf->SetFont('Arial', 'B', 12);
-            $this->fpdf->Text(2, $line_start, 'Lotto Activo ' . $grupo[0]->schedule);
-            $this->fpdf->SetFont('Arial');
+        for ($i = 0; $i < count($sorteos_keys); $i++) {
+            $line_start += 1;
+
             $line_start += $spacing;
 
-            foreach ($grupo as $item) {
-                $this->fpdf->Text(2, $line_start, $item->animal->number . " " . $item->animal->nombre);
-                $this->fpdf->Text(50, $line_start, $ticket->moneda->simbolo . ' ' . number_format($item->monto, 2, ".", ","));
+            $sorteo = $ticket_detalles[$sorteos_keys[$i]];
+            $horarios_keys = array_keys($sorteo->toArray());
+
+            for ($e = 0; $e < count($horarios_keys); $e++) {
+                $horario = $sorteo[$horarios_keys[$e]];
+                $this->fpdf->SetFont('Arial', 'B', 11);
+                $this->fpdf->Text(2, $line_start, $horario[0]->type->name . " " . $horario[0]->schedule);
+                $this->fpdf->SetFont('Arial');
+              
                 $line_start += $spacing;
+
+                for ($h = 0; $h < count($horario); $h++) {
+                    $item = $horario[$h];
+
+                    $this->fpdf->Text(2, $line_start, $item->animal->number . " " . $item->animal->nombre);
+                    $this->fpdf->Text(50, $line_start, $ticket->moneda->simbolo . ' ' . number_format($item->monto, 2, ".", ","));
+                    $line_start += $spacing;
+                    # code...
+                }
             }
         }
+
+        // foreach ($collection as $grupo) {
+        //     //  dd($grupo);
+        //     $line_start += 3;
+        //     $this->fpdf->SetFont('Arial', 'B', 11);
+        //     $this->fpdf->Text(2, $line_start, $grupo[0]->schedule);
+        //     $this->fpdf->SetFont('Arial');
+        //     $line_start += $spacing;
+
+        //     foreach ($grupo as $item) {
+        //         $this->fpdf->Text(2, $line_start, $item->animal->number . " " . $item->animal->nombre . " " . $item->type->name);
+        //         $this->fpdf->Text(50, $line_start, $ticket->moneda->simbolo . ' ' . number_format($item->monto, 2, ".", ","));
+        //         $line_start += $spacing;
+        //     }
+        // }
 
 
         $this->fpdf->Text(0, $line_start + 1, "---------------------------------------------------------");

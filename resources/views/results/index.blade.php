@@ -22,6 +22,7 @@
                         <table class="table">
                             <tr>
                                 <td>Sorteo</td>
+                                <td>Tipo</td>
                                 <td>Fecha y Hora</td>
                                 <td>Numero</td>
                                 <td>Animalito</td>
@@ -37,6 +38,7 @@
                             @foreach($results as $result)
                             <tr x-data="converter('{{$result->created_at}}')">
                                 <td>{{$result->schedule->schedule}}</td>
+                                <td>{{$result->type->nombre}}</td>
                                 <td x-text="fecha_inicial"></td>
                                 <td>{{$result->animal->number}}</td>
                                 <td>{{$result->animal->nombre}}</td>

@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Exchange;
 use App\Models\Moneda;
 use App\Models\Schedule;
+use App\Models\SorteosType;
 use App\Models\User;
 use DateTime;
 use Illuminate\Database\Seeder;
@@ -21,73 +22,76 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        User::create([
-            'taquilla_name' => 'FivipLotto',
-            'name' => 'Adolfo Gabazutt',
-            'email' => 'adolfo.gbztt@gmail.com',
-            'password' => bcrypt('adolfo2403'),
-            'role_id' => 1,
-            'status' => 1,
-            'parent_id' => 1,
-            "monedas" => ['1', '2', '3', '4', '5']
+        // User::create([
+        //     'taquilla_name' => 'FivipLotto',
+        //     'name' => 'Adolfo Gabazutt',
+        //     'email' => 'adolfo.gbztt@gmail.com',
+        //     'password' => bcrypt('adolfo2403'),
+        //     'role_id' => 1,
+        //     'status' => 1,
+        //     'parent_id' => 1,
+        //     "monedas" => ['1', '2', '3', '4', '5']
+        // ]);
+
+
+        // Moneda::create([
+        //     'nombre' => 'Bolivares',
+        //     'currency' => 'VEN',
+        //     'simbolo' => 'Bs.',
+        // ]);
+
+        // Moneda::create([
+        //     'nombre' => 'Peso Colombiano',
+        //     'currency' => 'COP',
+        //     'simbolo' => '$',
+        // ]);
+
+        // Moneda::create([
+        //     'nombre' => 'Dolar Ecuatoriano',
+        //     'currency' => 'ECU',
+        //     'simbolo' => '$',
+        // ]);
+
+        // Moneda::create([
+        //     'nombre' => 'Sol Peruano',
+        //     'currency' => 'PEN',
+        //     'simbolo' => 'S/',
+        // ]);
+
+        // Moneda::create([
+        //     'nombre' => 'Binance',
+        //     'currency' => 'BIN',
+        //     'simbolo' => 'USDT',
+        // ]);
+
+        // Exchange::create([
+        //     'moneda_id' => 1,
+        //     'change_usd' => 5.80
+        // ]);
+
+        // Exchange::create([
+        //     'moneda_id' => 2,
+        //     'change_usd' => 3.80
+        // ]);
+
+        // Exchange::create([
+        //     'moneda_id' => 3,
+        //     'change_usd' => 1.02
+        // ]);
+
+        // Exchange::create([
+        //     'moneda_id' => 4,
+        //     'change_usd' => 1993.80
+        // ]);
+
+        // Exchange::create([
+        //     'moneda_id' => 5,
+        //     'change_usd' => 1
+        // ]);
+
+        SorteosType::create([
+            "name" => 'La Granjita'
         ]);
-
-
-        Moneda::create([
-            'nombre' => 'Bolivares',
-            'currency' => 'VEN',
-            'simbolo' => 'Bs.',
-        ]);
-
-        Moneda::create([
-            'nombre' => 'Peso Colombiano',
-            'currency' => 'COP',
-            'simbolo' => '$',
-        ]);
-
-        Moneda::create([
-            'nombre' => 'Dolar Ecuatoriano',
-            'currency' => 'ECU',
-            'simbolo' => '$',
-        ]);
-
-        Moneda::create([
-            'nombre' => 'Sol Peruano',
-            'currency' => 'PEN',
-            'simbolo' => 'S/',
-        ]);
-
-        Moneda::create([
-            'nombre' => 'Binance',
-            'currency' => 'BIN',
-            'simbolo' => 'USDT',
-        ]);
-
-        Exchange::create([
-            'moneda_id' => 1,
-            'change_usd' => 5.80
-        ]);
-
-        Exchange::create([
-            'moneda_id' => 2,
-            'change_usd' => 3.80
-        ]);
-
-        Exchange::create([
-            'moneda_id' => 3,
-            'change_usd' => 1.02
-        ]);
-
-        Exchange::create([
-            'moneda_id' => 4,
-            'change_usd' => 1993.80
-        ]);
-
-        Exchange::create([
-            'moneda_id' => 5,
-            'change_usd' => 1
-        ]);
-
 
         Animal::create([
             'number' => '00',
@@ -95,6 +99,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '0',
@@ -102,6 +107,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '01',
@@ -109,6 +115,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '02',
@@ -116,6 +123,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '03',
@@ -123,6 +131,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '04',
@@ -130,6 +139,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '05',
@@ -137,6 +147,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '06',
@@ -144,6 +155,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '07',
@@ -151,6 +163,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '08',
@@ -158,6 +171,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '09',
@@ -165,6 +179,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '10',
@@ -172,6 +187,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
 
         Animal::create([
@@ -180,6 +196,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '12',
@@ -187,6 +204,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '13',
@@ -194,6 +212,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '14',
@@ -201,6 +220,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '15',
@@ -208,6 +228,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '16',
@@ -215,6 +236,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '17',
@@ -222,6 +244,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '18',
@@ -229,6 +252,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '19',
@@ -236,6 +260,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
 
         Animal::create([
@@ -244,6 +269,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '21',
@@ -251,6 +277,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '22',
@@ -258,6 +285,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '23',
@@ -265,6 +293,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '24',
@@ -272,6 +301,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '25',
@@ -279,6 +309,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '26',
@@ -286,6 +317,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '27',
@@ -293,6 +325,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '28',
@@ -300,6 +333,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '29',
@@ -307,6 +341,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
 
         Animal::create([
@@ -315,6 +350,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '31',
@@ -322,6 +358,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '32',
@@ -329,6 +366,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '33',
@@ -336,6 +374,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '34',
@@ -343,6 +382,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '35',
@@ -350,6 +390,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
         Animal::create([
             'number' => '36',
@@ -357,84 +398,85 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
+            "sorteo_type_id" => 2,
         ]);
 
-        Schedule::create([
-            "schedule" => "9 AM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 13:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "9 AM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 13:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "10 AM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "10 AM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "11 AM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "11 AM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "12 AM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "12 AM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "01 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "01 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "02 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "02 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "03 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "03 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "04 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "04 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "05 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "05 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "06 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "06 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:00'),
+        //     "status" => 1
+        // ]);
 
-        Schedule::create([
-            "schedule" => "07 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-16 00:50:00'),
-            "status" => 1
-        ]);
+        // Schedule::create([
+        //     "schedule" => "07 PM",
+        //     "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:01'),
+        //     "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-16 00:50:00'),
+        //     "status" => 1
+        // ]);
 
 
         // $this->call([

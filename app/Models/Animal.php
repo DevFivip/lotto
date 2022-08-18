@@ -15,6 +15,12 @@ class Animal extends Model
         "nombre",
         "limit_cant",
         "limit_price_usd",
-        "status"
+        "status",
+        "sorteo_type_id"
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(SorteosType::class, 'sorteo_type_id');
+    }
 }

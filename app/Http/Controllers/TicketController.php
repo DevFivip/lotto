@@ -66,7 +66,6 @@ class TicketController extends Controller
             return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
         }
 
-
         //validar apertura de caja
 
         $caja = Caja::where('user_id', auth()->user()->id)->where('status', 1)->first();
@@ -74,7 +73,7 @@ class TicketController extends Controller
         if (!!$caja) {
 
             $resource = $this->resource;
-            $animals = Animal::all();
+            $animals = Animal::with('type')->get();
             $schedules = Schedule::where('status', 1)->get();
             $payments = Payment::where('status', '1')->get();
             $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();

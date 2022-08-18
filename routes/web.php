@@ -63,5 +63,5 @@ Route::get('/setting-impresora', function () {
 
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);
 
-Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);
-Route::post('/send-results-complement', [App\Http\Controllers\ScrappingController::class, 'getResult']);
+// Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);
+// Route::post('/send-results-complement', [App\Http\Controllers\ScrappingController::class, 'getResult']);

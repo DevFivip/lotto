@@ -21,7 +21,7 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        $animals = Animal::all();
+        $animals = Animal::with('type')->get();
         $resource = $this->resource;
         return view('animals.index', compact('animals', 'resource'));
         //

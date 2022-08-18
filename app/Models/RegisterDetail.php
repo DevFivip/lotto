@@ -21,6 +21,7 @@ class RegisterDetail extends Model
         "status",
         "user_id",
         "caja_id",
+        "sorteo_type_id",
     ];
 
 
@@ -42,5 +43,9 @@ class RegisterDetail extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function type()
+    {
+        return $this->belongsTo(SorteosType::class, 'sorteo_type_id');
     }
 }

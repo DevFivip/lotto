@@ -14,5 +14,12 @@ class Schedule extends Model
         "interval_start_utc",
         "interval_end_utc",
         "status",
+        "sorteo_type_id",
     ];
+
+
+    public function type()
+    {
+        return $this->belongsTo(SorteosType::class, 'sorteo_type_id');
+    }
 }

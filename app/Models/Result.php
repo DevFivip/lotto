@@ -18,6 +18,7 @@ class Result extends Model
         "amount_winners_usd",
         "amount_home_usd",
         "amount_balance_usd",
+        "sorteo_type_id",
 
     ];
 
@@ -29,5 +30,9 @@ class Result extends Model
     public function animal()
     {
         return $this->belongsTo(Animal::class, 'animal_id');
+    }
+    public function type()
+    {
+        return $this->belongsTo(SorteosType::class, 'sorteo_type_id');
     }
 }
