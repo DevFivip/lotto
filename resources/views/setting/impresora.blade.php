@@ -14,9 +14,6 @@
                                 <label for="impresora_id" class="col-md-4 col-form-label text-md-end"></label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" x-model="url">
-                                    <a class="btn btn-warning mt-3" @click.prevent="getPrinter()">
-                                        Buscar Impresoras
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -38,12 +35,7 @@
                             <div class="row mb-3">
                                 <label for="impresora_id" class="col-md-4 col-form-label text-md-end"></label>
                                 <div class="col-md-6">
-                                    <select x-model="printerSelected" name="impresora_id" class="form-select" aria-label="Mis Impresoras">
-                                        <option value="null">Seleccione Impresora</option>
-                                        <template x-for="printer in printers" :key="printer.deviceId">
-                                            <option :value="printer.deviceId" x-text="printer.name"></option>
-                                        </template>
-                                    </select>
+                                    <input type="text" x-model="printerSelected" class="form-control">
                                 </div>
                             </div>
                         </div>
