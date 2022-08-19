@@ -48,19 +48,12 @@ Route::post('/send-results-granjita', function (Request $request) {
 
     $data = $request->all();
 
-    // return $data;
     $schedule = Schedule::where('id', $data['schedule_id'])->where('status', 0)->first();
     if ($schedule) {
         $response = ResultController::storeDirectGranjita($data['numero'], $data['schedule_id']);
         $response['sorteo'] = $schedule->schedule;
-        // dd($response);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
-        // return ['sorteo realizado'];
     }
-
-    // return $resultados;
-    // return response()->json(['valid','response'],200);
-
 });
