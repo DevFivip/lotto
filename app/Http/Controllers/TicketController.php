@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Concerns\Excel;
@@ -24,16 +25,74 @@ class TicketController extends Controller
         $this->resource = 'tickets';
     }
 
-    public function index()
+    public function index(Request $request)
     {
-
+        $filter = $request->query();
         if (auth()->user()->role_id == 1) {
-            $tickets = Register::with(['user', 'moneda', 'detalles'])->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->orderBy('id', 'desc');
+
+            if (isset($filter['has_winner'])) {
+                $tickets = $tickets->where('has_winner', $filter['has_winner']);
+            }
+
+            if (isset($filter['moneda_id'])) {
+                $tickets = $tickets->where('moneda_id', $filter['moneda_id']);
+            }
+            if (isset($filter['user_id'])) {
+                $tickets = $tickets->where('user_id', $filter['user_id']);
+            }
+            if (isset($filter['created_at_inicio'])) {
+                $tickets = $tickets->where('created_at', '>=', $filter['created_at_inicio'] . ' 00:00:00');
+            }
+            if (isset($filter['created_at_final'])) {
+                $tickets = $tickets->where('created_at', '<=', $filter['created_at_final'] . ' 23:59:59');
+            }
+            $tickets = $tickets->paginate(isset($filter['_perPage']) ? $filter['_perPage'] : 10)->appends(request()->query());
+            $usuarios = User::all();
         } elseif (auth()->user()->role_id == 2) {
-            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc');
+
+            if (isset($filter['has_winner'])) {
+                $tickets = $tickets->where('has_winner', $filter['has_winner']);
+            }
+
+            if (isset($filter['moneda_id'])) {
+                $tickets = $tickets->where('moneda_id', $filter['moneda_id']);
+            }
+
+            if (isset($filter['user_id'])) {
+                $tickets = $tickets->where('user_id', $filter['user_id']);
+            }
+            if (isset($filter['created_at_inicio'])) {
+                $tickets = $tickets->where('created_at', '>=', $filter['created_at_inicio'] . ' 00:00:00');
+            }
+            if (isset($filter['created_at_final'])) {
+                $tickets = $tickets->where('created_at', '<=', $filter['created_at_final'] . ' 23:59:59');
+            }
+            if (isset($filter['created_at_final'])) {
+                $tickets = $tickets->where('created_at', '<=', $filter['created_at_final'] . ' 23:59:59');
+            }
+            $tickets = $tickets->paginate(isset($filter['_perPage']) ? $filter['_perPage'] : 10)->appends(request()->query());
+            $usuarios = User::where('parent_id', auth()->user()->id)->get();
         } elseif (auth()->user()->role_id == 3) {
             // $padre = auth()->user()->parent_id;
-            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('user_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('user_id', auth()->user()->id)->orderBy('id', 'desc');
+
+            if (isset($filter['has_winner'])) {
+                $tickets = $tickets->where('has_winner', $filter['has_winner']);
+            }
+
+            if (isset($filter['moneda_id'])) {
+                $tickets = $tickets->where('moneda_id', $filter['moneda_id']);
+            }
+            if (isset($filter['created_at_inicio'])) {
+                $tickets = $tickets->where('created_at', '>=', $filter['created_at_inicio'] . ' 00:00:00');
+            }
+            if (isset($filter['created_at_final'])) {
+                $tickets = $tickets->where('created_at', '<=', $filter['created_at_final'] . ' 23:59:59');
+            }
+            $tickets = $tickets->paginate(isset($filter['_perPage']) ? $filter['_perPage'] : 10)->appends(request()->query());
+            $usuarios = null;
         }
 
         $ticket =  $tickets->each(function ($ticket) {
@@ -56,7 +115,11 @@ class TicketController extends Controller
             return $ticket;
         });
 
-        return view('tickets.index', compact('tickets'));
+        $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
+
+        // dd($monedas);
+
+        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios'));
     }
 
     public function create()
