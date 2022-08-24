@@ -77,7 +77,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        @if(auth()->user()->role_id = 1 || auth()->user()->role_id = 2)
+                                        @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
 
                                         <div class="col-md-4">
                                             <label for="user_id" class="form-label">Usuarios</label>
