@@ -22,6 +22,10 @@
                                         <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
                                         <label class="form-check-label" for="type_granjita">La Granjita</label>
                                     </div>
+                                    <div class="form-check form-check-inline">
+                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="3" id="type_selvaTropical">
+                                        <label class="form-check-label" for="type_selvaTropical">Selva Tropical</label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -485,7 +489,10 @@
                 timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
                 if (res.valid) {
                     if (localStorage.getItem('printer') && localStorage.getItem('printer_url')) {
-                        await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), res.ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
+                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), res.ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
+                        console.log({
+                            st
+                        })
                         this.toast('Imprimiendo...', 5000)
                         location.reload();
                     } else {
@@ -520,6 +527,7 @@
                 }
             },
             printDirect: async function(printer, url, detalles, ticket, paper_width) {
+                let res;
                 axios(`${url}/print`, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -532,13 +540,16 @@
                 }).then(({
                     data
                 }) => {
-                    this.toast('Al parecer todo va bien ✌', 3000)
+                    this.toast('✌', 3000)
+                    res = data;
                     // console.log(data);
                 }).catch((e) => {
                     this.toast('Verifica el la url del pluggin', 3000)
                     this.toast('Asegurate que tengas instalado el pluggin de impresion en tu computadora local', 3000)
+                    res = false;
                     // console.log(e);
                 });
+                return res;
 
             }
 
