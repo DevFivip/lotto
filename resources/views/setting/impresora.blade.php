@@ -40,8 +40,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mb-3">
+                        <div class="alert alert-dark" role="alert">
+                            <p>
+                                Para poder enlazar tu impresora es necesario los siguientes programas, <a href="https://drive.google.com/file/d/1pUc8EK04fMcprvGIy27aAaxwI5aSnp7r/view?usp=sharing">lea la guia de instalación.</a>
+                            </p>
+                            <p>fivip-printer.exe</p>
+                            <p>RestartOnCrash.exe</p>
+                            <p>run.vbs</p>
+                            <p>setting.conf</p>
+                            <p>test</p>
+                            <p>
+                                <a href="https://drive.google.com/drive/folders/1QgOkxeYrt_SD7yZRz8hYprnXMU8VJd6Z?usp=sharing" class="btn btn-primary">💾 Descargar</a>
+                            </p>
+                        </div>
+
+                    </div>
                     <div class="row mb-0">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <a class="btn btn-danger" @click.prevent="deletePrinter()">
                                 Eliminar Configuración
                             </a>
