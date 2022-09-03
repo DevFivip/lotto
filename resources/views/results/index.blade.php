@@ -18,6 +18,9 @@
                         <span class="strong">{{$errors->first()}}</span>
                     </div>
                     @endif
+
+                    @foreach($results as $resultss)
+                    <div>{{$resultss[0]->type->name}}</div>
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
@@ -35,7 +38,7 @@
                                 <td>$ Balance</td>
                                 @endif
                             </tr>
-                            @foreach($results as $result)
+                            @foreach($resultss as $result)
                             <tr x-data="converter('{{$result->created_at}}')">
                                 <td>{{$result->schedule->schedule}}</td>
                                 <td>{{$result->type->name}}</td>
@@ -56,9 +59,13 @@
 
                         </table>
                     </div>
-                    <div class="d-flex">
-                        {!! $results->links() !!}
-                    </div>
+
+                    @endforeach
+
+
+
+
+
                 </div>
             </div>
         </div>

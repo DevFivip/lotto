@@ -33,6 +33,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+
 Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
 Route::resource('/tickets', TicketController::class);
@@ -43,6 +44,7 @@ Route::resource('/schedules', ScheduleController::class);
 Route::resource('/resultados', ResultController::class);
 Route::resource('/cash-admins', CashAdminController::class);
 
+Route::get('/tickets-repeat', [App\Http\Controllers\TicketController::class, 'repeat']);
 
 Route::post('/tickets/makepay/{id}', [App\Http\Controllers\RegisterController::class, 'payAnimalito']);
 Route::get('/tickets/pay/{code}', [App\Http\Controllers\TicketController::class, 'pay']);

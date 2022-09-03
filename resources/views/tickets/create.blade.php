@@ -215,6 +215,7 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repeatTicketModal"><i class="fa-solid fa-repeat"></i> Repetir</button>
                                             <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
                                             <a href="/balance-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i> Caja</a>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
@@ -263,6 +264,31 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="repeatTicketModal" tabindex="-1" aria-labelledby="repeatTicketModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="repeatTicketModalLabel">Buscar ticket para Repetir</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/tickets-repeat" method="GET">
+                            <div class="">
+                                <label for="exampleFormControlInput1" class="form-label">Código del Ticket</label>
+                                <input type="text" name="code" class="form-control" id="codetickt">
+                            </div>
+                            <div class="d-grid gap-2 mt-1">
+                                <button class="btn btn-dark" type="submit">
+                                    Buscar <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <script type="text/javascript">

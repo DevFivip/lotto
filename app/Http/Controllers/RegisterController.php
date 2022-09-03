@@ -65,6 +65,14 @@ class RegisterController extends Controller
                 if (!!count($errors)) {
                     return response()->json(["valid" => false, 'messages' => $errors], 403);
                 }
+
+
+                if (gettype($data['moneda']) == 'array') {
+                    $data['moneda'] = $data['moneda']['id'];
+                }
+
+
+
                 $registro = Register::create([
                     'code' => Str::random(10),
                     'caja_id' => $caja->id,
@@ -75,20 +83,43 @@ class RegisterController extends Controller
                     'status' => 1,
                 ]);
 
+
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $animalito = $data['detalles'][$i];
 
+
+                    // dd($animalito);
+
+                    if (!isset($animalito['type']['id'])) {
+                        $type = $animalito['sorteo_type_id'];
+                    } else {
+                        $type = $animalito['type']['id'];
+                    }
+
+
+                    if (!isset($animalito['animal']['id'])) {
+                        $animalito_id = $animalito['id'];
+                    } else {
+                        $animalito_id = $animalito['animal']['id'];
+                    }
+
+                    if (gettype($animalito['schedule']) == 'array') {
+                        $schedule = $animalito['schedule']['schedule'];
+                    } else {
+                        $schedule = $animalito['schedule'];
+                    }
+
                     RegisterDetail::create([
                         'register_id' => $registro->id,
-                        'animal_id' => $animalito['id'],
+                        'animal_id' => $animalito_id,
                         'schedule_id' => $animalito['schedule_id'],
-                        'schedule' => $animalito['schedule'],
+                        'schedule' => $schedule,
                         'admin_id' => $user['parent_id'],
                         'monto' => $animalito['monto'],
                         'moneda_id' => $registro->moneda_id,
                         'user_id' => auth()->user()->id,
                         'caja_id' => $caja->id,
-                        "sorteo_type_id" => $animalito['type']['id'],
+                        "sorteo_type_id" => $type,
                     ]);
                 }
 
@@ -143,6 +174,11 @@ class RegisterController extends Controller
         $animal = Animal::find($animal_id);
         $horario = Schedule::find($horario_id);
         $err = [];
+
+        if (!isset($animal->limit_cant)) {
+            return ['status' => true];
+        };
+
 
         if ($horario->status == 0) {
             array_push($err, '⛔ El sorteo ' . $horario->schedule . ' ya no se encuantra disponible ⛔');
@@ -235,7 +271,7 @@ class RegisterController extends Controller
                 $this->fpdf->SetFont('Arial', 'B', 11);
                 $this->fpdf->Text(2, $line_start, $horario[0]->type->name . " " . $horario[0]->schedule);
                 $this->fpdf->SetFont('Arial');
-              
+
                 $line_start += $spacing;
 
                 for ($h = 0; $h < count($horario); $h++) {

@@ -198,4 +198,35 @@ class TicketController extends Controller
 
         return view('tickets.pay', compact('ticket', 'detalles'));
     }
+    public function repeat(Request $request)
+    {
+
+        $code = $request->all()['code'];
+
+        // if (auth()->user()->role_id == 1) {
+        //     $ticket = Register::with([
+        //         'caja',
+        //         'user',
+        //         'moneda'
+        //     ])->where('code', $code)->first();
+        // } else {
+
+        $ticket = Register::with([
+            'caja',
+            'user',
+            'moneda'
+        ])->where('user_id', auth()->user()->id)->where('code', $code)->first();
+
+        // }
+
+        $detalles = RegisterDetail::with([
+            "animal",
+            "schedule",
+        ])->where('register_id', $ticket->id)->get();
+
+
+        $schedules = Schedule::where('status', 1)->get();
+
+        return view('tickets.repeat', compact('ticket', 'detalles', 'schedules'));
+    }
 }
