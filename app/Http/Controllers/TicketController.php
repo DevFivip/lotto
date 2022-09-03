@@ -201,9 +201,6 @@ class TicketController extends Controller
     public function repeat(Request $request)
     {
 
-
-        dd('módulo en mantenimiento');
-
         $code = $request->all()['code'];
 
         // if (auth()->user()->role_id == 1) {

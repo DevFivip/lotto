@@ -70,8 +70,7 @@ class RegisterController extends Controller
                 if (gettype($data['moneda']) == 'array') {
                     $data['moneda'] = $data['moneda']['id'];
                 }
-
-
+                
 
                 $registro = Register::create([
                     'code' => Str::random(10),
@@ -175,14 +174,20 @@ class RegisterController extends Controller
         $horario = Schedule::find($horario_id);
         $err = [];
 
-        if (!isset($animal->limit_cant)) {
-            return ['status' => true];
-        };
-
+        // dd($horario->status);
 
         if ($horario->status == 0) {
             array_push($err, '⛔ El sorteo ' . $horario->schedule . ' ya no se encuantra disponible ⛔');
         }
+
+        if (!isset($animal->limit_cant)) {
+
+            if (count($err) >= 1) {
+                return ['status' => false, 'messages' => $err[0]];
+            } else {
+                return ['status' => true];
+            }
+        };
 
         if ($resp[0] > $animal->limit_cant) {
             array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
