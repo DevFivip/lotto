@@ -20,7 +20,7 @@
                     @endif
 
                     @foreach($results as $resultss)
-                    <div>{{$resultss[0]->type->name}}</div>
+                    
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
