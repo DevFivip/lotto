@@ -35,10 +35,6 @@ class ResultController extends Controller
         $results = Result::with('type')->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
         $results = $results->groupBy('sorteo_type_id');
         // dd($results);
-
-        dd($results);
-
-
         return view('results.index', compact('results'));
     }
 
