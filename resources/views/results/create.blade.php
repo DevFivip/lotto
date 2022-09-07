@@ -19,7 +19,7 @@
                                     <div class="col-md-6">
                                         <select name="animal_id" class="form-select" aria-label="Default select example">
                                             @foreach($animalitos as $animal)
-                                            <option value="{{$animal->number}}">{{$animal->number}} {{$animal->nombre}}</option>
+                                            <option value="{{$animal->number}}">{{$animal->number}} {{$animal->nombre}} {{$animal->type->name}} </option>
                                             @endforeach
                                         </select>
                                     </div>

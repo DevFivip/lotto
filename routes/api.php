@@ -57,3 +57,17 @@ Route::post('/send-results-granjita', function (Request $request) {
         return response()->json(['valid' => false], 200);
     }
 });
+
+Route::post('/send-results-selvaParaiso', function (Request $request) {
+
+    $data = $request->all();
+
+    $schedule = Schedule::find($data['schedule_id']);
+    if ($schedule) {
+        $response = ResultController::storeDirectSelvaParaiso($data['numero'], $data['schedule_id']);
+        $response['sorteo'] = $schedule->schedule;
+        return response()->json($response, 200);
+    } else {
+        return response()->json(['valid' => false], 200);
+    }
+});

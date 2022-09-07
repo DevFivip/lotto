@@ -46,9 +46,11 @@ class ResultController extends Controller
     public function create()
     {
         //
-        $animalitos = Animal::all();
+        $animalitos = Animal::with('type')->get();
         $schedules = Schedule::all();
         $sorteo_types = SorteosType::all();
+
+        // dd($animalitos);
         return view('results.create', compact('animalitos', 'schedules', 'sorteo_types'));
     }
 

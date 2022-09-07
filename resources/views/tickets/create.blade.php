@@ -19,11 +19,11 @@
                                         <label class="form-check-label" for="type_lotto_activo">Lotto Activo</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
                                         <label class="form-check-label" for="type_granjita">La Granjita</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="3" id="type_selvaTropical">
+                                        <input disable x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="3" id="type_selvaTropical">
                                         <label class="form-check-label" for="type_selvaTropical">Selva Tropical</label>
                                     </div>
                                 </div>
