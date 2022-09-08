@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         SorteosType::create([
-            "name" => 'La Granjita'
+            "name" => 'Selva Paraiso'
         ]);
 
         Animal::create([
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '0',
@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '01',
@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '02',
@@ -123,15 +123,15 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '03',
-            'nombre' => 'Ciempies',
+            'nombre' => 'Cuy',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '04',
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '05',
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '06',
@@ -155,7 +155,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '07',
@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '08',
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '09',
@@ -179,7 +179,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '10',
@@ -187,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
 
         Animal::create([
@@ -196,7 +196,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '12',
@@ -204,7 +204,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '13',
@@ -212,7 +212,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '14',
@@ -220,15 +220,15 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '15',
-            'nombre' => 'Zorro',
+            'nombre' => 'Estrella',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '16',
@@ -236,7 +236,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '17',
@@ -244,7 +244,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '18',
@@ -252,7 +252,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '19',
@@ -260,16 +260,16 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
 
         Animal::create([
             'number' => '20',
-            'nombre' => 'Cochino',
+            'nombre' => 'Chancho',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '21',
@@ -277,7 +277,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '22',
@@ -285,7 +285,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '23',
@@ -293,7 +293,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '24',
@@ -301,7 +301,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '25',
@@ -309,7 +309,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '26',
@@ -317,7 +317,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '27',
@@ -325,15 +325,15 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '28',
-            'nombre' => 'Zamuro',
+            'nombre' => 'Conejo',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '29',
@@ -341,24 +341,24 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
 
         Animal::create([
             'number' => '30',
-            'nombre' => 'Caiman',
+            'nombre' => 'Cocodrilo',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '31',
-            'nombre' => 'Lapa',
+            'nombre' => 'Llama',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '32',
@@ -366,7 +366,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '33',
@@ -374,7 +374,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '34',
@@ -382,7 +382,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '35',
@@ -390,15 +390,15 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
         Animal::create([
             'number' => '36',
-            'nombre' => 'Culebra',
+            'nombre' => 'Serpiente',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 2,
+            "sorteo_type_id" => 3,
         ]);
 
         // Schedule::create([
