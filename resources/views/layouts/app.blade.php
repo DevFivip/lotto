@@ -16,11 +16,9 @@ $l = $_SERVER['REQUEST_URI']
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ env('APP_URL').'/js/app.js' }}" defer></script>
-    
-    <script src="{{ env('APP_URL').'/js/util.js' }}" defer></script>
-    <!-- <script src="{{ asset('js/util.js') }}" defer></script> -->
-
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/util.js') }}" defer></script>
+   
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -28,7 +26,7 @@ $l = $_SERVER['REQUEST_URI']
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Styles -->
-    <link href="{{ env('APP_URL').'/css/app.css' }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Alpine Plugins -->
     <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.0.0/dist/moment.min.js" defer></script>
