@@ -26,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        if (request()->server->has('HTTP_X_ORIGINAL_HOST')) {
-            url()->forceRootUrl(
-                request()->server->get('HTTP_X_FORWARDED_PROTO').'://'.request()->server->get('HTTP_X_ORIGINAL_HOST')
-            );
-        }
+        // if (request()->server->has('HTTP_X_ORIGINAL_HOST')) {
+        //     url()->forceRootUrl(
+        //         request()->server->get('HTTP_X_FORWARDED_PROTO').'://'.request()->server->get('HTTP_X_ORIGINAL_HOST')
+        //     );
+        // }
         //
     }
 }
