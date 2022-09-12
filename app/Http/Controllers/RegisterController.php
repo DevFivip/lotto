@@ -62,6 +62,7 @@ class RegisterController extends Controller
                         array_push($errors, $res['messages']);
                     }
                 }
+
                 if (!!count($errors)) {
                     return response()->json(["valid" => false, 'messages' => $errors], 403);
                 }
@@ -70,7 +71,7 @@ class RegisterController extends Controller
                 if (gettype($data['moneda']) == 'array') {
                     $data['moneda'] = $data['moneda']['id'];
                 }
-                
+
 
                 $registro = Register::create([
                     'code' => Str::random(10),
@@ -135,9 +136,39 @@ class RegisterController extends Controller
                     return $sorteo->groupBy('schedule_id');
                 });
 
+                $ticket_detalles_res = [];
+                //
+                $_grupo = 0;
+                $_horario = 0;
+
+
+                foreach ($ticket_detalles as $grupo) {
+
+                    $ticket_detalles_res[$_grupo] = [];
+
+                    foreach ($grupo as $horario) {
+
+                        $ticket_detalles_res[$_grupo][$_horario] = [];
+
+                        foreach ($horario as $animalito) {
+                            array_push($ticket_detalles_res[$_grupo][$_horario], $animalito);
+                        }
+                        $_horario += 1;
+                    }
+
+                    $_grupo += 1;
+                }
+
+                // dd($ticket_detalles->toArray());
+                //
+
+
+
+
+
                 // $collection = $ticket_detalles->groupBy('schedule_id');
 
-                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles], 200);
+                return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles_res], 200);
             } else {
                 return response()->json(["valid" => false, 'messages' => ['Seleccione moneda y al menos un Animalito']], 403);
             }
@@ -212,7 +243,6 @@ class RegisterController extends Controller
         $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();
         $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone($data['timezone']));
-
 
         $ticket_detalles = RegisterDetail::with(['type', 'animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
 
