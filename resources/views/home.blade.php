@@ -209,6 +209,7 @@
             handleResult: false,
             usuarios: usu,
             handleGetStarts: async function(userId, index) {
+                return false
                 // console.log(this.get_query())
                 const res = await fetch('/reports/usuario?user_id=' + userId + '&' + new URLSearchParams(this.get_query()), {
                     method: 'GET',
