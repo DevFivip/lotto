@@ -50,6 +50,7 @@ Route::post('/tickets/makepay/{id}', [App\Http\Controllers\RegisterController::c
 Route::get('/tickets/pay/{code}', [App\Http\Controllers\TicketController::class, 'pay']);
 Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class, 'create']);
 Route::post('/ticket-validate/{code}', [App\Http\Controllers\TicketController::class, 'validateToPay']);
+Route::get('/print-direct/{code}', [App\Http\Controllers\RegisterController::class, 'print_direct']);
 Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);
 Route::get('/balance-caja/{id}', [App\Http\Controllers\CajaController::class, 'show']);

@@ -159,6 +159,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><a class="dropdown-item" x-bind:href="'/print/{{$ticket->code}}?timezone='+timezone">Ver Ticket</a></li>
                                             <li><a class="dropdown-item" x-bind:href="'/tickets-repeat?code={{$ticket->code}}'">Repetir Ticket</a></li>
+                                            <li><button class="dropdown-item" @click="handlePrintDirect('{{$ticket->code}}')">Direct Print</button></li>
                                             <li><button class="dropdown-item" @click="handleDelete('{{$ticket->code}}')">Eliminar</button></li>
                                             @if($ticket->has_winner == 1 && $ticket->total_premios_pendientes > 0)
                                             <li><a class="dropdown-item" href="/tickets/pay/{{$ticket->code}}">Pagar</a></li>
@@ -185,6 +186,39 @@
         return {
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             openFilter: false,
+            handlePrintDirect: async function(code) {
+
+                let body = await fetch('/print-direct/' + code, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
+                    },
+                })
+                res = await body.json()
+
+                 if (res.valid) {
+                    if (localStorage.getItem('printer') && localStorage.getItem('printer_url')) {
+
+                        const ticket = this.checkTypesDetalle(res.ticket);
+
+                        const ticket_detalles = res.ticket_detalles.map((grupo,k)=>grupo.map(horario=>horario.map(animalito=>this.checkTypesAnimalito(animalito))))
+
+                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, ticket_detalles, localStorage.getItem('paper_width'))
+                        console.log({
+                            st
+                        })
+                        this.toast('Imprimiendo...', 5000)
+                        // location.reload();
+                    } else {
+                        window.open(
+                            `/print/${res.code}?timezone=${timezone}`, "_blank");
+                        location.reload();
+                    }
+
+
+                }
+            },
             handleDelete: async function(code) {
                 if (confirm("¿Seguro deseas eliminar este tickets?") == true) {
                     const res = await fetch('/register/' + code, {
@@ -207,6 +241,32 @@
                     // alert()
                 }
             },
+            printDirect: async function(printer, url, detalles, ticket, paper_width) {
+                let res;
+                axios(`${url}/print`, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    data: {
+                        printer,
+                        detalles,
+                        ticket,
+                        paper_width
+                    }
+                }).then(({
+                    data
+                }) => {
+                    this.toast('✌', 3000)
+                    res = data;
+                    // console.log(data);
+                }).catch((e) => {
+                    this.toast('Verifica el la url del pluggin', 3000)
+                    this.toast('Asegurate que tengas instalado el pluggin de impresion en tu computadora local', 3000)
+                    res = false;
+                    // console.log(e);
+                });
+                return res;
+
+            },
             toast: function(msg = 'Error al eliminar', duration = 800) {
                 Toastify({
                     text: msg,
@@ -217,6 +277,105 @@
                         background: "linear-gradient(to right, #00b09b, #96c93d)",
                     }
                 }).showToast();
+            },
+            checkTypesDetalle: function(detalle) {
+                // debugger
+                _detalle = {};
+                _detalle.id = parseInt(detalle.id)
+                _detalle.code = (detalle.code).toString()
+                _detalle.caja_id = parseInt(detalle.caja_id)
+                _detalle.user_id = parseInt(detalle.user_id)
+                _detalle.admin_id = parseInt(detalle.admin_id)
+                _detalle.total = parseFloat(detalle.total)
+                _detalle.has_winner = parseInt(detalle.has_winner)
+                _detalle.status = parseInt(detalle.status)
+                _detalle.created_at = (detalle.created_at).toString()
+                _detalle.updated_at = (detalle.updated_at).toString()
+                _detalle.user = this.checkTypesUser(detalle.user)
+                _detalle.moneda = detalle.moneda
+                _detalle.moneda_id = parseInt(detalle.moneda_id)
+                _detalle.caja = this.checkTypesCaja(detalle.caja)
+                return _detalle
+            },
+            checkTypesUser: function(user) {
+                _user = {};
+                _user.id = parseInt(user.id);
+                _user.taquilla_name = user.taquilla_name;
+                _user.name = user.name;
+                _user.email = user.email;
+                _user.email_verified_at = user.email_verified_at;
+                _user.parent_id = parseInt(user.parent_id);
+                _user.monedas = user.monedas;
+                _user.created_at = user.created_at;
+                _user.updated_at = user.updated_at;
+                _user.role_id = parseInt(user.role_id);
+                _user.status = parseInt(user.status);
+                _user.comision = parseInt(user.comision);
+                return _user;
+            },
+            checkTypesCaja: function(caja) {
+                _caja = {};
+                _caja.id = parseInt(caja.id);
+                _caja.user_id = parseInt(caja.user_id);
+                _caja.close_user_id = parseInt(caja.close_user_id);
+                _caja.fecha_apertura = caja.fecha_apertura;
+                _caja.fecha_cierre = caja.fecha_cierre;
+                _caja.balance_inicial = caja.balance_inicial;
+                _caja.balance_final = caja.balance_final;
+                _caja.entrada = caja.entrada;
+                _caja.status = caja.status;
+                _caja.referencia = caja.referencia;
+                _caja.created_at = caja.created_at;
+                _caja.updated_at = caja.updated_at;
+                _caja.admin_id = parseInt(caja.admin_id);
+                return _caja;
+            },
+            checkTypesAnimalito: function(animalito) {
+                _animalito = {};
+                _animalito.id = parseInt(animalito.id);
+                _animalito.register_id = parseInt(animalito.register_id);
+                _animalito.animal_id = parseInt(animalito.animal_id);
+                _animalito.schedule = this.checkTypeSchedule(animalito.schedule);
+                _animalito.schedule_id = parseInt(animalito.schedule_id);
+                _animalito.admin_id = parseInt(animalito.admin_id);
+                _animalito.winner = parseInt(animalito.winner);
+                _animalito.monto = parseFloat(animalito.monto);
+                _animalito.moneda_id = parseInt(animalito.moneda_id);
+                _animalito.created_at = animalito.created_at;
+                _animalito.updated_at = animalito.updated_at;
+                _animalito.user_id = parseInt(animalito.user_id);
+                _animalito.caja_id = parseInt(animalito.caja_id);
+                _animalito.status = parseInt(animalito.status);
+                _animalito.sorteo_type_id = parseInt(animalito.sorteo_type_id);
+                _animalito.type = animalito.type;
+                _animalito.animal = this.checkTypeAnimal(animalito.animal);
+
+                return _animalito;
+            },
+            checkTypeSchedule: function(schedule){
+                _schedule = {};
+                _schedule.id = parseInt(schedule.id);
+                _schedule.schedule = schedule.schedule;
+                _schedule.interval_start_utc = schedule.interval_start_utc;
+                _schedule.interval_end_utc = schedule.interval_end_utc;
+                _schedule.status = parseInt(schedule.status);
+                _schedule.created_at = schedule.created_at;
+                _schedule.updated_at = schedule.updated_at;
+                _schedule.sorteo_type_id = parseInt(schedule.sorteo_type_id);
+                return _schedule;
+            },
+            checkTypeAnimal: function(animal){
+                _animal = {};
+                _animal.id = parseInt(animal.id)
+                _animal.number = (animal.number).toString()
+                _animal.nombre = (animal.nombre).toString()
+                _animal.limit_cant = animal.limit_cant
+                _animal.limit_price_usd = animal.limit_price_usd
+                _animal.status = animal.status
+                _animal.created_at = animal.created_at
+                _animal.updated_at = animal.updated_at
+                _animal.sorteo_type_id = animal.sorteo_type_id
+                return _animal
             },
         }
     }

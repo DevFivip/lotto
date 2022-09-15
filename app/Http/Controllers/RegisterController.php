@@ -159,13 +159,6 @@ class RegisterController extends Controller
                     $_grupo += 1;
                 }
 
-                // dd($ticket_detalles->toArray());
-                //
-
-
-
-
-
                 // $collection = $ticket_detalles->groupBy('schedule_id');
 
                 return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $registro->code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles_res], 200);
@@ -356,6 +349,47 @@ class RegisterController extends Controller
         $this->fpdf->Output('ticket-' . $code . '.pdf', 'I');
 
         exit;
+    }
+    public function print_direct($code)
+    {
+        $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();
+        $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
+
+        $ticket_detalles = RegisterDetail::with(['type', 'animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+
+        $ticket_detalles = $ticket_detalles->groupBy('sorteo_type_id');
+
+        $ticket_detalles = $ticket_detalles->map(function ($sorteo) {
+            return $sorteo->groupBy('schedule_id');
+        });
+
+        $ticket_detalles_res = [];
+        //
+        $_grupo = 0;
+        $_horario = 0;
+
+
+        foreach ($ticket_detalles as $grupo) {
+
+            $ticket_detalles_res[$_grupo] = [];
+
+            foreach ($grupo as $horario) {
+
+                $ticket_detalles_res[$_grupo][$_horario] = [];
+
+                foreach ($horario as $animalito) {
+                    array_push($ticket_detalles_res[$_grupo][$_horario], $animalito);
+                }
+                $_horario += 1;
+            }
+
+            $_grupo += 1;
+        }
+
+        // $collection = $ticket_detalles->groupBy('schedule_id');
+
+        return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles_res], 200);
     }
 
 
