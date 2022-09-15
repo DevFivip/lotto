@@ -565,6 +565,15 @@
                 _user.id = parseInt(user.id);
                 _user.taquilla_name=user.taquilla_name;
                 _user.name=user.name;
+                _user.email=user.email;
+                _user.email_verified_at=user.email_verified_at;
+                _user.parent_id = parseInt(user.parent_id);
+                _user.monedas=user.monedas;
+                _user.created_at=user.created_at;
+                _user.updated_at=user.updated_at;
+                _user.role_id=parseInt(user.role_id);
+                _user.status=parseInt(user.status);
+                _user.comision=parseInt(user.comision);
                 return _user;
             },
             setType: function(e,want){
