@@ -515,12 +515,15 @@
                 timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
                 if (res.valid) {
                     if (localStorage.getItem('printer') && localStorage.getItem('printer_url')) {
-                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), res.ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
+
+                        const ticket = this.checkTypesDetalle(res.ticket);
+
+                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
                         console.log({
                             st
                         })
                         this.toast('Imprimiendo...', 5000)
-                        location.reload();
+                        // location.reload();
                     } else {
                         window.open(
                             `/print/${res.code}?timezone=${timezone}`, "_blank");
@@ -537,6 +540,28 @@
                     // this.errors = res.messages
                     // this.handleError = true;
                 }
+            },
+            checkTypesDetalle: function(detalle){
+                // debugger
+                _detalle = {};
+                _detalle.id = parseInt(detalle.id)
+                _detalle.code = (detalle.code).toString()
+                _detalle.caja_id = parseInt(detalle.caja_id)
+                _detalle.user_id = parseInt(detalle.user_id)
+                _detalle.admin_id = parseInt(detalle.admin_id)
+                _detalle.total = parseFloat(detalle.total)
+                _detalle.has_winner = parseInt(detalle.has_winner)
+                _detalle.status = parseInt(detalle.status)
+                _detalle.created_at = (detalle.created_at).toString()
+                _detalle.updated_at = (detalle.updated_at).toString()
+                _detalle.user = detalle.user 
+                _detalle.moneda = detalle.moneda 
+                _detalle.moneda_id = detalle.moneda_id 
+                _detalle.caja = detalle.caja 
+                return _detalle
+            },
+            setType: function(e,want){
+
             },
             handlePay: async function() {
                 this.handleBtnPaySearch = true;
