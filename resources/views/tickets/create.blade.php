@@ -623,7 +623,7 @@
                 _schedule.schedule = schedule.schedule;
                 _schedule.interval_start_utc = schedule.interval_start_utc;
                 _schedule.interval_end_utc = schedule.interval_end_utc;
-                _schedule.status = parseInte(schedule.status);
+                _schedule.status = parseInt(schedule.status);
                 _schedule.created_at = schedule.created_at;
                 _schedule.updated_at = schedule.updated_at;
                 _schedule.sorteo_type_id = parseInt(schedule.sorteo_type_id);
