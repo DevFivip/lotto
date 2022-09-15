@@ -520,7 +520,7 @@
 
                         const ticket_detalles = res.ticket_detalles.map((grupo,k)=>grupo.map(horario=>horario.map(animalito=>this.checkTypesAnimalito(animalito))))
 
-                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
+                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, ticket_detalles, localStorage.getItem('paper_width'))
                         console.log({
                             st
                         })
