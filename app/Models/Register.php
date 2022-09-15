@@ -18,6 +18,15 @@ class Register extends Model
         'moneda_id',
         'has_winner',
     ];
+   
+    protected $cast = [
+        'code'=>"string",
+        'caja_id'=>"integer",
+        'user_id'=>"integer",
+        'admin_id'=>"integer",
+        'moneda_id'=>"integer",
+        'has_winner'=>"integer",
+    ];
 
     public function caja()
     {
