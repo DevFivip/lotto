@@ -541,7 +541,7 @@
                     // this.handleError = true;
                 }
             },
-            checkTypesDetalle: function(detalle){
+            checkTypesDetalle: function(detalle) {
                 // debugger
                 _detalle = {};
                 _detalle.id = parseInt(detalle.id)
@@ -554,29 +554,46 @@
                 _detalle.status = parseInt(detalle.status)
                 _detalle.created_at = (detalle.created_at).toString()
                 _detalle.updated_at = (detalle.updated_at).toString()
-                _detalle.user = this.checkTypesUser(detalle.user) 
-                _detalle.moneda = detalle.moneda 
-                _detalle.moneda_id = detalle.moneda_id 
-                _detalle.caja = detalle.caja 
+                _detalle.user = this.checkTypesUser(detalle.user)
+                _detalle.moneda = detalle.moneda
+                _detalle.moneda_id = parseInt(detalle.moneda_id)
+                _detalle.caja = this.checkTypesCaja(detalle.caja)
                 return _detalle
             },
-            checkTypesUser:function(user){
+            checkTypesUser: function(user) {
                 _user = {};
                 _user.id = parseInt(user.id);
-                _user.taquilla_name=user.taquilla_name;
-                _user.name=user.name;
-                _user.email=user.email;
-                _user.email_verified_at=user.email_verified_at;
+                _user.taquilla_name = user.taquilla_name;
+                _user.name = user.name;
+                _user.email = user.email;
+                _user.email_verified_at = user.email_verified_at;
                 _user.parent_id = parseInt(user.parent_id);
-                _user.monedas=user.monedas;
-                _user.created_at=user.created_at;
-                _user.updated_at=user.updated_at;
-                _user.role_id=parseInt(user.role_id);
-                _user.status=parseInt(user.status);
-                _user.comision=parseInt(user.comision);
+                _user.monedas = user.monedas;
+                _user.created_at = user.created_at;
+                _user.updated_at = user.updated_at;
+                _user.role_id = parseInt(user.role_id);
+                _user.status = parseInt(user.status);
+                _user.comision = parseInt(user.comision);
                 return _user;
             },
-            setType: function(e,want){
+            checkTypesCaja: function(caja) {
+                _caja = {};
+                _caja.id = parseInt(caja.id);
+                _caja.user_id = parseInt(caja.user_id);
+                _caja.close_user_id = parseInt(caja.close_user_id);
+                _caja.fecha_apertura = caja.fecha_apertura;
+                _caja.fecha_cierre = caja.fecha_cierre;
+                _caja.balance_inicial = caja.balance_inicial;
+                _caja.balance_final = caja.balance_final;
+                _caja.entrada = caja.entrada;
+                _caja.status = caja.status;
+                _caja.referencia = caja.referencia;
+                _caja.created_at = caja.created_at;
+                _caja.updated_at = caja.updated_at;
+                _caja.admin_id = parseInt(caja.admin_id);
+                return _caja;
+            },
+            setType: function(e, want) {
 
             },
             handlePay: async function() {
