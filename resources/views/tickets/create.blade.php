@@ -554,11 +554,18 @@
                 _detalle.status = parseInt(detalle.status)
                 _detalle.created_at = (detalle.created_at).toString()
                 _detalle.updated_at = (detalle.updated_at).toString()
-                _detalle.user = detalle.user 
+                _detalle.user = this.checkTypesUser(detalle.user) 
                 _detalle.moneda = detalle.moneda 
                 _detalle.moneda_id = detalle.moneda_id 
                 _detalle.caja = detalle.caja 
                 return _detalle
+            },
+            checkTypesUser:function(user){
+                _user = {};
+                _user.id = parseInt(user.id);
+                _user.taquilla_name=user.taquilla_name;
+                _user.name=user.name;
+                return _user;
             },
             setType: function(e,want){
 
