@@ -19,6 +19,10 @@ class Animal extends Model
         "sorteo_type_id"
     ];
 
+    protected $cast = [
+        "number" => "string"
+    ];
+
     public function type()
     {
         return $this->belongsTo(SorteosType::class, 'sorteo_type_id');
