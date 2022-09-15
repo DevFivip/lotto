@@ -518,6 +518,8 @@
 
                         const ticket = this.checkTypesDetalle(res.ticket);
 
+                        const ticket_detalles = res.ticket_detalles.map((grupo,k)=>grupo.map(horario=>horario.map(animalito=>this.checkTypesAnimalito(animalito))))
+
                         const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, res.ticket_detalles, localStorage.getItem('paper_width'))
                         console.log({
                             st
@@ -592,6 +594,53 @@
                 _caja.updated_at = caja.updated_at;
                 _caja.admin_id = parseInt(caja.admin_id);
                 return _caja;
+            },
+            checkTypesAnimalito: function(animalito) {
+                _animalito = {};
+                _animalito.id = parseInt(animalito.id);
+                _animalito.register_id = parseInt(animalito.register_id);
+                _animalito.animal_id = parseInt(animalito.animal_id);
+                _animalito.schedule = this.checkTypeSchedule(animalito.schedule);
+                _animalito.schedule_id = parseInt(animalito.schedule_id);
+                _animalito.admin_id = parseInt(animalito.admin_id);
+                _animalito.winner = parseInt(animalito.winner);
+                _animalito.monto = parseFloat(animalito.monto);
+                _animalito.moneda_id = parseInt(animalito.moneda_id);
+                _animalito.created_at = animalito.created_at;
+                _animalito.updated_at = animalito.updated_at;
+                _animalito.user_id = parseInt(animalito.user_id);
+                _animalito.caja_id = parseInt(animalito.caja_id);
+                _animalito.status = parseInt(animalito.status);
+                _animalito.sorteo_type_id = parseInt(animalito.sorteo_type_id);
+                _animalito.type = animalito.type;
+                _animalito.animal = this.checkTypeAnimal(animalito.animal);
+
+                return _animalito;
+            },
+            checkTypeSchedule: function(schedule){
+                _schedule = {};
+                _schedule.id = parseInt(schedule.id);
+                _schedule.schedule = schedule.schedule;
+                _schedule.interval_start_utc = schedule.interval_start_utc;
+                _schedule.interval_end_utc = schedule.interval_end_utc;
+                _schedule.status = parseInte(schedule.status);
+                _schedule.created_at = schedule.created_at;
+                _schedule.updated_at = schedule.updated_at;
+                _schedule.sorteo_type_id = parseInt(schedule.sorteo_type_id);
+                return _schedule;
+            },
+            checkTypeAnimal: function(animal){
+                _animal = {};
+                _animal.id = parseInt(animal.id)
+                _animal.number = (animal.number).toString()
+                _animal.nombre = (animal.nombre).toString()
+                _animal.limit_cant = animal.limit_cant
+                _animal.limit_price_usd = animal.limit_price_usd
+                _animal.status = animal.status
+                _animal.created_at = animal.created_at
+                _animal.updated_at = animal.updated_at
+                _animal.sorteo_type_id = animal.sorteo_type_id
+                return _animal
             },
             setType: function(e, want) {
 
