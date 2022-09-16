@@ -60,7 +60,6 @@ class HomeController extends Controller
 
         if (auth()->user()->role_id == 1) {
 
-
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
                 $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
@@ -77,7 +76,6 @@ class HomeController extends Controller
             }
 
             $animalesvendidos = $animalesvendidos->get();
-            $ticketsvendidos = Register::where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
             $usuarios = User::all()->toArray();
         }
 
@@ -101,7 +99,6 @@ class HomeController extends Controller
             $animalesvendidos = $animalesvendidos->get();
             // $animalesvendidos = RegisterDetail::with('usuario','schedule','animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('parent_id', auth()->user()->id)->get()->toArray();
-            $ticketsvendidos = Register::where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
         }
 
         if (auth()->user()->role_id == 3) {
@@ -120,15 +117,8 @@ class HomeController extends Controller
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
             $animalesvendidos = $animalesvendidos->get();
-            //$animalesvendidos = RegisterDetail::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
             $usuarios = User::where('id', auth()->user()->id)->get()->toArray();
-            $ticketsvendidos = Register::where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
-            // $cajas = Caja::with('usuario')->where('status', 1)->get()->toArray();
         }
-
-        $reports['tickets_vendidos'] = $ticketsvendidos->count();
-        $reports['tickets_numeros_vendidos'] = $animalesvendidos->count();
-
 
 
         $monedas = Moneda::all()->toArray();
@@ -150,7 +140,7 @@ class HomeController extends Controller
                 // dd($dt->format('Y-m-d'));
                 // $__animalesvendidos = 
                 // $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
-                
+
                 /**
                  * 
                  * CONDICIONES DEL BUSCADOR DE FECHAS

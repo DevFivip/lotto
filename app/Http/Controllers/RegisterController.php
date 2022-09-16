@@ -366,27 +366,28 @@ class RegisterController extends Controller
 
         $ticket_detalles_res = [];
         //
-        $_grupo = 0;
-        $_horario = 0;
 
+        foreach ($ticket_detalles as $key => $grupo) {
 
-        foreach ($ticket_detalles as $grupo) {
+            // if($key == 2) {
+            //     dd($grupo);
+            // }
+    
+            $ticket_detalles_res[$key] = []; // as grupo
 
-            $ticket_detalles_res[$_grupo] = [];
+            foreach ($grupo as $hkey => $horario) {  // 
 
-            foreach ($grupo as $horario) {
-
-                $ticket_detalles_res[$_grupo][$_horario] = [];
+                $ticket_detalles_res[$key][$hkey] = [];
 
                 foreach ($horario as $animalito) {
-                    array_push($ticket_detalles_res[$_grupo][$_horario], $animalito);
+                    array_push($ticket_detalles_res[$key][$hkey], $animalito);
                 }
-                $_horario += 1;
             }
 
-            $_grupo += 1;
+
         }
 
+        // dd($ticket_detalles_res);
         // $collection = $ticket_detalles->groupBy('schedule_id');
 
         return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $code, 'ticket' => $ticket, "ticket_detalles" => $ticket_detalles_res], 200);
