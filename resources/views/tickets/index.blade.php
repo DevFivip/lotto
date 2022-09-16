@@ -197,25 +197,42 @@
                 })
                 res = await body.json()
 
-                 if (res.valid) {
+                if (res.valid) {
                     if (localStorage.getItem('printer') && localStorage.getItem('printer_url')) {
 
                         const ticket = this.checkTypesDetalle(res.ticket);
+                        // console.log(res.ticket_detalles)
+                        const k = Object.keys(res.ticket_detalles)
+                        // console.log(k)
 
-                        const ticket_detalles = res.ticket_detalles.map((grupo,k)=>grupo.map(horario=>horario.map(animalito=>this.checkTypesAnimalito(animalito))))
+                        const td = []
 
-                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, ticket_detalles, localStorage.getItem('paper_width'))
-                        console.log({
-                            st
-                        })
+                        for (let i = 0; i < k.length; i++) {
+                            const grupo = res.ticket_detalles[k[i]];
+                            td[i] = []
+                            const grupo_keys = Object.keys(grupo)
+                            for (let g = 0; g < grupo_keys.length; g++) {
+                                td[i][g] = grupo[grupo_keys[g]]
+                                const horario = grupo[grupo_keys[g]];
+                                const horario_keys = Object.keys(horario)
+
+                                for (let h = 0; h < horario_keys.length; h++) {
+                                    const animalito = horario[horario_keys[h]];
+                                    td[i][g][h] = this.checkTypesAnimalito(animalito);
+                                    // debugger
+                                }
+                            }
+                        }
+
+                        const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, td, localStorage.getItem('paper_width'))
+
                         this.toast('Imprimiendo...', 5000)
-                        // location.reload();
+                        
                     } else {
                         window.open(
                             `/print/${res.code}?timezone=${timezone}`, "_blank");
                         location.reload();
                     }
-
 
                 }
             },
@@ -352,7 +369,7 @@
 
                 return _animalito;
             },
-            checkTypeSchedule: function(schedule){
+            checkTypeSchedule: function(schedule) {
                 _schedule = {};
                 _schedule.id = parseInt(schedule.id);
                 _schedule.schedule = schedule.schedule;
@@ -364,7 +381,7 @@
                 _schedule.sorteo_type_id = parseInt(schedule.sorteo_type_id);
                 return _schedule;
             },
-            checkTypeAnimal: function(animal){
+            checkTypeAnimal: function(animal) {
                 _animal = {};
                 _animal.id = parseInt(animal.id)
                 _animal.number = (animal.number).toString()
