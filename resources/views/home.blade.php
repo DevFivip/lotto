@@ -43,9 +43,6 @@
                         </div>
                     </form>
 
-
-
-
                     <div class="row mt-3">
                         <div class="col">
                             <div class="card">
@@ -125,6 +122,53 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @foreach($_start as $admin)
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    {{$admin['usuario']['name']}}
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td class="fw-bold text-center">Moneda</td>
+                                            <td class="fw-bold text-end">Ventas</td>
+                                            <td class="fw-bold text-end">Premios</td>
+                                            <td class="fw-bold text-end">Comisión</td>
+                                            <td class="fw-bold text-end">Balance</td>
+                                            <td class="fw-bold text-end">Pagados</td>
+                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Ventas (USDT)</td>@endif
+                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Premios (USDT)</td>@endif
+                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Balance (USDT)</td>@endif
+                                            @if(auth()->user()->role_id == 1)<td class="fw-bold text-end">Pagados (USDT)</td>@endif
+                                        </tr>
+
+                                        @foreach($admin as $key => $moneda)
+                                        @if(isset($moneda['total']))
+
+                                        <tr>
+                                            <td class="text-center">{{$moneda['nombre']}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total'],2,',','.')}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total_rewards'],2,',','.')}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['comision'],2,',','.')}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['balance'],2,',','.')}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total_pay'],2,',','.')}}</td>
+                                            @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['total_exchange_usd'],2,',','.')}}</td>@endif
+                                            @if(auth()->user()->role_id == 1) <td class="text-end">$ {{number_format($moneda['total_rewards_exchange_usd'],2,',','.')}}</td>@endif
+                                            @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['balance_exchange_usd'],2,',','.')}}</td>@endif
+                                            @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['total_pay_exchange_usd'],2,',','.')}}</td>@endif
+                                        </tr>
+                                        @endif
+                                        @endforeach
+
+                                    </table>
+
+                                </div>
+                            </div>
+                            @endforeach
+
+
+
                         </div>
                     </div>
                 </div>

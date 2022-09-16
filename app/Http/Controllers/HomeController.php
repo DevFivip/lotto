@@ -38,7 +38,6 @@ class HomeController extends Controller
         if (count($request->all()) > 1) {
             $data = $request->all();
             $dt = new DateTime($data['fecha_inicio'] . " 00:00:00", new DateTimeZone('UTC'));
-
             if (isset($data['fecha_fin'])) {
                 $dt2 = new DateTime($data['fecha_fin'] . " 00:00:00", new DateTimeZone('UTC'));
                 // $dt2->setTimezone(new DateTimeZone(session('timezone')));
@@ -57,8 +56,10 @@ class HomeController extends Controller
         $usuarios = [];
 
 
+        $administradores = User::where('role_id', 2)->get();
 
         if (auth()->user()->role_id == 1) {
+
 
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
                 $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
@@ -74,10 +75,6 @@ class HomeController extends Controller
                 $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
-
-            // if(isset($data['fecha_fin'])){
-            //     $animalesvendidos=    $animalesvendidos->where('created_at','>=',$dt2->format('Y-m-d').' 23:59:59');
-            // }
 
             $animalesvendidos = $animalesvendidos->get();
             $ticketsvendidos = Register::where('created_at', '>=', $dt->format('Y-m-') . '01 00:00:00')->get();
@@ -134,8 +131,87 @@ class HomeController extends Controller
 
 
 
-        $totalMonedas = Moneda::all()->toArray();
+        $monedas = Moneda::all()->toArray();
         $change = Exchange::all()->toArray();
+        /**
+         * @Array $TotalMonedas @Array $Change
+         * return Array $totalMonedas
+         */
+        $totalMonedas =  $this->totalMonedas($monedas, $change, $animalesvendidos, $usuarios);
+
+        // $totalMonedas =  $this->totalMonedas($monedas, $change, $animalesvendidos, $usuarios);
+        $_start = [];
+
+        if (auth()->user()->role_id == 1) {
+            $_usuarios_admins = User::where('role_id', 2)->get()->toArray();
+            foreach ($_usuarios_admins as $key => $usuario) {
+                $__usuario = array($usuario);
+
+                // dd($dt->format('Y-m-d'));
+                // $__animalesvendidos = 
+                // $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+                
+                /**
+                 * 
+                 * CONDICIONES DEL BUSCADOR DE FECHAS
+                 */
+                if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+                }
+                if (isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+                }
+                if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
+                }
+                $__animalesvendidos = $__animalesvendidos->get();
+
+
+                $_usuariototalMonedas =  $this->totalMonedas($monedas, $change, $__animalesvendidos, $__usuario);
+                $_usuariototalMonedas['usuario'] = $usuario;
+                // dd($_usuariototalMonedas);
+                array_push($_start, $_usuariototalMonedas);
+            }
+        }
+
+        $groups = $animalesvendidos->groupBy('schedule_id');
+
+        $list_plays =  $groups->map(function ($group, $k) {
+            $animals_groups = $group->groupBy('animal_id');
+
+            $g = $animals_groups->map(function ($gr) {
+
+                if ($gr[0]->schedule()->first()->status == 1) {
+                    return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
+                } else {
+                    return [null, 0, 0];
+                }
+            });
+            $g = $g->sortByDesc(2);
+            $g = $g->slice(0, 7);
+
+            return [$g, 'schedule' => $group[0]->schedule];
+
+            // dd($g);
+
+            // dd($animals_groups);
+            // $_groups = $animals_groups->map(function($a,$l){
+            //     return [$a->animal->nombre,$a->count()];
+            // });
+
+            // dd($_groups);
+        });
+
+        // dd($_start);
+
+        return view('home', compact('totalMonedas', 'list_plays', '_start'));
+    }
+
+    public function totalMonedas($totalMonedas, $change, $animalesvendidos, $usuarios)
+    {
 
         foreach ($animalesvendidos as $animalvendido) {
             //obtener el index de cada moneda
@@ -172,7 +248,6 @@ class HomeController extends Controller
         //calcular comisiones y perdidas
         foreach ($totalMonedas as $_key => $totales) {
 
-
             if (isset($totales['total'])) {
                 // dd($totales);
                 $totales['comision'] = $totales['total'] * $totales['_comision'];
@@ -196,37 +271,6 @@ class HomeController extends Controller
             $totalMonedas[$_key] = $totales;
         }
 
-
-        $groups = $animalesvendidos->groupBy('schedule_id');
-
-
-        $list_plays =  $groups->map(function ($group, $k) {
-            $animals_groups = $group->groupBy('animal_id');
-
-            $g = $animals_groups->map(function ($gr) {
-
-                if ($gr[0]->schedule()->first()->status == 1) {
-                    return [$gr[0]->animal->number, $gr[0]->animal->nombre, $gr->count()];
-                } else {
-                    return [null, 0, 0];
-                }
-            });
-            $g = $g->sortByDesc(2);
-            $g = $g->slice(0, 7);
-
-            return [$g, 'schedule' => $group[0]->schedule];
-
-            // dd($g);
-
-            // dd($animals_groups);
-            // $_groups = $animals_groups->map(function($a,$l){
-            //     return [$a->animal->nombre,$a->count()];
-            // });
-
-            // dd($_groups);
-        });
-
-
-        return view('home', compact('totalMonedas', 'usuarios', 'list_plays'));
+        return $totalMonedas;
     }
 }
