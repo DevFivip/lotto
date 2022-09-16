@@ -539,7 +539,7 @@
                         const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, td, localStorage.getItem('paper_width'))
 
                         this.toast('Imprimiendo...', 5000)
-                        
+
                         setTimeout(() => {
                             location.reload();
                         }, 1500);
@@ -563,6 +563,7 @@
             },
             checkTypesDetalle: function(detalle) {
                 // debugger
+                fecha = converter2(detalle.created_at);
                 _detalle = {};
                 _detalle.id = parseInt(detalle.id)
                 _detalle.code = (detalle.code).toString()
@@ -572,7 +573,7 @@
                 _detalle.total = parseFloat(detalle.total)
                 _detalle.has_winner = parseInt(detalle.has_winner)
                 _detalle.status = parseInt(detalle.status)
-                _detalle.created_at = (detalle.created_at).toString()
+                _detalle.created_at = (fecha.fecha_inicial).toString()
                 _detalle.updated_at = (detalle.updated_at).toString()
                 _detalle.user = this.checkTypesUser(detalle.user)
                 _detalle.moneda = detalle.moneda
@@ -709,17 +710,17 @@
     }
 
 
-    function converter(q, k) {
+    function converter2(q, k) {
         date = new Date(q);
         w = date.getTimezoneOffset()
-        yourDate = new Date(date.getTime() - (w * 60 * 1000))
+        yourDate = new Date(date.getTime())
         f1 = yourDate.toLocaleDateString();
         f2 = yourDate.toLocaleTimeString();
 
         if (!!k) {
             date = new Date(k);
             r = date.getTimezoneOffset()
-            yourDate = new Date(date.getTime() - (r * 60 * 1000))
+            yourDate = new Date(date.getTime())
             f3 = yourDate.toLocaleDateString();
             f4 = yourDate.toLocaleTimeString();
 

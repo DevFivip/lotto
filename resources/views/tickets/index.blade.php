@@ -297,6 +297,7 @@
             },
             checkTypesDetalle: function(detalle) {
                 // debugger
+                const fecha = converter2(detalle.created_at);
                 _detalle = {};
                 _detalle.id = parseInt(detalle.id)
                 _detalle.code = (detalle.code).toString()
@@ -306,7 +307,7 @@
                 _detalle.total = parseFloat(detalle.total)
                 _detalle.has_winner = parseInt(detalle.has_winner)
                 _detalle.status = parseInt(detalle.status)
-                _detalle.created_at = (detalle.created_at).toString()
+                _detalle.created_at = (fecha.fecha_inicial).toString()
                 _detalle.updated_at = (detalle.updated_at).toString()
                 _detalle.user = this.checkTypesUser(detalle.user)
                 _detalle.moneda = detalle.moneda
@@ -401,6 +402,31 @@
         date = new Date(q);
         w = date.getTimezoneOffset()
         yourDate = new Date(date.getTime() - (w * 60 * 1000))
+        f1 = yourDate.toLocaleDateString();
+        f2 = yourDate.toLocaleTimeString();
+
+        if (!!k) {
+            date = new Date(k);
+            r = date.getTimezoneOffset()
+            yourDate = new Date(date.getTime() - (r * 60 * 1000))
+            f3 = yourDate.toLocaleDateString();
+            f4 = yourDate.toLocaleTimeString();
+
+        } else {
+            f3 = '';
+            f4 = '';
+        }
+
+
+        return {
+            fecha_inicial: f1 + ' ' + f2,
+            fecha_cierre: f3 + ' ' + f4,
+        }
+    }
+    function converter2(q, k) {
+        date = new Date(q);
+        w = date.getTimezoneOffset()
+        yourDate = new Date(date.getTime())
         f1 = yourDate.toLocaleDateString();
         f2 = yourDate.toLocaleTimeString();
 
