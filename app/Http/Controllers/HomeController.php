@@ -166,6 +166,41 @@ class HomeController extends Controller
                 array_push($_start, $_usuariototalMonedas);
             }
         }
+      
+        if (auth()->user()->role_id == 2) {
+            $_usuarios_taquilla = User::where("parent_id",auth()->user()->id)->where('role_id', 3)->get()->toArray();
+            foreach ($_usuarios_taquilla as $key => $usuario) {
+                $__usuario = array($usuario);
+
+                // dd($dt->format('Y-m-d'));
+                // $__animalesvendidos = 
+                // $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')->get();
+
+                /**
+                 * 
+                 * CONDICIONES DEL BUSCADOR DE FECHAS
+                 */
+                if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+                }
+                if (isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
+                }
+                if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
+                    $__animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', $usuario["id"])->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                    $__animalesvendidos = $__animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
+                }
+                $__animalesvendidos = $__animalesvendidos->get();
+
+
+                $_usuariototalMonedas =  $this->totalMonedas($monedas, $change, $__animalesvendidos, $__usuario);
+                $_usuariototalMonedas['usuario'] = $usuario;
+                // dd($_usuariototalMonedas);
+                array_push($_start, $_usuariototalMonedas);
+            }
+        }
 
         $groups = $animalesvendidos->groupBy('schedule_id');
 

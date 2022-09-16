@@ -18,7 +18,6 @@
 
                     Hola, {{auth()->user()->name}}
 
-
                     <div class="d-grid gap-1 mt-1">
                         <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
                     </div>
@@ -41,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form> 
 
                     <div class="row mt-3">
                         <div class="col">
