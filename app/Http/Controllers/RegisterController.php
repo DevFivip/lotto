@@ -57,7 +57,7 @@ class RegisterController extends Controller
                 //validar cada item
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $item = $data['detalles'][$i];
-                    $res =  $this->validateItem($item['id'], $item['schedule_id']);
+                    $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto']);
                     if (!$res['status']) {
                         array_push($errors, $res['messages']);
                     }
@@ -181,21 +181,22 @@ class RegisterController extends Controller
         }
 
         $monto = 0;
-
         foreach ($r as $item) {
             $k = array_search($item->moneda_id, $_mapexchange);
             $_exchange = $exchange[$k];
             $change = $item->monto / $_exchange['change_usd'];
-            $monto = $change + $monto;
+            $monto += $change;
         }
+
         return [$cantidad, $monto];
     }
 
-    public function validateItem($animal_id, $horario_id)
+    public function validateItem($animal_id, $horario_id, $moneda, $monto)
     {
         $resp =  $this->checkItem($animal_id, $horario_id);
         $animal = Animal::find($animal_id);
         $horario = Schedule::find($horario_id);
+        $exchange = Exchange::where('moneda_id', $moneda)->first();
         $err = [];
 
         // dd($horario->status);
@@ -217,7 +218,15 @@ class RegisterController extends Controller
             array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
-        if ($resp[1] > $animal->limit_price_usd) {
+        // Validate
+        // Valores actuales
+
+        $actual_monto = $monto / $exchange->change_usd;
+
+        // dd($resp[1], $actual_monto, $animal->limit_price_usd);
+
+
+        if (($resp[1] +  $actual_monto) > $animal->limit_price_usd) {
             array_push($err, 'Limite de venta de precio' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
@@ -372,7 +381,7 @@ class RegisterController extends Controller
             // if($key == 2) {
             //     dd($grupo);
             // }
-    
+
             $ticket_detalles_res[$key] = []; // as grupo
 
             foreach ($grupo as $hkey => $horario) {  // 
@@ -383,8 +392,6 @@ class RegisterController extends Controller
                     array_push($ticket_detalles_res[$key][$hkey], $animalito);
                 }
             }
-
-
         }
 
         // dd($ticket_detalles_res);
