@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CajaController;
+use App\Http\Controllers\CajaRegisterController;
 use App\Http\Controllers\CashAdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
@@ -36,6 +37,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
+Route::resource('/caja-registers', CajaRegisterController::class);
 Route::resource('/tickets', TicketController::class);
 Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
@@ -59,6 +61,11 @@ Route::post('/cash-flow/{id}', [App\Http\Controllers\CajaController::class, 'cas
 Route::get('/reports', [App\Http\Controllers\ReportControllers::class, 'index']);
 Route::get('/reports/general', [App\Http\Controllers\ReportControllers::class, 'general']);
 Route::get('/reports/usuario', [App\Http\Controllers\ReportControllers::class, 'personalStarts']);
+
+Route::get('/lottoloko', [App\Http\Controllers\LottoLokoController::class, 'preview']);
+Route::get('/lottoloko/animalitos', [App\Http\Controllers\LottoLokoController::class, 'animalitos']);
+Route::get('/lottoloko/horarios', [App\Http\Controllers\LottoLokoController::class, 'horarios']);
+Route::post('/lottoloko/save', [App\Http\Controllers\LottoLokoController::class, 'save']);
 
 Route::get('/setting-impresora', function () {
     return view('setting.impresora');

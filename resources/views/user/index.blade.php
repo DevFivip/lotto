@@ -39,6 +39,10 @@
                                     @if($usuario->role_id == 3)
                                     <span class="badge rounded-pill bg-success">Taquilla</span>
                                     @endif
+
+                                    @if($usuario->is_socio == 1)
+                                    <span class="badge rounded-pill bg-primary "><i class="fa-solid fa-briefcase"></i></span>
+                                    @endif
                                 </td>
                                 <td>
 

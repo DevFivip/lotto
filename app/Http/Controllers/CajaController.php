@@ -146,15 +146,50 @@ class CajaController extends Controller
 
             $total = $item->detalles->sum('monto');
             $totalPremio = $item->detalles->sum(function ($vv) {
+                $reward_porcent = 0;
+                switch ($vv->sorteo_type_id) {
+                    case 4:
+                        $reward_porcent = 32;
+                        # code...
+                        break;
+
+                    case 1:
+                        $reward_porcent = 30;
+                        # code...
+                        break;
+
+                    default:
+                        $reward_porcent = 30;
+                        # code...
+                        break;
+                }
+
                 if ($vv->winner == 1) {
-                    return $vv->monto * 30;
+                    return $vv->monto * $reward_porcent;
                 } else {
                     return 0;
                 }
             });
             $totalPagado = $item->detalles->sum(function ($vv) {
+                $reward_porcent = 0;
+                switch ($vv->sorteo_type_id) {
+                    case 4:
+                        $reward_porcent = 32;
+                        # code...
+                        break;
+
+                    case 1:
+                        $reward_porcent = 30;
+                        # code...
+                        break;
+
+                    default:
+                        $reward_porcent = 30;
+                        # code...
+                        break;
+                }
                 if ($vv->status == 1) {
-                    return $vv->monto * 30;
+                    return $vv->monto * $reward_porcent;
                 } else {
                     return 0;
                 }

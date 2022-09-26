@@ -34,7 +34,11 @@
                                 <td class="font-monospace text-center">{{$item->animal->number}}</td>
                                 <td class="font-monospace text-center">{{$item->animal->number}} {{$item->animal->nombre}} {{$item->schedule}}</td>
                                 <td class="font-monospace text-end">{{$ticket->moneda->simbolo}} {{number_format($item->monto,2,',','.') }}</td>
+                                @if($item->sorteo_type_id == 4)
+                                <td class="font-monospace text-end">{{$ticket->moneda->simbolo}} {{ $item->winner == 1 ? number_format($item->monto * 32,2,',','.') : 0.00 }}</td>
+                                @else
                                 <td class="font-monospace text-end">{{$ticket->moneda->simbolo}} {{ $item->winner == 1 ? number_format($item->monto * 30,2,',','.') : 0.00 }}</td>
+                                @endif
                                 <td class="text-end">
                                     @if($item->winner == 1)
                                     @if($item->status == 0)

@@ -145,6 +145,27 @@
                             </div>
                         </div>
 
+                        @if(auth()->user()->role_id == 1)
+                        <div class="row mb-3">
+                            <label for="is_socio" class="col-md-4 col-form-label text-md-end">Socio</label>
+                            <div class="col-md-6">
+                                <select name="is_socio" class="form-select" aria-label="Es Socio">
+                                    @if($user->is_socio == 0)
+                                    <option selected value="0">No</option>
+                                    @else
+                                    <option value="0">No</option>
+                                    @endif
+
+                                    @if($user->is_socio == 1)
+                                    <option selected value="1">Si</option>
+                                    @else
+                                    <option value="1">Si</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        @endif
+
                         @error('monedas')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

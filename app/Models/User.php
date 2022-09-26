@@ -26,7 +26,8 @@ class User extends Authenticatable
         'parent_id',
         'status',
         'monedas',
-        'comision'
+        'comision',
+        "is_socio"
     ];
 
     /**

@@ -70,8 +70,23 @@ class ReportControllers extends Controller
                 $m = Moneda::find($k);
                 $monto = $h->sum('monto');
                 $premios = $h->sum(function ($p) {
+                    $reward_porcent = 0;
+                    switch ($p->sorteo_type_id) {
+                        case 4:
+                            $reward_porcent = 32;
+                            break;
+
+                        case 1:
+                            $reward_porcent = 30;
+                            break;
+
+                        default:
+                            $reward_porcent = 30;
+                            break;
+                    }
+
                     if ($p->winner == 1) {
-                        return $p->monto * 30;
+                        return $p->monto * $reward_porcent;
                     }
                 });
 

@@ -133,6 +133,17 @@
                             </div>
                         </div>
 
+                        @if(auth()->user()->role_id == 1)
+                        <div class="row mb-3">
+                            <label for="is_socio" class="col-md-4 col-form-label text-md-end">Socio</label>
+                            <div class="col-md-6">
+                                <select name="is_socio" class="form-select" aria-label="Es Socio">
+                                    <option selected value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select>
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

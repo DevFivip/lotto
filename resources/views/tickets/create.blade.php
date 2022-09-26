@@ -22,18 +22,34 @@
                                         <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
                                         <label class="form-check-label" for="type_granjita">La Granjita</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <!-- <div class="form-check form-check-inline">
                                         <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="3" id="type_selvaTropical">
                                         <label class="form-check-label" for="type_selvaTropical">Selva Tropical</label>
+                                    </div> -->
+                                    <div class="form-check form-check-inline">
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="4" id="type_lottoPlus">
+                                        <label class="form-check-label" for="type_lottoPlus">⭐Lotto Plus</label>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row row-cols-6">
-                                <template x-for="(schedule, index) in schedules">
-                                    <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
-                                        <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
-                                    </div>
+                                <template x-if="ticket.type_sorteo_id == 4">
+                                    <template x-for="(schedule, index) in schedules">
+                                        <template x-if="schedule.sorteo_type_id == 4">
+                                            <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
+                                                <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template x-if="ticket.type_sorteo_id != 4">
+                                    <template x-for="(schedule, index) in schedules">
+                                        <template x-if="schedule.sorteo_type_id == 1">
+                                            <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
+                                                <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </template>
                             </div>
                             <div class="mt-2" x-show="!turn" style="display: none;">
@@ -213,7 +229,7 @@
                                     <div class="d-grid gap-1 mt-1">
                                         <button x-show="turn" style="display: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a>
+                                            <!-- <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a> -->
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repeatTicketModal"><i class="fa-solid fa-repeat"></i> Repetir</button>
                                             <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>

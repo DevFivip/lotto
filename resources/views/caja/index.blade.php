@@ -20,6 +20,7 @@
                         <table class="table">
                             <tr>
                                 <td></td>
+                                <td></td>
                                 <td>Usuario</td>
                                 <td>Apertura</td>
                                 <td>Cierre</td>
@@ -28,6 +29,9 @@
                             </tr>
                             @foreach($cajas as $caja)
                             <tr x-data="converter('{{$caja->fecha_apertura}}','{{$caja->fecha_cierre}}')">
+                            <td>
+                                {{$caja->id}}
+                            </td>
                                 <td>
                                     @if($caja->status == 1)
                                     <span class="badge bg-warning text-dark">Abierto</span>

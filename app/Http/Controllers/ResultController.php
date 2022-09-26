@@ -67,6 +67,8 @@ class ResultController extends Controller
         $animal_number = $data['animal_id'];
         $sorteo_type_id = $data['sorteo_type_id'];
 
+        // dd($data);
+
         $animal = Animal::where('sorteo_type_id', $sorteo_type_id)->where('number', $animal_number)->first();
 
         $old = Result::orderBy('id', 'DESC')->first();
@@ -85,6 +87,24 @@ class ResultController extends Controller
         $change = Exchange::all()->toArray();
 
 
+        $reward_porcent = 0;
+
+        switch ($sorteo_type_id) {
+            case 1:
+                $reward_porcent = 30;
+                break;
+
+            case 4:
+                $reward_porcent = 32;
+                break;
+
+            default:
+                $reward_porcent = 30;
+                break;
+        }
+
+
+
         $amount_winners = 0;
         $amount_home_usd = 0;
 
@@ -100,12 +120,10 @@ class ResultController extends Controller
                 //calcular el monto en dolares de los premios
 
 
-
                 // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
                 $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
 
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
+                $amount_winners += ($register->monto * $reward_porcent) / $change[$key2]['change_usd'];
 
                 $reg = Register::find($register->register_id);
                 $reg->has_winner = 1;
@@ -117,8 +135,6 @@ class ResultController extends Controller
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
                 $register_loser->update();
-
-
 
                 // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
                 $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
@@ -144,7 +160,7 @@ class ResultController extends Controller
         }
     }
 
-    public static function storeDirect($animal_number, $schedule_id)
+    public static function storeDirect($animal_number, $schedule_id) //store de lotto
     {
 
         // $schedule_id = $data['schedule_id'];
@@ -169,6 +185,7 @@ class ResultController extends Controller
 
         // dd($data);
 
+
         $amount_winners = 0;
         $amount_home_usd = 0;
 
@@ -180,16 +197,14 @@ class ResultController extends Controller
             // dd(date('Y-m-d'), $registers);
 
             foreach ($registers as $register) {
+
                 $register->winner = 1;
                 $register->update();
 
                 //calcular el monto en dolares de los premios
 
-
-
                 // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
                 $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
 
                 $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
 

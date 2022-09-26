@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->comision_vendedores = 0.13;
+        // $this->comision_vendedores = 0.13;
         $this->amount_rewards = 30; //numero por que se multiplica los premios
         $this->middleware('auth');
         $this->middleware('timezone');
@@ -166,9 +166,9 @@ class HomeController extends Controller
                 array_push($_start, $_usuariototalMonedas);
             }
         }
-      
+
         if (auth()->user()->role_id == 2) {
-            $_usuarios_taquilla = User::where("parent_id",auth()->user()->id)->where('role_id', 3)->get()->toArray();
+            $_usuarios_taquilla = User::where("parent_id", auth()->user()->id)->where('role_id', 3)->get()->toArray();
             foreach ($_usuarios_taquilla as $key => $usuario) {
                 $__usuario = array($usuario);
                 // dd($_usuarios_taquilla);
@@ -241,6 +241,24 @@ class HomeController extends Controller
     {
 
         foreach ($animalesvendidos as $animalvendido) {
+
+            // if($animalvendido->sorteo_type_id == 4)
+
+            switch ($animalvendido->sorteo_type_id) {
+                case 1:
+                    $this->amount_rewards = 30;
+                    break;
+
+                case 4:
+                    $this->amount_rewards = 32;
+                    break;
+
+                default:
+                    $this->amount_rewards = 30;
+                    break;
+            }
+
+
             //obtener el index de cada moneda
             $key =  array_search($animalvendido->moneda_id, array_column($totalMonedas, 'id'));
             $key2 =  array_search($animalvendido->moneda_id, array_column($change, 'moneda_id'));

@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ScheduleRequest;
-use App\Models\Schedule;
+use App\Models\CajaRegister;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ScheduleController extends Controller
+class CajaRegisterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('timezone');
-        $this->resource = 'schedules';
-    }
     /**
      * Display a listing of the resource.
      *
@@ -21,9 +15,17 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = Schedule::where('sorteo_type_id', '!=', 4)->get();
-        $resource = $this->resource;
-        return view('schedules.index', compact('resource', 'schedules'));
+        //
+        if(auth()->user()->role_id == 1){
+            $taquillas = User::where("role_id",3)->get();
+        }
+
+        if(auth()->user()->role_id == 2){
+            $taquillas = User::where('parent_id',auth()->user()->id)->where("role_id",3)->get();
+        }
+
+        return view('caja_register.index',compact('taquillas'));
+
     }
 
     /**
@@ -33,9 +35,6 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        
-        $resource = $this->resource;
-        return view('schedules.create', compact('resource'));
         //
     }
 
@@ -45,11 +44,8 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ScheduleRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-        $schedule = Schedule::create($data);
-        return redirect('/' . $this->resource);
         //
     }
 
@@ -72,10 +68,6 @@ class ScheduleController extends Controller
      */
     public function edit($id)
     {
-        $schedule = Schedule::find($id);
-        $resource = $this->resource;
-
-        return view('schedules.edit', compact('resource', $schedule));
         //
     }
 
@@ -86,15 +78,8 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ScheduleRequest $request, $id)
+    public function update(Request $request, $id)
     {
-
-        $data = $request->all();
-        $schedule = Schedule::find($id);
-        $schedule->update($data);
-
-        return redirect('/' . $this->resource);
-
         //
     }
 
@@ -106,12 +91,17 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        if (auth()->user()->role_id == 1) {
-            $schedule = Schedule::find($id);
-            $schedule->update(['status' => !!!$schedule->status]);
-            return true;
-        } else {
-            return false;
-        }
+        //
+    }
+
+    /**
+     * Crear nuevo registro de caja register.
+     *
+     * @param  int  $id as id caja
+     * @return \json $valores de la caja_register nuevo
+     */
+    public function makeCaja()
+    {
+        //
     }
 }

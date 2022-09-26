@@ -13,8 +13,6 @@ use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-use Maatwebsite\Excel\Concerns\Excel;
-
 class TicketController extends Controller
 {
 
@@ -96,16 +94,47 @@ class TicketController extends Controller
         }
 
         $ticket =  $tickets->each(function ($ticket) {
+
             $ticket->total_premios = $ticket->detalles->sum(function ($item) {
+
+                $reward_porcent = 0;
+                switch ($item->sorteo_type_id) {
+                    case 1:
+                        $reward_porcent = 30;
+                        break;
+                    case 4:
+                        $reward_porcent = 32;
+                        break;
+                    default:
+                        $reward_porcent = 30;
+                        break;
+                }
+
+
                 if ($item->winner == 1) {
-                    return  floatval($item->monto * 30);
+                    return  floatval($item->monto * $reward_porcent);
                 } else {
                     return 0;
                 }
             });
             $ticket->total_premios_pagados = $ticket->detalles->sum(function ($item) {
+
+                $reward_porcent = 0;
+                switch ($item->sorteo_type_id) {
+                    case 1:
+                        $reward_porcent = 30;
+                        break;
+                    case 4:
+                        $reward_porcent = 32;
+                        break;
+                    default:
+                        $reward_porcent = 30;
+                        break;
+                }
+
+
                 if ($item->winner == 1 &&  $item->status == 1) {
-                    return  floatval($item->monto * 30);
+                    return  floatval($item->monto * $reward_porcent);
                 } else {
                     return 0;
                 }
@@ -124,6 +153,10 @@ class TicketController extends Controller
 
     public function create()
     {
+
+        // if (auth()->user()->role_id == 1) {
+        //     return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
+        // }
 
         if (auth()->user()->role_id == 2) {
             return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');

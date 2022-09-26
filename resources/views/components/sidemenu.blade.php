@@ -8,6 +8,7 @@
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>
     @endif
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
+    <a href="/caja-registers" class="list-group-item list-group-item-action">Cajas Register</a>
     @if(auth()->user()->role_id == 2)
     <a href="/cash-admins/{{auth()->user()->id}}" class="list-group-item list-group-item-action">Caja Administrativa</a>
     @endif
@@ -17,6 +18,8 @@
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     <a href="/payments" class="list-group-item list-group-item-action">Metodos de Pago</a>
     <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
+    <a href="/lottoloko" class="list-group-item list-group-item-action">⭐Lotto Plus</a>
+
     @endif
     <a href="/resultados" class="list-group-item list-group-item-action">Resultados</a>
     <a href="/reports" class="list-group-item list-group-item-action">Reportes</a>
