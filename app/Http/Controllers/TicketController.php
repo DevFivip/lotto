@@ -154,9 +154,9 @@ class TicketController extends Controller
     public function create()
     {
 
-        // if (auth()->user()->role_id == 1) {
-        //     return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
-        // }
+        if (auth()->user()->status == 0) {
+            return redirect('/tickets')->withErrors('⚠️ Usuario desactivado contactate con tu proveedor');
+        }
 
         if (auth()->user()->role_id == 2) {
             return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
