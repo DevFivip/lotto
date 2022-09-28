@@ -168,9 +168,9 @@
 
                         @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
                         <div class="row mb-3">
-                            <label for="status" class="col-md-4 col-form-label text-md-end">Socio</label>
+                            <label for="status" class="col-md-4 col-form-label text-md-end">Estado</label>
                             <div class="col-md-6">
-                                <select name="status" class="form-select" aria-label="Es Socio">
+                                <select name="status" class="form-select" aria-label="Estado de bloqueado">
                                     @if($user->status == 0)
                                     <option selected value="0">Bloqueado</option>
                                     @else
