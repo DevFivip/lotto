@@ -155,10 +155,14 @@ class SetWinnerLottoPlusCommand extends Command
         $recoger[] = $hh->sortBy('total_jugadas')->first();
 
 
-        // dd($recoger);
-        // dd($arr_premiar);
-
-        $default = $arr_bas->first();
+        $first = $arr_bas->first();
+        if ($first == null) {
+            $win = $complete_animal[rand(0, 38)];
+            $default = [];
+            $default['animal_id'] = $win->id;
+        } else {
+            $default = $first;
+        }
 
         // dd($arr_premiar);
 
