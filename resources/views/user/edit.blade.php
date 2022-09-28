@@ -166,6 +166,27 @@
                         </div>
                         @endif
 
+                        @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
+                        <div class="row mb-3">
+                            <label for="status" class="col-md-4 col-form-label text-md-end">Socio</label>
+                            <div class="col-md-6">
+                                <select name="status" class="form-select" aria-label="Es Socio">
+                                    @if($user->status == 0)
+                                    <option selected value="0">Bloqueado</option>
+                                    @else
+                                    <option value="0">Bloqueado</option>
+                                    @endif
+
+                                    @if($user->status == 1)
+                                    <option selected value="1">Activo</option>
+                                    @else
+                                    <option value="1">Activo</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        @endif
+
                         @error('monedas')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
