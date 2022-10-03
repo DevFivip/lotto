@@ -27,7 +27,8 @@ class User extends Authenticatable
         'status',
         'monedas',
         'comision',
-        "is_socio"
+        "is_socio",
+        "limit",
     ];
 
     /**

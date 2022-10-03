@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Animal;
+use App\Models\LottoPlusConfig;
 use App\Models\NextResult;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
@@ -37,6 +38,8 @@ class SetWinnerLottoPlusCommand extends Command
 
         // horario is_send no enviado  =  0
         // el ultimo que no se a enviado
+
+        $setting = LottoPlusConfig::first();
 
         $horario = Schedule::where('is_send', 0)->where('sorteo_type_id', 4)->orderBy('id', 'ASC')->first();
         // dd($horario->schedule);
@@ -116,9 +119,9 @@ class SetWinnerLottoPlusCommand extends Command
 
         foreach ($details as $detail) {
             $totales['total_venta_usd'] += $detail->monto / $detail->exchange->change_usd;
-            $totales['total_comision_usd'] += ($detail->monto * 0.12) / $detail->exchange->change_usd;
-            $totales['balance_80'] += ($detail->monto * 0.8) / $detail->exchange->change_usd;
-            $totales['total_caja_usd'] += ($detail->monto * 0.08) / $detail->exchange->change_usd;
+            $totales['total_comision_usd'] += ($detail->monto *  $setting->porcent_comision) / $detail->exchange->change_usd;
+            $totales['balance_80'] += ($detail->monto * $setting->porcent_limit) / $detail->exchange->change_usd;
+            $totales['total_caja_usd'] += ($detail->monto * $setting->porcent_cash) / $detail->exchange->change_usd;
         }
 
         // dd($totales);

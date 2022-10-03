@@ -66,6 +66,8 @@ Route::get('/lottoloko', [App\Http\Controllers\LottoLokoController::class, 'prev
 Route::get('/lottoloko/animalitos', [App\Http\Controllers\LottoLokoController::class, 'animalitos']);
 Route::get('/lottoloko/horarios', [App\Http\Controllers\LottoLokoController::class, 'horarios']);
 Route::post('/lottoloko/save', [App\Http\Controllers\LottoLokoController::class, 'save']);
+Route::get('/lottoloko/setting', [App\Http\Controllers\LottoLokoController::class, 'settings']);
+Route::put('/lottoloko/setSetting', [App\Http\Controllers\LottoLokoController::class, 'setSettings']);
 
 Route::get('/setting-impresora', function () {
     return view('setting.impresora');

@@ -119,7 +119,6 @@
 
                         <div class="row mb-3">
                             <label for="monedas" class="col-md-4 col-form-label text-md-end">Monedas Usadas</label>
-
                             <div class="col-md-6">
                                 <select name="monedas[]" class="form-select" multiple aria-label="multiple select example">
                                     @foreach($monedas as $moneda)
@@ -138,6 +137,21 @@
                             <div class="col-md-6">
                                 <input id="comision" type="number" class="form-control @error('comision') is-invalid @enderror" name="comision" value="{{ $user->comision }}" required autocomplete="comision">
                                 @error('comision')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="limit" class="col-md-4 col-form-label text-md-end">Limite de Venta por Animalito ($)</label>
+                            <div class="col-md-6">
+                                <input id="limit" type="number" step=".01" class="form-control @error('limit') is-invalid @enderror" name="limit" value="{{ $user->limit }}" required autocomplete="limit">
+                                <p class="form-text text-muted">Dejar en 0 para aplicar los limites del Sistema & Administrador</p>
+                                <p class="form-text text-muted">Para Administradores aplicara para la sumatoria total de sus taquillas</p>
+                                <p class="form-text text-muted">Para Taquillas aplicara para la sumatoria total de su propias ventas</p>
+                                @error('limit')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

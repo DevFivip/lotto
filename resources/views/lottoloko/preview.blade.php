@@ -9,6 +9,7 @@
         <div class="col-md-10">
             <a class="btn btn-primary" href="/lottoloko/animalitos">Animalitos</a>
             <a class="btn btn-primary" href="/lottoloko/horarios">Horarios</a>
+            <a class="btn btn-primary" href="/lottoloko/setting">Settings</a>
             <form action="/lottoloko/save" method="POST">
                 @csrf
                 @method('POST')
@@ -38,7 +39,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <p>Comisiones USDT %12</p>
+                                        <p>Comisiones USDT %{{$setting->porcent_comision*100}}</p>
                                         <h3 class="text-left">{{number_format($totales['total_comision_usd'],2,'.',',')}}</h3>
                                     </div>
                                 </div>
@@ -46,7 +47,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <p>Caja USDT 8%</p>
+                                        <p>Caja USDT %{{$setting->porcent_cash*100}}</p>
                                         <h3 class="text-left">{{number_format($totales['total_caja_usd'],2,'.',',')}}</h3>
                                     </div>
                                 </div>
@@ -54,7 +55,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <p>Limite 80%</p>
+                                        <p>Limite %{{$setting->porcent_limit *100}}</p>
                                         <h3 class="text-left">{{number_format($totales['balance_80'],2,'.',',')}}</h3>
                                     </div>
                                 </div>

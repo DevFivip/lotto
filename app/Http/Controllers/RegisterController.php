@@ -8,6 +8,7 @@ use App\Models\Exchange;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -50,14 +51,22 @@ class RegisterController extends Controller
         return DB::transaction(function () use ($request) {
             $data = $request->all();
             $user = auth()->user();
+            $admin = User::where('id', $user->parent_id)->first();
             $caja = Caja::where('user_id', $user->id)->where('status', 1)->first();
+            // dd($user,$admin);
             //validar
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
                 $errors = [];
                 //validar cada item
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $item = $data['detalles'][$i];
-                    $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto']);
+
+                    if ($item['sorteo_type_id'] != 4) {
+                        $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit);
+                    } else {
+                        $res = ['status' => true];
+                    }
+
                     if (!$res['status']) {
                         array_push($errors, $res['messages']);
                     }
@@ -168,9 +177,12 @@ class RegisterController extends Controller
         });
     }
 
-    public function checkItem($animal_id, $horario_id)
+    public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
         $r = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+
         $cantidad = $r->count();
         $exchange = Exchange::all()->toArray();
 
@@ -181,6 +193,9 @@ class RegisterController extends Controller
         }
 
         $monto = 0;
+        $monto_taquilla = 0;
+        $monto_admin = 0;
+
         foreach ($r as $item) {
             $k = array_search($item->moneda_id, $_mapexchange);
             $_exchange = $exchange[$k];
@@ -188,12 +203,32 @@ class RegisterController extends Controller
             $monto += $change;
         }
 
-        return [$cantidad, $monto];
+        foreach ($r2 as $item2) {
+            $k = array_search($item2->moneda_id, $_mapexchange);
+            $_exchange = $exchange[$k];
+            $change2 = $item2->monto / $_exchange['change_usd'];
+            $monto_taquilla += $change2;
+        }
+
+        foreach ($r3 as $item3) {
+            $k = array_search($item3->moneda_id, $_mapexchange);
+            $_exchange = $exchange[$k];
+            $change3 = $item3->monto / $_exchange['change_usd'];
+            $monto_admin += $change3;
+        }
+
+        /**
+         * ($cantidad, monto) Globales - $monto_taquilla (Total Taquilla) - $monto_admin (Total Administrador)
+         * 
+         */
+        return [$cantidad, $monto, $monto_taquilla, $monto_admin];
     }
 
-    public function validateItem($animal_id, $horario_id, $moneda, $monto)
+    public function validateItem($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin)
     {
-        $resp =  $this->checkItem($animal_id, $horario_id);
+
+        // dd($limit_admin,$limit_personal);
+        $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
         $animal = Animal::find($animal_id);
         $horario = Schedule::find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
@@ -206,7 +241,6 @@ class RegisterController extends Controller
         }
 
         if (!isset($animal->limit_cant)) {
-
             if (count($err) >= 1) {
                 return ['status' => false, 'messages' => $err[0]];
             } else {
@@ -227,8 +261,26 @@ class RegisterController extends Controller
 
 
         if (($resp[1] +  $actual_monto) > $animal->limit_price_usd) {
-            array_push($err, 'Limite de venta de precio' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+            array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
+
+        if ($limit_admin != 0) {
+
+            // dd($resp[3],$actual_monto,$limit_admin);
+
+            if (($resp[3] +  $actual_monto) > $limit_admin) {
+                array_push($err, ' El limite de venta de tu banquero (' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede , intente para otro horario');
+            }
+        }
+
+        if ($limit_personal != 0) {
+            //  dd($resp[2],$actual_monto,$limit_personal);
+
+            if (($resp[2] +  $actual_monto) > $limit_personal) {
+                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
+            }
+        }
+
 
         if (count($err) >= 1) {
             return ['status' => false, 'messages' => $err[0]];
