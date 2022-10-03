@@ -27,7 +27,7 @@
                                         <label class="form-check-label" for="type_selvaTropical">Selva Tropical</label>
                                     </div> -->
                                     <div class="form-check form-check-inline">
-                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="4" id="type_lottoPlus">
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="4" id="type_lottoPlus">
                                         <label class="form-check-label" for="type_lottoPlus">⭐Lotto Plus</label>
                                     </div>
                                 </div>
