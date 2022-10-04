@@ -180,8 +180,8 @@ class RegisterController extends Controller
     public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
         $r = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        $r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        //$r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        //$r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
         $cantidad = $r->count();
         $exchange = Exchange::all()->toArray();
@@ -203,19 +203,19 @@ class RegisterController extends Controller
             $monto += $change;
         }
 
-        foreach ($r2 as $item2) {
-            $k = array_search($item2->moneda_id, $_mapexchange);
-            $_exchange = $exchange[$k];
-            $change2 = $item2->monto / $_exchange['change_usd'];
-            $monto_taquilla += $change2;
-        }
+        // foreach ($r2 as $item2) {
+        //     $k = array_search($item2->moneda_id, $_mapexchange);
+        //     $_exchange = $exchange[$k];
+        //     $change2 = $item2->monto / $_exchange['change_usd'];
+        //     $monto_taquilla += $change2;
+        // }
 
-        foreach ($r3 as $item3) {
-            $k = array_search($item3->moneda_id, $_mapexchange);
-            $_exchange = $exchange[$k];
-            $change3 = $item3->monto / $_exchange['change_usd'];
-            $monto_admin += $change3;
-        }
+        // foreach ($r3 as $item3) {
+        //     $k = array_search($item3->moneda_id, $_mapexchange);
+        //     $_exchange = $exchange[$k];
+        //     $change3 = $item3->monto / $_exchange['change_usd'];
+        //     $monto_admin += $change3;
+        // }
 
         /**
          * ($cantidad, monto) Globales - $monto_taquilla (Total Taquilla) - $monto_admin (Total Administrador)
@@ -264,22 +264,22 @@ class RegisterController extends Controller
             array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
-        if ($limit_admin != 0) {
+        // if ($limit_admin != 0) {
 
-            // dd($resp[3],$actual_monto,$limit_admin);
+        //     // dd($resp[3],$actual_monto,$limit_admin);
 
-            if (($resp[3] +  $actual_monto) > $limit_admin) {
-                array_push($err, ' El limite de venta de tu banquero (' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede , intente para otro horario');
-            }
-        }
+        //     if (($resp[3] +  $actual_monto) > $limit_admin) {
+        //         array_push($err, ' El limite de venta de tu banquero (' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede , intente para otro horario');
+        //     }
+        // }
 
-        if ($limit_personal != 0) {
-            //  dd($resp[2],$actual_monto,$limit_personal);
+        // if ($limit_personal != 0) {
+        //     //  dd($resp[2],$actual_monto,$limit_personal);
 
-            if (($resp[2] +  $actual_monto) > $limit_personal) {
-                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
-            }
-        }
+        //     if (($resp[2] +  $actual_monto) > $limit_personal) {
+        //         array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
+        //     }
+        // }
 
 
         if (count($err) >= 1) {
