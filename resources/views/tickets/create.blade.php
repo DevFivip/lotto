@@ -54,7 +54,7 @@
                             </div>
                             <div class="mt-2" x-show="!turn" style="display: none;">
                                 <div class="alert alert-warning" role="alert">
-                                    Se han acabado los sorteos del dia de hoy <a href="/cajas/{{$caja->id}}/edit" class="alert-link">Realiza tu cierre de caja</a>.Y vuelve mañana 👋
+                                    Se han acabado los sorteos del dia de hoy. Vuelve mañana 👋
                                 </div>
                             </div>
                             <div class="mt-2" x-show="turn" style="display: none;">
