@@ -18,6 +18,9 @@ class CajaRegisterDetail extends Model
         "moneda_id",
         "total",
         "exchange",
-        "total_usdt",
+        "comision",
+        "premio",
+        "balance",
+        "total_usdt"                
     ];
 }

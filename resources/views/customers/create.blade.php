@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     <form method="POST" action="/{{ $resource }}">
-                        @csrf
+                        <!-- @csrf -->
 
                         @if(auth()->user()->role_id == 2)
                         <input type="hidden" value="{{auth()->user()->id}}" name="admin_id">

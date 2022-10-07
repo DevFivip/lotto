@@ -180,8 +180,8 @@ class RegisterController extends Controller
     public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
         $r = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        //$r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        //$r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        // $r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        // $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
         $cantidad = $r->count();
         $exchange = Exchange::all()->toArray();

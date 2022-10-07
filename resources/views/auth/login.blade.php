@@ -9,6 +9,7 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
+                        
                         @csrf
                         <input id="timezone" type="hidden" class="" name="timezone">
 
@@ -22,6 +23,7 @@
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
+
                                 @enderror
                             </div>
                         </div>
