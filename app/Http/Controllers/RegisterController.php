@@ -51,8 +51,8 @@ class RegisterController extends Controller
         return DB::transaction(function () use ($request) {
             $data = $request->all();
             $user = auth()->user();
-            $admin = User::where('id', $user->parent_id)->first();
-            $caja = Caja::where('user_id', $user->id)->where('status', 1)->first();
+            $admin = User::select(['id','limit'])->where('id', $user->parent_id)->first();
+            $caja = Caja::select(['id'])->where('user_id', $user->id)->where('status', 1)->first();
             // dd($user,$admin);
             //validar
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
