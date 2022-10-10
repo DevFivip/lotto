@@ -47,7 +47,6 @@ class CloseAllCashRegisterCommand extends Command
         $cash->each(function ($v, $k) {
 
 
-
             // return false;
             $ventas = RegisterDetail::where('user_id', $v->user_id)->where('caja_id', $v->id)->get();
             $user = User::find($v->user_id);
@@ -88,6 +87,7 @@ class CloseAllCashRegisterCommand extends Command
                 $comision = $gruped_tickets / (100 / $user->comision);
                 $balance = $gruped_tickets - $ganadores - $comision;
                 $total_usdt = $gruped_tickets / $moneda->change_usd;
+
                 CajaRegisterDetail::create([
                     "type" => "1",
                     "detalle" => "Venta del Día",
@@ -139,6 +139,7 @@ class CloseAllCashRegisterCommand extends Command
             $v->update();
 
         });
+        
         return true;
     }
 }

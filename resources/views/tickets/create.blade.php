@@ -358,6 +358,7 @@
             sorteoSelected: function() {
                 // let moneda = this.monedas.filter((v) => v.id == parseInt(this.ticket.moneda))
                 // this._monedaSelected = moneda[0];
+                this.clearForm()
                 localStorage.setItem('sorteo', this.ticket.type_sorteo_id)
             },
             choose: function() {
@@ -561,8 +562,20 @@
                         }, 1500);
 
                     } else {
+
+                        // var myWindow = window.open('', '', 'width=200,height=100');
+
+                        // myWindow.document.write("<p>This is 'myWindow'</p>");
+
+                        // myWindow.document.close();
+                        // myWindow.focus();
+                        // myWindow.print();
+                        // myWindow.close();
+
+
                         window.open(
                             `/print/${res.code}?timezone=${timezone}`, "_blank");
+
                         location.reload();
                     }
 
