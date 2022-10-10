@@ -179,8 +179,8 @@ class RegisterController extends Controller
 
     public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
-        $r = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        // $r2 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $r = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $r2 = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
         // $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
         $cantidad = $r->count();
@@ -203,12 +203,12 @@ class RegisterController extends Controller
             $monto += $change;
         }
 
-        // foreach ($r2 as $item2) {
-        //     $k = array_search($item2->moneda_id, $_mapexchange);
-        //     $_exchange = $exchange[$k];
-        //     $change2 = $item2->monto / $_exchange['change_usd'];
-        //     $monto_taquilla += $change2;
-        // }
+        foreach ($r2 as $item2) {
+            $k = array_search($item2->moneda_id, $_mapexchange);
+            $_exchange = $exchange[$k];
+            $change2 = $item2->monto / $_exchange['change_usd'];
+            $monto_taquilla += $change2;
+        }
 
         // foreach ($r3 as $item3) {
         //     $k = array_search($item3->moneda_id, $_mapexchange);
@@ -273,13 +273,13 @@ class RegisterController extends Controller
         //     }
         // }
 
-        // if ($limit_personal != 0) {
-        //     //  dd($resp[2],$actual_monto,$limit_personal);
+        if ($limit_personal != 0) {
+            //  dd($resp[2],$actual_monto,$limit_personal); 
 
-        //     if (($resp[2] +  $actual_monto) > $limit_personal) {
-        //         array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
-        //     }
-        // }
+            if (($resp[2] +  $actual_monto) > $limit_personal) {
+                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
+            }
+        }
 
 
         if (count($err) >= 1) {
