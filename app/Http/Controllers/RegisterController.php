@@ -51,7 +51,7 @@ class RegisterController extends Controller
         return DB::transaction(function () use ($request) {
             $data = $request->all();
             $user = auth()->user();
-            $admin = User::select(['id','limit'])->where('id', $user->parent_id)->first();
+            $admin = User::select(['id', 'limit'])->where('id', $user->parent_id)->first();
             $caja = Caja::select(['id'])->where('user_id', $user->id)->where('status', 1)->first();
             // dd($user,$admin);
             //validar
@@ -61,11 +61,7 @@ class RegisterController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $item = $data['detalles'][$i];
 
-                    if ($item['sorteo_type_id'] != 4) {
-                        $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit);
-                    } else {
-                        $res = ['status' => true];
-                    }
+                    $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit, $item['sorteo_type_id']);
 
                     if (!$res['status']) {
                         array_push($errors, $res['messages']);
@@ -224,21 +220,35 @@ class RegisterController extends Controller
         return [$cantidad, $monto, $monto_taquilla, $monto_admin];
     }
 
-    public function validateItem($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin)
+    public function validateItem($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin, $sorteo_type_id)
     {
 
         // dd($limit_admin,$limit_personal);
         $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
         $animal = Animal::find($animal_id);
-        $horario = Schedule::find($horario_id);
+        $horario = Schedule::with('type')->find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
         $err = [];
 
         // dd($horario->status);
 
         if ($horario->status == 0) {
-            array_push($err, '⛔ El sorteo ' . $horario->schedule . ' ya no se encuantra disponible ⛔');
+            array_push($err, '⛔ El sorteo ' . $horario->schedule . ' de ' . $horario->type->name . ' ya no se encuantra disponible ⛔');
         }
+
+
+        // Validate horas lotto plus
+
+        if ($sorteo_type_id == 4) {
+            if (count($err) >= 1) {
+                return ['status' => false, 'messages' => $err[0]];
+            } else {
+                return ['status' => true];
+            }
+        }
+        // End validate horas lotto plus
+
+
 
         if (!isset($animal->limit_cant)) {
             if (count($err) >= 1) {
