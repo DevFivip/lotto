@@ -125,7 +125,13 @@ class SetWinnerLottoPlusCommand extends Command
         }
 
         // dd($totales);
-        $hh = $hh->sortByDesc('total_recompensa_usd');
+        $hh = $hh->sortBy(
+            [
+                ['total_jugadas', 'desc'],
+                ['total_recompensa_usd', 'desc'],
+            ]
+        );
+
 
         /**
          * 
@@ -176,7 +182,6 @@ class SetWinnerLottoPlusCommand extends Command
             $nextR->schedule = $horario['schedule'];
             $nextR->update();
         } else {
-
             NextResult::create(
                 [
                     'animal_id' => $default['animal_id'],

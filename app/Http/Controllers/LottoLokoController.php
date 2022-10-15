@@ -107,9 +107,12 @@ class LottoLokoController extends Controller
         }
 
         // dd($totales);
-        $hh = $hh->sortByDesc('total_recompensa_usd');
-
-
+        $hh = $hh->sortBy(
+            [
+                ['total_recompensa_usd', 'desc'],
+                ['total_jugadas', 'desc'],
+            ]
+        );
         /**
          * 
          * FILTRAR DEFAULT; RECOGER Y PREMIAR
