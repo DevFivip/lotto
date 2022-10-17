@@ -107,7 +107,7 @@
                                                 <td class="text-center">{{$total['nombre']}}</td>
                                                 <td class="text-end">{{$total['simbolo']}} {{number_format($total['total'],2,',','.')}}</td>
                                                 <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_rewards'],2,',','.')}}</td>
-                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['comision'],2,',','.')}}</td>
+                                                <td class="text-end">{{$total['simbolo']}} {{number_format($total['_comision'],2,',','.')}}</td>
                                                 <td class="text-end">{{$total['simbolo']}} {{number_format($total['balance'],2,',','.')}}</td>
                                                 <td class="text-end">{{$total['simbolo']}} {{number_format($total['total_pay'],2,',','.')}}</td>
                                                 @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($total['total_exchange_usd'],2,',','.')}}</td>@endif
@@ -149,7 +149,7 @@
                                             <td class="text-center">{{$moneda['nombre']}}</td>
                                             <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total'],2,',','.')}}</td>
                                             <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total_rewards'],2,',','.')}}</td>
-                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['comision'],2,',','.')}}</td>
+                                            <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['_comision'],2,',','.')}}</td>
                                             <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['balance'],2,',','.')}}</td>
                                             <td class="text-end">{{$moneda['simbolo']}} {{number_format($moneda['total_pay'],2,',','.')}}</td>
                                             @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['total_exchange_usd'],2,',','.')}}</td>@endif

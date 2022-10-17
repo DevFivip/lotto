@@ -266,16 +266,37 @@ class HomeController extends Controller
 
             if (!isset($totalMonedas[$key]['total'])) {
                 // dd($animalvendido->usuario);
-                $totalMonedas[$key]['_comision'] = $animalvendido->usuario->comision / 100;
+
+
                 $totalMonedas[$key]['user_id'] = $animalvendido->user_id;
                 $totalMonedas[$key]['caja_id'] = $animalvendido->caja_id;
                 $totalMonedas[$key]['exchange_usd'] = $change[$key2]['change_usd'];
                 $totalMonedas[$key]['total'] = $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = $animalvendido->monto / $change[$key2]['change_usd'];
+
+                //calcular comision
+                if (!isset($totalMonedas[$key]['_comision'])) {
+                    $totalMonedas[$key]['_comision'] = $animalvendido->monto * ($animalvendido->usuario->comision / 100);
+                    $totalMonedas[$key]['comision_exchange_usd'] = ($totalMonedas[$key]['_comision']) / $totalMonedas[$key]['exchange_usd'];
+                } else {
+                    $totalMonedas[$key]['_comision'] += $animalvendido->monto * ($animalvendido->usuario->comision / 100);
+                    $totalMonedas[$key]['comision_exchange_usd'] += ($totalMonedas[$key]['_comision']) / $totalMonedas[$key]['exchange_usd'];
+                }
             } else {
                 $totalMonedas[$key]['total'] =  $totalMonedas[$key]['total'] + $animalvendido->monto;
                 $totalMonedas[$key]['total_exchange_usd'] = ($animalvendido->monto / $change[$key2]['change_usd']) + $totalMonedas[$key]['total_exchange_usd'];
+
+                //calcular comision
+                if (!isset($totalMonedas[$key]['_comision'])) {
+                    $totalMonedas[$key]['_comision'] = $animalvendido->monto * ($animalvendido->usuario->comision / 100);
+                    $totalMonedas[$key]['comision_exchange_usd'] = ($totalMonedas[$key]['_comision']) / $totalMonedas[$key]['exchange_usd'];
+                } else {
+                    $totalMonedas[$key]['_comision'] += $animalvendido->monto * ($animalvendido->usuario->comision / 100);
+                    $totalMonedas[$key]['comision_exchange_usd'] += ($totalMonedas[$key]['_comision']) / $totalMonedas[$key]['exchange_usd'];
+                }
             }
+
+            // dd($totalMonedas[$key]);
 
             if (!isset($totalMonedas[$key]['total_rewards'])) {
                 $totalMonedas[$key]['total_rewards'] = $animalvendido->winner == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00;
@@ -288,16 +309,28 @@ class HomeController extends Controller
             } else {
                 $totalMonedas[$key]['total_pay'] = $totalMonedas[$key]['total_pay'] + ($animalvendido->status == 1 ? $animalvendido->monto * $this->amount_rewards : 0.00);
             }
+
+            // dd($totalMonedas[$key]);
+
         }
 
         //calcular comisiones y perdidas
         foreach ($totalMonedas as $_key => $totales) {
 
-            if (isset($totales['total'])) {
-                // dd($totales);
-                $totales['comision'] = $totales['total'] * $totales['_comision'];
-                $totales['comision_exchange_usd'] = ($totales['total'] * $totales['_comision']) / $totales['exchange_usd'];
-            }
+
+
+            // if (isset($totales['total'])) {
+            //     // dd($totales);
+            //     $totales['comision'] = $totales['total'] * $totales['_comision'];
+
+            //     // dd($totales['total'],$totales['_comision']);
+
+
+            //     $totales['comision_exchange_usd'] = ($totales['total'] * $totales['_comision']) / $totales['exchange_usd'];
+            // }
+
+            //  dd($totales);
+
 
             if (isset($totales['total_rewards'])) {
                 $totales['total_rewards_exchange_usd'] = $totales['total_rewards'] /  $totales['exchange_usd'];
@@ -305,7 +338,7 @@ class HomeController extends Controller
             }
 
             if (isset($totales['total'])) {
-                $totales['balance'] = $totales['total'] - $totales['total_rewards'] - $totales['comision'];
+                $totales['balance'] = $totales['total'] - $totales['total_rewards'] - $totales['_comision'];
                 $totales['balance_exchange_usd'] = $totales['total_exchange_usd'] - $totales['total_rewards_exchange_usd'] - $totales['comision_exchange_usd'];
             }
 
@@ -313,6 +346,7 @@ class HomeController extends Controller
                 $totales['total_pay_exchange_usd'] = $totales['total_pay'] /  $totales['exchange_usd'];
             }
 
+            // dd($totales);
             $totalMonedas[$_key] = $totales;
         }
 
