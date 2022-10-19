@@ -71,3 +71,10 @@ Route::post('/send-results-selvaParaiso', function (Request $request) {
         return response()->json(['valid' => false], 200);
     }
 });
+
+Route::post('/save_soteo_semanal', function (Request $request) {
+
+    $data = $request->all();
+    
+    
+});

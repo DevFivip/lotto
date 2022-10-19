@@ -52,7 +52,13 @@ class SendWinnerLottoPlusCommand extends Command
                 "schedule" =>  $animalito->schedule
             ];
 
-            $response = Http::post($endpoint . '/register-lotto-valid', $an);
+            $response = Http::withHeaders([
+                'user' => env('APP_LOTTO_USER'),
+                'password' => env('APP_LOTTO_PASSWORD')
+            ])
+                ->post($endpoint . '/register-lotto-valid', $an);
+
+
             $schedule->is_send = 1;
             $schedule->update();
             $animalito->delete();

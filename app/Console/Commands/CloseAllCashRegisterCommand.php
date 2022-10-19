@@ -61,7 +61,6 @@ class CloseAllCashRegisterCommand extends Command
             ]);
             $_caja_id = $caja->id;
 
-
             $arr_monedas->each(function ($vv, $moneda_id) use ($user, $caja_id, $_caja_id) {
                 $moneda = Exchange::find($moneda_id);
                 $gruped_tickets = $vv->sum('monto');

@@ -33,8 +33,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-
 Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
 Route::resource('/caja-registers', CajaRegisterController::class);

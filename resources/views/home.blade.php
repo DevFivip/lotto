@@ -157,6 +157,7 @@
                                             @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['balance_exchange_usd'],2,',','.')}}</td>@endif
                                             @if(auth()->user()->role_id == 1)<td class="text-end">$ {{number_format($moneda['total_pay_exchange_usd'],2,',','.')}}</td>@endif
                                         </tr>
+                                        
                                         @endif
                                         @endforeach
 
