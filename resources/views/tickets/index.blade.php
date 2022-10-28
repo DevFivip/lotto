@@ -227,7 +227,7 @@
                         const st = await this.printDirect(localStorage.getItem('printer'), localStorage.getItem('printer_url'), ticket, td, localStorage.getItem('paper_width'))
 
                         this.toast('Imprimiendo...', 5000)
-                        
+
                     } else {
                         window.open(
                             `/print/${res.code}?timezone=${timezone}`, "_blank");
@@ -423,6 +423,7 @@
             fecha_cierre: f3 + ' ' + f4,
         }
     }
+
     function converter2(q, k) {
         date = new Date(q);
         w = date.getTimezoneOffset()
