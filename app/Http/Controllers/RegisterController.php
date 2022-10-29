@@ -61,7 +61,9 @@ class RegisterController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $item = $data['detalles'][$i];
 
-                    $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit, $item['sorteo_type_id']);
+                    // dd($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit, $item['sorteo_type_id']);
+
+                    $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, null, $user->limit, null, $item['sorteo_type_id']);
 
                     if (!$res['status']) {
                         array_push($errors, $res['messages']);
@@ -223,7 +225,7 @@ class RegisterController extends Controller
     public function validateItem($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin, $sorteo_type_id)
     {
 
-        // dd($limit_admin,$limit_personal);
+        // dd($limit_admin, $limit_personal);
         $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
         $animal = Animal::find($animal_id);
         $horario = Schedule::with('type')->find($horario_id);
@@ -248,7 +250,7 @@ class RegisterController extends Controller
         }
         // End validate horas lotto plus
 
-
+        // dd($animal->limit_cant);
 
         if (!isset($animal->limit_cant)) {
             if (count($err) >= 1) {
@@ -265,10 +267,20 @@ class RegisterController extends Controller
         // Validate
         // Valores actuales
 
-        $actual_monto = $monto / $exchange->change_usd;
+        $actual_monto = floatval($monto / $exchange->change_usd);
+
+
+        // dd('this', $resp[2], $actual_monto, $limit_personal);
+
+        if ($limit_personal != 0) {
+            // dd('those', $resp[2] + $actual_monto .' > '. $limit_personal , $actual_monto);
+
+            if (($resp[2] +  $actual_monto) > floatval($limit_personal)) {
+                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
+            }
+        }
 
         // dd($resp[1], $actual_monto, $animal->limit_price_usd);
-
 
         if (($resp[1] +  $actual_monto) > $animal->limit_price_usd) {
             array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
@@ -282,14 +294,6 @@ class RegisterController extends Controller
         //         array_push($err, ' El limite de venta de tu banquero (' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede , intente para otro horario');
         //     }
         // }
-
-        if ($limit_personal != 0) {
-            //  dd($resp[2],$actual_monto,$limit_personal); 
-
-            if (($resp[2] +  $actual_monto) > $limit_personal) {
-                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
-            }
-        }
 
 
         if (count($err) >= 1) {
