@@ -426,13 +426,10 @@
                                     <span x-text="ticket.moneda.currency"></span>
                                     <span x-text="ticket.moneda.simbolo"></span>
                                     <span x-text="ticket.total.toFixed(2)"></span>
-
                             </li>
                         </ul>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -445,12 +442,27 @@
         let det = @json($detalles);
         let schedules = @json($schedules);
         // console.log(det)
+        let _detalles = det.map((v) => {
+            return {
+                id: v.animal_id,
+                schedule_id: v.schedule_id,
+                schedule: v.schedule,
+                monto: v.monto,
+                admin_id: v.admin_id,
+                user_id: v.user_id,
+                caja_id: v.caja_id,
+                animal: v.animal,
+                sorteo_type_id: v.sorteo_type_id,
+                moneda: tick.moneda
 
+            }
+        })
         return {
             ticket: {
                 // type_sorteo_id: !!!localStorage.getItem('sorteo') ? 1 : localStorage.getItem('sorteo'),
                 ...tick,
-                detalles: det,
+                moneda: tick.moneda.id,
+                detalles: _detalles,
             },
             visibles: [{
                     id: 1,

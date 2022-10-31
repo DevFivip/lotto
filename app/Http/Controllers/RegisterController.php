@@ -61,7 +61,8 @@ class RegisterController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $item = $data['detalles'][$i];
 
-                    // dd($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit, $item['sorteo_type_id']);
+
+                    // dd("ANIMAL ID", $item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, $admin->id, $user->limit, $admin->limit, $item['sorteo_type_id']);
 
                     $res =  $this->validateItem($item['id'], $item['schedule_id'], $data['moneda'], $item['monto'], $user->id, null, $user->limit, null, $item['sorteo_type_id']);
 
@@ -177,14 +178,16 @@ class RegisterController extends Controller
 
     public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
+
         $r = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
         $r2 = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
         // $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
         $cantidad = $r->count();
         $exchange = Exchange::all()->toArray();
-
         $_mapexchange = [];
+
+        // dd($cantidad,$exchange);
 
         foreach ($exchange as $key => $value) {
             array_push($_mapexchange, $value['id']);
@@ -225,8 +228,11 @@ class RegisterController extends Controller
     public function validateItem($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin, $sorteo_type_id)
     {
 
+        // dd($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin, $sorteo_type_id);
+
         // dd($limit_admin, $limit_personal);
         $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
+        //  dd($resp);
         $animal = Animal::find($animal_id);
         $horario = Schedule::with('type')->find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
