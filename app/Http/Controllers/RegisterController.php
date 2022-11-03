@@ -431,6 +431,29 @@ class RegisterController extends Controller
 
         exit;
     }
+
+    public function print2(Request $request, $code)
+    {
+
+        $data = $request->all();
+
+        $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();
+        $dt = new DateTime($ticket->created_at, new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone($data['timezone']));
+
+        $ticket_detalles = RegisterDetail::with(['type', 'animal', 'schedule'])->where('register_id', $ticket->id)->orderBy('schedule_id', 'ASC')->get();
+
+        $ticket_detalles = $ticket_detalles->groupBy('sorteo_type_id');
+
+        $ticket_detalles = $ticket_detalles->map(function ($sorteo) {
+            return $sorteo->groupBy('schedule_id');
+        });
+
+        $sorteos_keys = array_keys($ticket_detalles->toArray());
+
+        return view('print.print', compact('ticket', 'ticket_detalles', 'dt', 'sorteos_keys'));
+    }
+
     public function print_direct($code)
     {
         $ticket = Register::with(['user', 'moneda', 'caja'])->where('code', $code)->first();

@@ -345,6 +345,7 @@
             handleBtnPaySearch: false,
             fechaHoy: (new Date()).toISOString().split('T')[0],
             ticketToSearch: '',
+            impresion_type: !!!localStorage.getItem('impresion_type') ? 0 : localStorage.getItem('impresion_type'),
             amount: function() {
                 let moneda = JSON.parse(localStorage.getItem('moneda'));
                 this.ticket.moneda = moneda.id
@@ -563,20 +564,28 @@
 
                     } else {
 
-                        // var myWindow = window.open('', '', 'width=200,height=100');
-
-                        // myWindow.document.write("<p>This is 'myWindow'</p>");
-
-                        // myWindow.document.close();
-                        // myWindow.focus();
-                        // myWindow.print();
-                        // myWindow.close();
+                        if (this.impresion_type == 0) {
+                            window.open(`/print/${res.code}?timezone=${timezone}`, "_blank");
+                            location.reload();
+                            return true
+                        }
 
 
-                        window.open(
-                            `/print/${res.code}?timezone=${timezone}`, "_blank");
+                        if (this.impresion_type == 1) {
+                            let win = window.open(`/print2/${res.code}?timezone=${timezone}`, "_blank", 'width=400, height=400');
+                            let q = win.focus();
+                            let w = win.print();
 
-                        location.reload();
+
+                            // win.close();
+                            setTimeout(() => {
+                                win.close();
+                                location.reload();
+                            }, 1200);
+
+                            return true
+                        }
+
                     }
 
 

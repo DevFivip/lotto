@@ -8,34 +8,15 @@
                 <div class="card-header">Configurar Impresora</div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label for="impresora_id" class="col-md-4 col-form-label text-md-end">URL del pluggin</label>
+                        <label for="impresora_id" class="col-md-4 col-form-label text-md-end">Tipo de Impresión</label>
                         <div class="col-md-6">
                             <div class="row mb-3">
                                 <label for="impresora_id" class="col-md-4 col-form-label text-md-end"></label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" x-model="url">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="paper_width" class="col-md-4 col-form-label text-md-end">Tamaño del Papel</label>
-                        <div class="col-md-6">
-                            <div class="row mb-3">
-                                <label for="paper_width" class="col-md-4 col-form-label text-md-end"></label>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" x-model="paper_width">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="impresora_id" class="col-md-4 col-form-label text-md-end">Listado de mis impresoras: <span x-text="printerSelected"></span></label>
-                        <div class="col-md-6">
-                            <div class="row mb-3">
-                                <label for="impresora_id" class="col-md-4 col-form-label text-md-end"></label>
-                                <div class="col-md-6">
-                                    <input type="text" x-model="printerSelected" class="form-control">
+                                    <select @change="setPrinter()" class="form-select" name="impresion_type" id="impresion_type" x-model="impresion_type">
+                                        <option value="0">PDF</option>
+                                        <option value="1">DIRECTA</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +38,7 @@
                         </div>
 
                     </div>
-                    <div class="row mb-0">
+                    <!-- <div class="row mb-0">
                         <div class="col-md-12">
                             <a class="btn btn-danger" @click.prevent="deletePrinter()">
                                 Eliminar Configuración
@@ -69,7 +50,7 @@
                                 Guardar Impresora
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -78,37 +59,19 @@
         function mounted() {
             return {
                 printers: [],
-                paper_width: localStorage.getItem('paper_width') || 226.772,
-                url: localStorage.getItem('printer_url') || 'http://localhost:7734',
-                printerSelected: localStorage.getItem('printer'),
-                getPrinter: async function() {
-                    axios(`${this.url}/printer-list`, {
-                        method: 'GET',
-                        mode: 'no-cors',
-                    }).then(({
-                        data
-                    }) => {
-                        this.printers = data
-                        // console.log(data);
-                    }).catch((e) => {
-                        this.toast('Verifica el la url del pluggin', 3000)
-                        this.toast('Asegurate que tengas instalado el pluggin de impresion en tu computadora local', 3000)
-                        console.log(e);
-                    });
-                },
+                impresion_type: localStorage.getItem('impresion_type') || null,
+
                 setPrinter: function() {
-                    localStorage.setItem('printer_url', this.url)
-                    localStorage.setItem('printer', this.printerSelected)
-                    localStorage.setItem('paper_width', this.paper_width)
+                    localStorage.setItem('impresion_type', this.impresion_type)
                     this.toast('Impresora configurada correctamente 👌')
                 },
-                deletePrinter: function() {
-                    localStorage.removeItem("printer_url");
-                    localStorage.removeItem("printer");
-                    this.printers = [];
-                    this.url = "http://localhost:7734"
-                    this.toast('Configuración Eliminada Correctamente se imprimira con PDF default 👌', 5000)
-                },
+                // deletePrinter: function() {
+                //     localStorage.removeItem("printer_url");
+                //     localStorage.removeItem("printer");
+                //     this.printers = [];
+                //     this.url = "http://localhost:7734"
+                //     this.toast('Configuración Eliminada Correctamente se imprimira con PDF default 👌', 5000)
+                // },
                 toast: function(msg = 'Error al eliminar', duration = 800) {
                     Toastify({
                         text: msg,
