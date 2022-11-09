@@ -61,7 +61,7 @@ class SendWinnerLottoPlusCommand extends Command
 
             $schedule->is_send = 1;
             $schedule->update();
-            $animalito->delete();
+            //  $animalito->delete();
             return 0;
         } else {
             return 0;

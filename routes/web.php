@@ -32,6 +32,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home2', [App\Http\Controllers\HomeController2::class, 'index'])->name('home2');
 
 Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
