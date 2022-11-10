@@ -33,9 +33,9 @@ class HomeController2 extends Controller
                 FROM register_details
                 LEFT JOIN monedas ON register_details.moneda_id = monedas.id
                 LEFT JOIN exchanges ON register_details.moneda_id = exchanges.moneda_id
-                LEFT JOIN users ON register_details.user_id = users.id
+                LEFT JOIN users ON register_details.user_id = users.id  
                 LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
-                WHERE Date(register_details.created_at) >= '2022-10-03'"));
+                WHERE Date(register_details.created_at) >= '2022-11-10'"));
 
             dd($results);
         }

@@ -62,54 +62,33 @@ class HomeController extends Controller
 
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
 
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')
-                    ->with(
-                        ['usuario' => function ($q) {
-                            $q->select('id', 'parent_id', 'name');
-                        }],
-                        ['schedule' => function ($q) {
-                            $q->select('id', 'schedule', 'status');
-                        }],
-                        ['animal' => function ($q) {
-                            $q->select('id', 'number', 'nombre');
-                        }]
+                $animalesvendidos = RegisterDetail::with(
+                        'usuario',
+                        'animal',
+                        'schedule'
                     )->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
 
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')
-                    ->with(
-                        ['usuario' => function ($q) {
-                            $q->select('id', 'parent_id', 'name');
-                        }],
-                        ['schedule' => function ($q) {
-                            $q->select('id', 'schedule', 'status');
-                        }],
-                        ['animal' => function ($q) {
-                            $q->select('id', 'number', 'nombre');
-                        }]
+                $animalesvendidos = RegisterDetail::with(   
+                        'usuario',
+                        'animal',
+                        'schedule'
                     )
                     ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')
-                    ->with(
-                        ['usuario' => function ($q) {
-                            $q->select('id', 'parent_id', 'name');
-                        }],
-                        ['schedule' => function ($q) {
-                            $q->select('id', 'schedule', 'status');
-                        }],
-                        ['animal' => function ($q) {
-                            $q->select('id', 'number', 'nombre');
-                        }]
+                $animalesvendidos = RegisterDetail::with(
+                        'usuario',
+                        'animal',
+                        'schedule'
                     )
                     // ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
-                    // select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')
+                    // ->with('usuario', 'schedule', 'animal')
                     ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
@@ -124,17 +103,17 @@ class HomeController extends Controller
         if (auth()->user()->role_id == 2) {
 
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('admin_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
 
@@ -145,17 +124,17 @@ class HomeController extends Controller
 
         if (auth()->user()->role_id == 3) {
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt->format('Y-m-d') . ' 23:59:59');
             }
 
             if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
-                $animalesvendidos = RegisterDetail::select('schedule_id', 'animal_id', 'user_id', 'status', 'monto')->with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
+                $animalesvendidos = RegisterDetail::with('usuario', 'schedule', 'animal')->where('user_id', auth()->user()->id)->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00');
                 $animalesvendidos = $animalesvendidos->where('created_at', '<=', $dt2->format('Y-m-d') . ' 23:59:59');
             }
             $animalesvendidos = $animalesvendidos->get();
