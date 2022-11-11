@@ -31,7 +31,7 @@ class HomeController2 extends Controller
 
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
                 $results = DB::select(DB::raw("SELECT user_id,register_details.moneda_id AS moneda,
-                users.taquilla_name,users.name,
+                users.taquilla_name as taquilla_name,users.name,
                 monedas.currency,monedas.simbolo,
                 sorteos_types.name AS loteria_name,
     
