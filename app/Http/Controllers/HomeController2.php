@@ -31,6 +31,7 @@ class HomeController2 extends Controller
 
             if (!isset($data['fecha_inicio']) && !isset($data['fecha_fin'])) {
                 $results = DB::select(DB::raw("SELECT user_id,register_details.moneda_id AS moneda,
+                T1.name as admin_name,
                 users.taquilla_name as taquilla_name,users.name,
                 monedas.currency,monedas.simbolo,
                 sorteos_types.name AS loteria_name,
@@ -48,6 +49,7 @@ class HomeController2 extends Controller
                 LEFT JOIN monedas ON register_details.moneda_id = monedas.id
                 LEFT JOIN exchanges ON register_details.moneda_id = exchanges.moneda_id
                 LEFT JOIN users ON users.id = register_details.user_id
+                LEFT JOIN users as T1 ON T1.id = register_details.admin_id
                 LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
                 WHERE date(register_details.created_at) >= date(:fecha_inicio)   
                 GROUP BY user_id ,register_details.moneda_id, register_details.sorteo_type_id
