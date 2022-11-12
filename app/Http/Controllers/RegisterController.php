@@ -231,6 +231,7 @@ class RegisterController extends Controller
         // dd($animal_id, $horario_id, $moneda, $monto, $taquilla_id, $admin_id, $limit_personal, $limit_admin, $sorteo_type_id);
 
         // dd($limit_admin, $limit_personal);
+        $user_id = auth()->user()->id;
         $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
         //  dd($resp);
         $animal = Animal::find($animal_id);
@@ -239,6 +240,11 @@ class RegisterController extends Controller
         $err = [];
 
         // dd($horario->status);
+
+        if ($sorteo_type_id === 2 && $user_id == 1 || $user_id == 67 || $user_id == 101) {
+            array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
+        }
+
 
         if ($horario->status == 0) {
             array_push($err, '⛔ El sorteo ' . $horario->schedule . ' de ' . $horario->type->name . ' ya no se encuantra disponible ⛔');
