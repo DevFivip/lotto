@@ -25,7 +25,6 @@ class HomeController2 extends Controller
             // $dt->setTimezone(new DateTimeZone(session('timezone')));
         }
 
-        // dd($dt->format('Y-m-d'));
 
         if (auth()->user()->role_id == 1) {
 
@@ -92,7 +91,7 @@ class HomeController2 extends Controller
 
                 // dd($dt->format('Y-m-d') . ' 00:00:00', $dt2->format('Y-m-d') . ' 23:59:59');
                 $results = DB::select(DB::raw("SELECT user_id,register_details.moneda_id AS moneda,
-                   T1.name as admin_name,
+            T1.name as admin_name,
             users.taquilla_name,users.name,
             monedas.currency,monedas.simbolo,
             sorteos_types.name AS loteria_name,
@@ -131,21 +130,21 @@ class HomeController2 extends Controller
                     $animalitos_vendidos = $e->sum('animalitos_vendidos');
 
                     // dd($total_monto,$comision_total,$premio_total,$animalitos_vendidos);
-
                     // $e-> totales = [
                     //     'total_monto' => $total_monto,
                     //     'comision_total' => $comision_total,
                     //     'premio_total' => $premio_total,
                     //     'animalitos_vendidos' => $animalitos_vendidos,
                     // ];
+
                     $r = collect([
                         'total_monto' => $total_monto,
                         'comision_total' => $comision_total,
                         'premio_total' => $premio_total,
                         'animalitos_vendidos' => $animalitos_vendidos,
                     ]);
-                    $e->push($r);
 
+                    $e->push($r);
                     return $e;
                 });
                 return $tm;

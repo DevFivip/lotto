@@ -241,7 +241,11 @@ class RegisterController extends Controller
 
         // dd($horario->status);
 
-        if ($sorteo_type_id === 2 && $user_id == 1 || $user_id == 67 || $user_id == 101) {
+        if ($sorteo_type_id === 2 && $user_id == 67 ) {
+            array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
+        }
+
+        if ($sorteo_type_id === 2 && $user_id == 101 ) {
             array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
         }
 

@@ -45,38 +45,55 @@
 
                 <div class="row mt-1">
                     <div class="col p-4">
-                        <table class="table">
-                            <tr>
-                                <td>Usuarios</td>
-                            </tr>
-                            @foreach($gg as $admin => $monedas)
-                            <tr>
-                                <td>{{$admin}}</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table class="table">
-                                        @foreach($monedas as $currency => $totales)
-                                        @php
-                                        $tt = $totales->toArray();
-                                        $monto_totales = $tt[count($totales)-1];
-                                        @endphp
-                                        <tr>
-                                            <td>{{$currency}}</td>
-                                            @foreach($monto_totales as $value => $key)
-                                            <td>{{$key}}</td>
-                                            @endforeach
-                                            <td></td>
 
-                                        </tr>
+                        @foreach($gg as $admin => $monedas)
+
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                Balance {{$admin}}
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table">
+
+                                    <tr>
+                                        <td>Moneda</td>
+                                        <td>Ventas</td>
+                                        <td>Comisión</td>
+                                        <td>Premios</td>
+                                        <td><abbr title="Cantidad de Animalitos Vendidos">C.V</abbr></td>
+                                    </tr>
+
+                                    @foreach($monedas as $currency => $totales)
+                                    @php
+                                    $tt = $totales->toArray();
+                                    $monto_totales = $tt[count($totales)-1];
+                                    @endphp
+                                    <tr>
+                                        <td>{{$currency}}</td>
+                                        @foreach($monto_totales as $value => $key)
+
+                                        <td> {{$value}} {{number_format($key,2,',','.')}}</td>
+                                        <!-- <td>{{$key}}</td> -->
                                         @endforeach
-                                    </table>
-                                </td>
-                            </tr>
-                            @endforeach
+
+                                    </tr>
+                                    @endforeach
 
 
-                        </table>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <tr>
+
+                        </tr>
+                        @endforeach
+
+
                     </div>
                 </div>
 
