@@ -49,103 +49,101 @@
                         @foreach($gg as $admin => $monedas)
 
                         <div class="card mb-2">
-                            <div class="card-header">
-                                Balance {{$admin}}
-                            </div>
+                            <h5 class="card-header d-flex justify-content-between align-items-center">
+                                {{$admin}}
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{str_replace(' ', '', $admin)}}">Detalles</button>
+                                <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
+                            </h5>
                             <div class="card-body table-responsive">
                                 <table class="table">
-
                                     <tr>
                                         <td>Moneda</td>
                                         <td>Ventas</td>
                                         <td>Comisión</td>
                                         <td>Premios</td>
                                         <td><abbr title="Cantidad de Animalitos Vendidos">C.V</abbr></td>
+                                        <td>Balance</td>
                                     </tr>
 
                                     @foreach($monedas as $currency => $totales)
                                     @php
                                     $tt = $totales->toArray();
                                     $monto_totales = $tt[count($totales)-1];
+                                    $balance_tt = ($monto_totales['total_monto'] - $monto_totales['comision_total']) - $monto_totales['premio_total'];
                                     @endphp
                                     <tr>
                                         <td>{{$currency}}</td>
                                         @foreach($monto_totales as $value => $key)
-
-                                        <td> {{$value}} {{number_format($key,2,',','.')}}</td>
-                                        <!-- <td>{{$key}}</td> -->
+                                        <td>{{number_format($key,2,',','.')}}</td>
                                         @endforeach
-
+                                        <td> <b class="@if($balance_tt < 0) text-danger @endif"> {{number_format($balance_tt,2,',','.') }}</b></td>
                                     </tr>
                                     @endforeach
-
-
                                 </table>
                             </div>
                         </div>
 
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="{{str_replace(' ', '', $admin)}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{$admin}}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body table-responsive">
 
+                                        <table class="table">
+                                            <tr>
+                                                <td>Taquilla</td>
+                                                <td>Loteria</td>
+                                                <td>Moneda</td>
+                                                <td>Venta</td>
+                                                <td>Premios</td>
+                                                <td>Comisión</td>
+                                                <td>Balance</td>
+                                                <td><abbr title="Cantidad de Animalitos Vendidos">C.V.</abbr></td>
+                                            </tr>
+                                            @foreach($monedas as $currency => $totales)
+                                            @php
+                                            $res = $totales->toArray();
+                                            @endphp
 
+                                            @foreach($res as $kk => $to)
+                                            @if($kk != count($res)-1)
+                                            @php
+                                            $balance_total = ($to->monto_total - $to->premio_total) - $to->comision_total;
+                                            @endphp
+                                            <tr>
+                                                <td>{{$to->taquilla_name}} {{$to->name}}</td>
+                                                <td>{{$to->loteria_name}}</td>
+                                                <td>{{$to->currency}}</td>
 
-                        <tr>
+                                                <td>{{$to->simbolo}} {{number_format($to->monto_total,2,',','.')}}</td>
+                                                <td>{{$to->simbolo}} {{number_format($to->premio_total,2,',','.')}}</td>
+                                                <td>{{$to->simbolo}} {{number_format($to->comision_total,2,',','.')}}</td>
+                                                <td><b class="@if($balance_total < 0) text-danger @endif">{{$to->simbolo}} {{number_format($balance_total,2,',','.')}}</b></td>
+                                                <td>{{$to->animalitos_vendidos}}</td>
+                                            </tr>
+                                            @endif
 
-                        </tr>
+                                            @endforeach
+
+                                            @endforeach
+                                        </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
-
-
                     </div>
                 </div>
 
-
-                <div class="row mt-1">
-                    <div class="col p-4">
-                        <div class="card mt-3">
-                            <div class="card-header">
-                                Balance
-                            </div>
-                            <div class="card-body table-responsive">
-                                <table class="table" style="font-size:12px;">
-                                    <tr>
-                                        <td class="fw-bold text-center">Admin</td>
-                                        <td class="fw-bold text-center">Taquilla</td>
-                                        <td class="fw-bold text-center">Loteria</td>
-                                        <td class="fw-bold text-center">Moneda</td>
-                                        <td class="fw-bold text-end">Ventas</td>
-                                        <td class="fw-bold text-end">Premios</td>
-                                        <td class="fw-bold text-end">Comisión</td>
-                                        <td class="fw-bold text-end">Balance</td>
-                                        <td class="fw-bold text-end">Cant. Ven.</td>
-
-                                    </tr>
-
-                                    @foreach($results as $balance)
-                                    @php
-                                    $balance_total = ($balance->monto_total - $balance->premio_total) - $balance->comision_total;
-                                    $balance_total_usd =($balance->usd_monto_total - $balance->usd_premio_total) - $balance->usd_comision_total;
-                                    @endphp
-                                    <tr>
-                                        <td class="text-start">{{$balance->admin_name}}</td>
-                                        <td class="text-start">{{$balance->name}}</td>
-                                        <td class="text-start">{{$balance->loteria_name}}</td>
-                                        <td class="text-center">{{$balance->currency}}</td>
-                                        <td class="text-end">{{$balance->simbolo}} {{number_format($balance->monto_total,2,',','.')}}</td>
-                                        <td class="text-end">{{$balance->simbolo}} {{number_format($balance->premio_total,2,',','.')}}</td>
-                                        <td class="text-end">{{$balance->simbolo}} {{number_format($balance->comision_total,2,',','.')}}</td>
-                                        <td class="text-end"><b class="@if($balance_total < 0) text-danger @endif"> {{$balance->simbolo}} {{number_format($balance_total,2,',','.')}} </b></td>
-                                        <td class="text-end">{{$balance->animalitos_vendidos}}</td>
-
-                                    </tr>
-                                    @endforeach
-
-
-                                </table>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
             </div>
 
         </div>
