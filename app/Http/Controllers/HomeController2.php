@@ -40,7 +40,7 @@ class HomeController2 extends Controller
                 SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total,
     
                 SUM(monto / exchanges.change_usd ) AS usd_monto_total,
-                SUM((monto * (users.comision) / 100) /  exchanges.change_usd)  AS usd_comision_total,
+                SUM((monto * (users.comision) / 100) /  exchanges.change_usd) AS usd_comision_total,
                 SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) / exchanges.change_usd , 0 )) AS usd_premio_total,
     
                 COUNT(*) AS animalitos_vendidos
@@ -149,7 +149,6 @@ class HomeController2 extends Controller
                 });
                 return $tm;
 
-
                 // dd($tm);
                 // dd($m);
                 // dd($v);
@@ -157,12 +156,35 @@ class HomeController2 extends Controller
                 //     return $q->monto_total;
                 // });
                 // dd($total);
+
+
+            });
+
+            // dd($results);
+
+            $balance_money_group = $results->groupBy('currency');
+
+            $balance_general = $balance_money_group->each(function ($ghh) {
+
+                $total_monto = $ghh->sum('monto_total');
+                $comision_total = $ghh->sum('comision_total');
+                $premio_total = $ghh->sum('premio_total');
+                $animalitos_vendidos = $ghh->sum('animalitos_vendidos');
+
+
+                $r2 = collect([
+                    'total_monto' => $total_monto,
+                    'comision_total' => $comision_total,
+                    'premio_total' => $premio_total,
+                    'animalitos_vendidos' => $animalitos_vendidos,
+                ]);
+
+                $ghh->push($r2);
+                return $ghh;
             });
 
 
-            // dd($gg);
-
-            return view('home2', compact('results', 'gg'));
+            return view('home2', compact('results', 'gg','balance_general'));
         }
     }
 }

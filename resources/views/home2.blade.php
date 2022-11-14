@@ -42,6 +42,44 @@
                         </div>
                     </form>
                 </div>
+                <div class="row mt-1">
+                    <div class="col p-4">
+                        <div class="card mb-2">
+                            <h5 class="card-header d-flex justify-content-between align-items-center">
+                                Balance General
+                            </h5>
+                            <div class="card-body table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <td>Moneda</td>
+                                        <td>Ventas</td>
+                                        <td>Comisión</td>
+                                        <td>Premios</td>
+                                        <td><abbr title="Cantidad de Animalitos Vendidos">C.V</abbr></td>
+                                        <td>Balance</td>
+                                    </tr>
+
+                                    @foreach($balance_general as $balance_moneda => $balance_total)
+                                    @php
+                                    $total = $balance_total[count($balance_total) -1];
+                                    $sbalance = ($total['total_monto'] - $total['comision_total']) - $total['premio_total'];
+                                    @endphp
+                                    <tr>
+                                        <td>{{$balance_moneda}}</td>
+                                        <td>{{number_format($total['total_monto'],2,',','.')}}</td>
+                                        <td>{{number_format($total['comision_total'],2,',','.')}}</td>
+                                        <td>{{number_format($total['premio_total'],2,',','.')}}</td>
+                                        <td>{{number_format($total['animalitos_vendidos'],2,',','.')}}</td>
+                                        <td>{{number_format($sbalance,2,',','.')}}</td>
+                                        <td></td>
+                                    </tr>
+                                    @endforeach
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row mt-1">
                     <div class="col p-4">
