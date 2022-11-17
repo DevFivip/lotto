@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         // User::create([
-        //     'taquilla_name' => 'FivipLotto',
-        //     'name' => 'Adolfo Gabazutt',
+        //     'taquilla_:30name' => 'FivipLotto',
+        //     ':30name' => 'Adolfo Gabazutt',
         //     'email' => 'adolfo.gbztt@gmail.com',
         //     'password' => bcrypt('adolfo2403'),
         //     'role_id' => 1,
@@ -89,8 +89,8 @@ class DatabaseSeeder extends Seeder
         //     'change_usd' => 1
         // ]);
 
-        SorteosType::create([
-            "name" => 'Lotto Plus'
+        $sorte = SorteosType::create([
+            "name" => 'Lotto Activo RD'
         ]);
 
         Animal::create([
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '0',
@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '01',
@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '02',
@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '03',
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '04',
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '05',
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '06',
@@ -155,7 +155,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '07',
@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '08',
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '09',
@@ -179,7 +179,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '10',
@@ -187,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Animal::create([
@@ -196,7 +196,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '12',
@@ -204,7 +204,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '13',
@@ -212,7 +212,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '14',
@@ -220,7 +220,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '15',
@@ -228,7 +228,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '16',
@@ -236,7 +236,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '17',
@@ -244,7 +244,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '18',
@@ -252,15 +252,16 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
+
         Animal::create([
             'number' => '19',
             'nombre' => 'Chivo',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Animal::create([
@@ -269,7 +270,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '21',
@@ -277,7 +278,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '22',
@@ -285,7 +286,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '23',
@@ -293,7 +294,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '24',
@@ -301,7 +302,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '25',
@@ -309,7 +310,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '26',
@@ -317,7 +318,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '27',
@@ -325,7 +326,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '28',
@@ -333,7 +334,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '29',
@@ -341,7 +342,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Animal::create([
@@ -350,7 +351,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '31',
@@ -358,7 +359,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '32',
@@ -366,7 +367,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '33',
@@ -374,7 +375,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '34',
@@ -382,7 +383,7 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
         Animal::create([
             'number' => '35',
@@ -390,120 +391,114 @@ class DatabaseSeeder extends Seeder
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
+
         Animal::create([
             'number' => '36',
             'nombre' => 'Culebra',
             'limit_cant' => 100,
             'limit_price_usd' => 40,
             'status' => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "08 AM",
+            "schedule" => "08:30 AM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 12:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 13:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "09 AM",
+            "schedule" => "09:30 AM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 13:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "10 AM",
+            "schedule" => "10:30 AM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 14:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "11 AM",
+            "schedule" => "11:30 AM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 15:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "12 AM",
+            "schedule" => "12:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 16:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "01 PM",
+            "schedule" => "01:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 17:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "02 PM",
+            "schedule" => "02:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 18:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "03 PM",
+            "schedule" => "03:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 19:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "04 PM",
+            "schedule" => "04:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 20:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "05 PM",
+            "schedule" => "05:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 21:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "06 PM",
+            "schedule" => "06:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 22:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
         Schedule::create([
-            "schedule" => "07 PM",
+            "schedule" => "07:30 PM",
             "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 23:50:01'),
             "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-16 00:50:00'),
             "status" => 1,
-            "sorteo_type_id" => 4,
+            "sorteo_type_id" => $sorte->id,
         ]);
 
-        Schedule::create([
-            "schedule" => "08 PM",
-            "interval_start_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-15 00:50:01'),
-            "interval_end_utc" => DateTime::createFromFormat('Y-m-!d H:i:s', '2009-02-16 01:50:00'),
-            "status" => 1,
-            "sorteo_type_id" => 4,
-        ]);
 
 
         // $this->call([

@@ -241,15 +241,15 @@ class RegisterController extends Controller
 
         // dd($horario->status);
 
-        if ($sorteo_type_id === 2 && $user_id == 1 ) {
+        if ($sorteo_type_id === 2 && $user_id == 1) {
             array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
         }
 
-        if ($sorteo_type_id === 2 && $user_id == 67 ) {
+        if ($sorteo_type_id === 2 && $user_id == 67) {
             array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
         }
 
-        if ($sorteo_type_id === 2 && $user_id == 101 ) {
+        if ($sorteo_type_id === 2 && $user_id == 101) {
             array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
         }
 
@@ -537,10 +537,16 @@ class RegisterController extends Controller
             }
         });
 
-        if ($detalles->count() != $valid->count()) {
+        if (auth()->user()->role_id == 1) {
+            $detalles->each(function ($item) {
+                $item->delete();
+            });
+            $register->delete();
+
+            return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
+        } else if ($detalles->count() != $valid->count()) {
             return response()->json(['valid' => false, 'message' => 'No se puede eliminar este ticket, ya un animalito se encuentra en sorteo'], 403);
         } else {
-
             $detalles->each(function ($item) {
                 $item->delete();
             });
@@ -548,6 +554,20 @@ class RegisterController extends Controller
 
             return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
         }
+
+
+
+        // if ($detalles->count() != $valid->count()) {
+        //     return response()->json(['valid' => false, 'message' => 'No se puede eliminar este ticket, ya un animalito se encuentra en sorteo'], 403);
+        // } else {
+
+        //     $detalles->each(function ($item) {
+        //         $item->delete();
+        //     });
+        //     $register->delete();
+
+        //     return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
+        // }
     }
 
     public function payAnimalito(Request $request, $id)

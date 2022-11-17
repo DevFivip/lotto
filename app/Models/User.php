@@ -26,6 +26,7 @@ class User extends Authenticatable
         'parent_id',
         'status',
         'monedas',
+        'sorteos',
         'comision',
         "is_socio",
         "limit",
@@ -49,6 +50,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'monedas' => 'array',
+        'sorteos' => 'array',
     ];
 
 

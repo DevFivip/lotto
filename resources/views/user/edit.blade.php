@@ -132,6 +132,37 @@
                             </div>
                         </div>
 
+                        @error('monedas')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+
+                        <div class="row mb-3">
+                            <label for="sorteos" class="col-md-4 col-form-label text-md-end">Sorteos Disponibles</label>
+
+                            <div class="col-md-6">
+                                <select name="sorteos[]" class="form-select" multiple aria-label="multiple select example">
+                                    @foreach($sorteos as $sorteo)
+                                    @if(in_array($sorteo->id, $user->sorteos))
+                                    <option selected value="{{$sorteo->id}}">{{$sorteo->name}}</option>
+                                    @else
+                                    <option value="{{$sorteo->id}}">{{$sorteo->name}}</option>
+                                    @endif
+
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                        </div>
+
+                        @error('sorteos')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+
                         <div class="row mb-3">
                             <label for="comision" class="col-md-4 col-form-label text-md-end">Comisión de Ventas</label>
                             <div class="col-md-6">
@@ -201,7 +232,7 @@
                         </div>
                         @endif
 
-                        @error('monedas')
+                        @error('status')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

@@ -47,7 +47,7 @@ class ResultController extends Controller
     {
         //
         $animalitos = Animal::with('type')->get();
-        $schedules = Schedule::all();
+        $schedules = Schedule::with('type')->get();
         $sorteo_types = SorteosType::all();
 
         // dd($animalitos);
@@ -159,7 +159,6 @@ class ResultController extends Controller
             return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
         }
     }
-
     public static function storeDirect($animal_number, $schedule_id) //store de lotto
     {
 
@@ -593,6 +592,25 @@ class ResultController extends Controller
      */
     public function destroy($id)
     {
-        Result::find($id)->delete();
+
+        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
+
+        //deshacer la actualizacion 
+        $resultado = Result::find($id);
+        // dd($resultado);
+        $registros = RegisterDetail::where('schedule_id', $resultado->schedule_id)->where('sorteo_type_id', $resultado->sorteo_type_id)
+            ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')
+            ->get();
+        // dd($dt->format('Y-m-d'), $registros->count());
+
+
+        $registros->each(function ($items) {
+            $items->winner = 0;
+            $items->update();
+        });
+
+        $resultado->delete();
+        return ["valid" => true, 'message' => 'Registro eliminado correctamente'];
     }
 }

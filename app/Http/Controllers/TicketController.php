@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
+use App\Models\SorteosType;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -168,6 +169,13 @@ class TicketController extends Controller
 
         if (!!$caja) {
 
+            if (auth()->user()->sorteos == null) {
+                $sorteos = SorteosType::where('status',1)->get();
+                // dd('isnull');
+            } else {
+                $sorteos = SorteosType::whereIn('id', auth()->user()->sorteos)->where('status',1)->get();
+            }
+
             $resource = $this->resource;
             $animals = Animal::with('type')->get();
             $schedules = Schedule::where('status', 1)->get();
@@ -183,7 +191,7 @@ class TicketController extends Controller
                 $customers = Customer::where('admin_id', $padre)->get();
             }
 
-            return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas', 'caja'));
+            return view('tickets.create', compact('resource', 'animals', 'schedules', 'customers', 'payments', 'monedas', 'caja', 'sorteos'));
             //
         } else {
             return redirect('/cajas')->withErrors('⚠️ Es necesario aperturar tu caja para realizar ventas');

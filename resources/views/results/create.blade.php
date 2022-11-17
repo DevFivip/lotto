@@ -39,7 +39,7 @@
                                     <div class="col-md-6">
                                         <select name="schedule_id" class="form-select" aria-label="Default select example">
                                             @foreach($schedules as $schedule)
-                                            <option value="{{$schedule->id}}"> {{$schedule->schedule}}</option>
+                                            <option value="{{$schedule->id}}"> {{$schedule->schedule}} {{$schedule->type->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>

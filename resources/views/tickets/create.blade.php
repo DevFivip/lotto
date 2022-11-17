@@ -14,25 +14,13 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div class="col">
-                                    <div class="form-check form-check-inline">
-                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="1" id="type_lotto_activo">
-                                        <label class="form-check-label" for="type_lotto_activo">Lotto Activo</label>
-                                    </div>
-                                    @if(auth()->user()->id != 1 && auth()->user()->id != 67 && auth()->user()->id != 101 )
-                                    <div class="form-check form-check-inline">
-                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="2" id="type_granjita">
-                                        <label class="form-check-label" for="type_granjita">La Granjita</label>
-                                    </div>
-                                    @endif
 
-                                    <!-- <div class="form-check form-check-inline">
-                                        <input disabled x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="3" id="type_selvaTropical">
-                                        <label class="form-check-label" for="type_selvaTropical">Selva Tropical</label>
-                                    </div> -->
+                                    @foreach($sorteos as $sorteo)
                                     <div class="form-check form-check-inline">
-                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="4" id="type_lottoPlus">
-                                        <label class="form-check-label" for="type_lottoPlus">⭐Lotto Plus</label>
+                                        <input x-model="ticket.type_sorteo_id" class="form-check-input" type="radio" value="{{$sorteo->id}}" id="{{str_replace(' ','',$sorteo->name)}}">
+                                        <label class="form-check-label" for="{{str_replace(' ','',$sorteo->name)}}">{{$sorteo->name}}</label>
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="row row-cols-6">
@@ -45,9 +33,18 @@
                                         </template>
                                     </template>
                                 </template>
-                                <template x-if="ticket.type_sorteo_id != 4">
+                                <template x-if="ticket.type_sorteo_id == 1">
                                     <template x-for="(schedule, index) in schedules">
                                         <template x-if="schedule.sorteo_type_id == 1">
+                                            <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
+                                                <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template x-if="ticket.type_sorteo_id == 6">
+                                    <template x-for="(schedule, index) in schedules">
+                                        <template x-if="schedule.sorteo_type_id == 6">
                                             <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
                                                 <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
                                             </div>

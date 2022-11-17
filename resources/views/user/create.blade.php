@@ -115,7 +115,21 @@
 
                         </div>
 
-                        @error('monedas')
+                        <div class="row mb-3">
+                            <label for="sorteos" class="col-md-4 col-form-label text-md-end">Sorteos Disponibles</label>
+
+                            <div class="col-md-6">
+                                <select name="sorteos[]" class="form-select" multiple aria-label="multiple select example">
+                                    @foreach($sorteos as $sorteo)
+                                    <option value="{{$sorteo->id}}">{{$sorteo->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                        </div>
+
+                        @error('sorteos')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

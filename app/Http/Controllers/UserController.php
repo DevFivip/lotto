@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\Moneda;
+use App\Models\SorteosType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -45,7 +46,8 @@ class UserController extends Controller
     {
         $resource = $this->resource;
         $monedas = Moneda::all();
-        return view('user.create', compact('resource', 'monedas'));
+        $sorteos = SorteosType::all();
+        return view('user.create', compact('resource', 'monedas', 'sorteos'));
     }
 
     /**
@@ -88,7 +90,8 @@ class UserController extends Controller
         $user = User::find($id);
         $resource = $this->resource;
         $monedas = Moneda::all();
-        return view('user.edit', compact('resource', 'monedas', 'user'));
+        $sorteos = SorteosType::all();
+        return view('user.edit', compact('resource', 'monedas', 'user','sorteos'));
     }
 
     /**

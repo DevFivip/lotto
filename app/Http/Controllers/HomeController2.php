@@ -157,7 +157,6 @@ class HomeController2 extends Controller
                 // });
                 // dd($total);
 
-
             });
 
             // dd($results);
@@ -184,7 +183,7 @@ class HomeController2 extends Controller
             });
 
 
-            return view('home2', compact('results', 'gg','balance_general'));
+            return view('home2', compact('results', 'gg', 'balance_general'));
         }
     }
 }
