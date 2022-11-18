@@ -454,7 +454,6 @@
                 animal: v.animal,
                 sorteo_type_id: v.sorteo_type_id,
                 moneda: tick.moneda
-
             }
         })
         return {

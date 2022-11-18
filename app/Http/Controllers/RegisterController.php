@@ -38,8 +38,6 @@ class RegisterController extends Controller
     public function index()
     {
         // ver todos si eres el super admin
-
-
         //
 
 
@@ -252,7 +250,6 @@ class RegisterController extends Controller
         if ($sorteo_type_id === 2 && $user_id == 101) {
             array_push($err, '⛔ No tienes acceso a realizar jugadas de la granjita, comunicate con tu administrador ⛔');
         }
-
 
         if ($horario->status == 0) {
             array_push($err, '⛔ El sorteo ' . $horario->schedule . ' de ' . $horario->type->name . ' ya no se encuantra disponible ⛔');

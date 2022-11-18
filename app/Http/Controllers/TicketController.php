@@ -170,10 +170,10 @@ class TicketController extends Controller
         if (!!$caja) {
 
             if (auth()->user()->sorteos == null) {
-                $sorteos = SorteosType::where('status',1)->get();
+                $sorteos = SorteosType::where('status', 1)->get();
                 // dd('isnull');
             } else {
-                $sorteos = SorteosType::whereIn('id', auth()->user()->sorteos)->where('status',1)->get();
+                $sorteos = SorteosType::whereIn('id', auth()->user()->sorteos)->where('status', 1)->get();
             }
 
             $resource = $this->resource;
@@ -267,7 +267,6 @@ class TicketController extends Controller
 
 
         $schedules = Schedule::where('status', 1)->get();
-
         return view('tickets.repeat', compact('ticket', 'detalles', 'schedules'));
     }
 }
