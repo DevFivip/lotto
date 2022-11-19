@@ -264,12 +264,16 @@ class ResultController extends Controller
 
         $old = Result::where('sorteo_type_id', 2)->orderBy('id', 'DESC')->first();
 
-        if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
+        //obtener la posicion del horario
+        $horarios = Schedule::where('sorteo_type_id', 2)->get();
+        $hora = $horarios[$schedule_id - 1];
+
+        if ($old->schedule_id ==  $hora->id && $old->animal_id == $animal->id) {
             return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
         }
 
         $r =  Result::create([
-            'schedule_id' => $schedule_id,
+            'schedule_id' =>  $hora->id,
             'animal_id' => $animal->id,
             'sorteo_type_id' => 2,
         ]);
@@ -284,8 +288,8 @@ class ResultController extends Controller
 
         if ($r) {
 
-            $all_registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
+            $all_registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->get();
+            $registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->get();
 
             // dd(date('Y-m-d'), $registers);
 
@@ -308,7 +312,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
+            $registers_losers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', '!=', $animal->id)->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;

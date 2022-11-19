@@ -24,33 +24,18 @@
                                 </div>
                             </div>
                             <div class="row row-cols-6">
-                                <template x-if="ticket.type_sorteo_id == 4">
+
+                                @foreach($sorteos as $sorteo)
+                                <template x-if="ticket.type_sorteo_id == {{$sorteo->id}}">
                                     <template x-for="(schedule, index) in schedules">
-                                        <template x-if="schedule.sorteo_type_id == 4">
+                                        <template x-if="schedule.sorteo_type_id == {{$sorteo->id}}">
                                             <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
                                                 <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
                                             </div>
                                         </template>
                                     </template>
                                 </template>
-                                <template x-if="ticket.type_sorteo_id == 1">
-                                    <template x-for="(schedule, index) in schedules">
-                                        <template x-if="schedule.sorteo_type_id == 1">
-                                            <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
-                                                <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
-                                            </div>
-                                        </template>
-                                    </template>
-                                </template>
-                                <template x-if="ticket.type_sorteo_id == 6">
-                                    <template x-for="(schedule, index) in schedules">
-                                        <template x-if="schedule.sorteo_type_id == 6">
-                                            <div class="d-grid gap-1 mt-1" x-init="index == 0 ? schedule.selected = true : schedule.selected = false">
-                                                <button :class="!!!schedule.selected ? 'btn-light': 'btn-dark' " class="btn fw-bold" @click="schedule.selected = !schedule.selected" x-text="schedule.schedule"> </button>
-                                            </div>
-                                        </template>
-                                    </template>
-                                </template>
+                                @endforeach
                             </div>
                             <div class="mt-2" x-show="!turn" style="display: none;">
                                 <div class="alert alert-warning" role="alert">
