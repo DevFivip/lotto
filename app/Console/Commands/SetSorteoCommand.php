@@ -44,17 +44,17 @@ class SetSorteoCommand extends Command
             // return 'reset off';
         }
 
-        $s = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
-        if (!!$s) {
-            $s->status = 0;
-            $s->update();
+        $s2 = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
+        if (!!$s2) {
+            $s2->status = 0;
+            $s2->update();
             // return $s->schedule . ' ' . 'off';
         } else {
 
-            $sorteos = Schedule::where('sorteo_type_id', '=', 2)->get();
-            foreach ($sorteos as $sorteo) {
-                $sorteo->status = 1;
-                $sorteo->update();
+            $sorteos2 = Schedule::where('sorteo_type_id', '=', 2)->get();
+            foreach ($sorteos2 as $sorteo2) {
+                $sorteo2->status = 1;
+                $sorteo2->update();
             }
             // return 'reset off';
         }
