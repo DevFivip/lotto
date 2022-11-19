@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-2 d-none d-sm-block">
             @include('components.sidemenu')
- </div>
+        </div>
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Horarios</div>
@@ -19,6 +19,7 @@
                     <table class="table">
                         <tr>
                             <td>Estado</td>
+                            <td>Loteria</td>
                             <td>Horario Nombre</td>
                             <td>Hora Inicio Hora Local / Hora UTC</td>
                             <td>Hora Fin Hora Local / Hora UTC</td>
@@ -33,6 +34,7 @@
                                 <span class="badge bg-danger">Desactivado</span>
                                 @endif
                             </td>
+                            <td>{{$schedule->type->name}}</td>
                             <td>{{$schedule->schedule}}</td>
                             <td> <span class="fw-bold" x-text="fecha_inicial"></span> <br> <span class="form-text">{{$schedule->interval_start_utc}}</span></td>
                             <td> <span class="fw-bold" x-text="fecha_cierre"></span> <br> <span class="form-text">{{$schedule->interval_end_utc}}</span></td>

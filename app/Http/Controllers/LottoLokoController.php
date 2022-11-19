@@ -164,7 +164,7 @@ class LottoLokoController extends Controller
 
     public function horarios()
     {
-        $schedules = Schedule::where('sorteo_type_id', 4)->get();
+        $schedules = Schedule::with('type')->where('sorteo_type_id', 4)->get();
         $resource = 'schedules';
         return view('schedules.index', compact('schedules', 'resource'));
     }
