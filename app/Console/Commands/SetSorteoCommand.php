@@ -29,19 +29,36 @@ class SetSorteoCommand extends Command
      */
     public function handle()
     {
-        $s = Schedule::where('status', 1)->where('sorteo_type_id', '!=', 4)->first();
+        $s = Schedule::where('status', 1)->where('sorteo_type_id', '=', 1)->first(); // Cerrar Lotto Activo  
         if (!!$s) {
             $s->status = 0;
             $s->update();
-            return $s->schedule . ' ' . 'off';
+            // return $s->schedule . ' ' . 'off';
         } else {
 
-            $sorteos = Schedule::where('sorteo_type_id', '!=', 4)->get();
+            $sorteos = Schedule::where('sorteo_type_id', '=', 1)->get();
             foreach ($sorteos as $sorteo) {
                 $sorteo->status = 1;
                 $sorteo->update();
             }
-            return 'reset off';
+            // return 'reset off';
         }
+
+        $s = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
+        if (!!$s) {
+            $s->status = 0;
+            $s->update();
+            // return $s->schedule . ' ' . 'off';
+        } else {
+
+            $sorteos = Schedule::where('sorteo_type_id', '=', 2)->get();
+            foreach ($sorteos as $sorteo) {
+                $sorteo->status = 1;
+                $sorteo->update();
+            }
+            // return 'reset off';
+        }
+
+        return 'reset off';
     }
 }
