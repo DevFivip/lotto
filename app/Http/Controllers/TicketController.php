@@ -178,7 +178,9 @@ class TicketController extends Controller
 
             $resource = $this->resource;
             $animals = Animal::with('type')->get();
+
             $schedules = Schedule::where('status', 1)->get();
+
             $payments = Payment::where('status', '1')->get();
             $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
 

@@ -307,7 +307,7 @@
 
     function sorteos() {
         var kk = @json($schedules);
-        // console.log(kk.length, !!kk.length)
+         console.log(kk,kk.length, !!kk.length)
         var aa = @json($animals);
         var mm = @json($monedas);
         return {
