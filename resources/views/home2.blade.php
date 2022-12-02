@@ -55,7 +55,7 @@
                                         <td>Ventas</td>
                                         <td>Comisión</td>
                                         <td>Premios</td>
-                                        <td><abbr title="Cantidad de Animalitos Vendidos">C.V</abbr></td>
+   
                                         <td>Balance</td>
                                     </tr>
 
@@ -69,7 +69,6 @@
                                         <td>{{number_format($total['total_monto'],2,',','.')}}</td>
                                         <td>{{number_format($total['comision_total'],2,',','.')}}</td>
                                         <td>{{number_format($total['premio_total'],2,',','.')}}</td>
-                                        <td>{{number_format($total['animalitos_vendidos'],2,',','.')}}</td>
                                         <td>{{number_format($sbalance,2,',','.')}}</td>
                                         <td></td>
                                     </tr>
@@ -146,7 +145,7 @@
                                                 <td>Premios</td>
                                                 <td>Comisión</td>
                                                 <td>Balance</td>
-                                                <td><abbr title="Cantidad de Animalitos Vendidos">C.V.</abbr></td>
+
                                             </tr>
                                             @foreach($monedas as $currency => $totales)
                                             @php
@@ -167,7 +166,7 @@
                                                 <td>{{$to->simbolo}} {{number_format($to->premio_total,2,',','.')}}</td>
                                                 <td>{{$to->simbolo}} {{number_format($to->comision_total,2,',','.')}}</td>
                                                 <td><b class="@if($balance_total < 0) text-danger @endif">{{$to->simbolo}} {{number_format($balance_total,2,',','.')}}</b></td>
-                                                <td>{{$to->animalitos_vendidos}}</td>
+                            
                                             </tr>
                                             @endif
 

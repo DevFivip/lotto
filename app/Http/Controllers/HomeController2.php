@@ -510,7 +510,7 @@ class HomeController2 extends Controller
                     'total_monto' => $total_monto,
                     'comision_total' => $comision_total,
                     'premio_total' => $premio_total,
-                    'animalitos_vendidos' => $animalitos_vendidos,
+                    //'animalitos_vendidos' => $animalitos_vendidos,
                 ]);
 
                 $ghh->push($r2);
