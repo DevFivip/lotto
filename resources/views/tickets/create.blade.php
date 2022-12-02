@@ -307,7 +307,7 @@
 
     function sorteos() {
         var kk = @json($schedules);
-         console.log(kk,kk.length, !!kk.length)
+        console.log(kk, kk.length, !!kk.length)
         var aa = @json($animals);
         var mm = @json($monedas);
         return {
@@ -364,7 +364,8 @@
             handleClick: function(number, st) {
                 if (!st) {
                     this.animals = this.animals.map((v, k) => {
-                        if (parseInt(v.type.id) == parseInt(this.ticket.type_sorteo_id)) {
+                        if (parseInt(v?.type?.id) == parseInt(this.ticket?.type_sorteo_id)) {
+                            console.log(v.type.id)
                             if (v.number == number) {
                                 v.selected = true;
                                 this._numeros.push(number)
@@ -380,7 +381,6 @@
                     })
                 } else {
                     this.animals = this.animals.map((v, k) => {
-
                         if (parseInt(v.type.id) == parseInt(this.ticket.type_sorteo_id)) {
                             if (v.number == number) {
                                 v.selected = false;
@@ -447,7 +447,7 @@
                     }
                 })
 
-                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected && parseInt(v.type.id) === parseInt(this.ticket.type_sorteo_id))));
+                __animals = JSON.parse(JSON.stringify(this.animals.filter(v => !!v.selected && parseInt(v?.type?.id) === parseInt(this.ticket.type_sorteo_id))));
                 _ani = [];
 
 

@@ -144,7 +144,7 @@
                                     <span class="badge bg-primary">Ganador</span>
                                     @endif
                                 </td>
-                                <td x-text="fecha_inicial"></td>
+                                <td>{{$ticket->created_at}}</td>
                                 <td>{{$ticket->code}}</td>
                                 <td> <span class="fw-bold">{{$ticket->user->taquilla_name}}</span> <br> {{$ticket->user->name}}</td>
                                 <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total,'2',',','.')}}</td>

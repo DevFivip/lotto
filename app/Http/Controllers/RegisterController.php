@@ -370,7 +370,8 @@ class RegisterController extends Controller
         $this->fpdf->SetFont('Arial');
         $this->fpdf->Text(0, 7.5, "---------------------------------------------------------");
         $this->fpdf->Text(2, 11, "Codigo: $code");
-        $this->fpdf->Text(2, 16, $dt->format('d/m/y H:i:s'));
+        // $this->fpdf->Text(2, 16, $dt->format('d/m/y H:i:s'));
+        $this->fpdf->Text(2, 16, $ticket->created_at);
         $this->fpdf->Text(2, 20.5, "Caja: " . $ticket->caja_id . " N:" . $ticket->id);
         $this->fpdf->Text(0, 23.2, "---------------------------------------------------------");
 

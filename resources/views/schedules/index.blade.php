@@ -34,7 +34,7 @@
                                 <span class="badge bg-danger">Desactivado</span>
                                 @endif
                             </td>
-                            <td>{{$schedule->type->name}}</td>
+                            <td>{{!$schedule->type ? 'null': $schedule->type->name}} {{$schedule->sorteo_type_id}}</td>
                             <td>{{$schedule->schedule}}</td>
                             <td> <span class="fw-bold" x-text="fecha_inicial"></span> <br> <span class="form-text">{{$schedule->interval_start_utc}}</span></td>
                             <td> <span class="fw-bold" x-text="fecha_cierre"></span> <br> <span class="form-text">{{$schedule->interval_end_utc}}</span></td>

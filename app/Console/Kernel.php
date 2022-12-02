@@ -13,9 +13,14 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
+    protected $commands = [
+        Commands\GetDolarTodayExchangeCommand::class
+    ];
+
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('sorteo:set')->everyTwoMinutes();
+         $schedule->command('exchange:dolarToday')->everyFourMinutes();
         // $schedule->command('sorteo:set')->timezone('America/New_York')->at('2:00');
     }
 

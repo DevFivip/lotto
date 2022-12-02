@@ -15,16 +15,16 @@ class HomeController2 extends Controller
     {
         if (count($request->all()) > 1) {
             $data = $request->all();
-            $dt = new DateTime($data['fecha_inicio'] . " 00:00:00", new DateTimeZone('UTC'));
+            $dt = new DateTime($data['fecha_inicio'] . " 00:00:00", new DateTimeZone('America/Caracas'));
             if (isset($data['fecha_fin'])) {
-                $dt2 = new DateTime($data['fecha_fin'] . " 00:00:00", new DateTimeZone('UTC'));
+                $dt2 = new DateTime($data['fecha_fin'] . " 00:00:00", new DateTimeZone('America/Caracas'));
                 // $dt2->setTimezone(new DateTimeZone(session('timezone')));
             }
+
         } else {
             $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-            // $dt->setTimezone(new DateTimeZone(session('timezone')));
+            $dt = $dt->setTimezone(new DateTimeZone("America/Caracas"));
         }
-
 
         if (auth()->user()->role_id == 1) {
 
