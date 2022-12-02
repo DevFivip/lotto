@@ -55,7 +55,6 @@
                                         <td>Ventas</td>
                                         <td>Comisión</td>
                                         <td>Premios</td>
-   
                                         <td>Balance</td>
                                     </tr>
 
@@ -69,11 +68,11 @@
                                         <td>{{number_format($total['total_monto'],2,',','.')}}</td>
                                         <td>{{number_format($total['comision_total'],2,',','.')}}</td>
                                         <td>{{number_format($total['premio_total'],2,',','.')}}</td>
+                  <td>0</td>
                                         <td>{{number_format($sbalance,2,',','.')}}</td>
                                         <td></td>
                                     </tr>
                                     @endforeach
-
                                 </table>
                             </div>
                         </div>
@@ -144,7 +143,6 @@
                                                 <td>Premios</td>
                                                 <td>Comisión</td>
                                                 <td>Balance</td>
-
                                             </tr>
                                             @foreach($monedas as $currency => $totales)
                                             @php
@@ -165,7 +163,7 @@
                                                 <td>{{$to->simbolo}} {{number_format($to->premio_total,2,',','.')}}</td>
                                                 <td>{{$to->simbolo}} {{number_format($to->comision_total,2,',','.')}}</td>
                                                 <td><b class="@if($balance_total < 0) text-danger @endif">{{$to->simbolo}} {{number_format($balance_total,2,',','.')}}</b></td>
-                            
+                                     
                                             </tr>
                                             @endif
 
