@@ -42,7 +42,7 @@
                             <tr x-data="converter('{{$result->created_at}}')">
                                 <td>{{$result->schedule->schedule}}</td>
                                 <td>{{$result->type->name}}</td>
-                                <td x-text="fecha_inicial"></td>
+                                <td>{{$result->created_at}}</td>
                                 <td>{{$result->animal->number}}</td>
                                 <td>{{$result->animal->nombre}}</td>
                                 @if(auth()->user()->role_id == 1)
