@@ -282,7 +282,7 @@ class HomeController2 extends Controller
             // dd($results);
 
             $results = collect($results);
-            $g = $results->groupBy('admin_name');
+            $g = $results->groupBy('taquilla_name');
 
             $gg = $g->map(function ($v) {
                 $m = $v->groupBy('currency');
