@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController2 extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->comision_vendedores = 0.13;
+        $this->amount_rewards = 30; //numero por que se multiplica los premios
+        $this->middleware('auth');
+        $this->middleware('timezone');
+    }
     //
     public function index(Request $request)
     {
+
+
         if (count($request->all()) > 1) {
             $data = $request->all();
             $dt = new DateTime($data['fecha_inicio'] . " 00:00:00", new DateTimeZone('America/Caracas'));
