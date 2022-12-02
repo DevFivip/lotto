@@ -84,11 +84,13 @@
                 <div class="row mt-1">
                     <div class="col p-4">
 
-                    @php
-                    $indexModal = 0;
-                    @endphp
+                        @php
+                        $indexModal = 0;
+                        @endphp
                         @foreach($gg as $admin => $monedas)
-$indexModal+=1:
+                        @php
+                        $indexModal +=1;
+                        @endphp
                         <div class="card mb-2">
                             <h5 class="card-header d-flex justify-content-between align-items-center">
                                 {{$admin}}
