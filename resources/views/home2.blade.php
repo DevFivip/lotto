@@ -22,7 +22,7 @@
                         <a href="/tickets/create" class="btn btn-primary">Nuevo Ticket</a>
                     </div>
 
-                    <form action="/home2" class="mt-2">
+                    <form action="/home" class="mt-2">
                         <div class="row">
                             <div class="col">
                                 <label for="">Fecha Inicio</label>
@@ -86,6 +86,7 @@
                         @php
                         $indexModal = 0;
                         @endphp
+
                         @foreach($gg as $admin => $monedas)
                         @php
                         $indexModal +=1;
