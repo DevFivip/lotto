@@ -103,7 +103,6 @@
                                         <td>Ventas</td>
                                         <td>Comisión</td>
                                         <td>Premios</td>
-                                        <td><abbr title="Cantidad de Animalitos Vendidos">C.V</abbr></td>
                                         <td>Balance</td>
                                     </tr>
 
