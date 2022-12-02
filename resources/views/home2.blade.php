@@ -68,7 +68,6 @@
                                         <td>{{number_format($total['total_monto'],2,',','.')}}</td>
                                         <td>{{number_format($total['comision_total'],2,',','.')}}</td>
                                         <td>{{number_format($total['premio_total'],2,',','.')}}</td>
-                  <td>0</td>
                                         <td>{{number_format($sbalance,2,',','.')}}</td>
                                         <td></td>
                                     </tr>
