@@ -83,7 +83,6 @@
 
                 <div class="row mt-1">
                     <div class="col p-4">
-
                         @php
                         $indexModal = 0;
                         @endphp
