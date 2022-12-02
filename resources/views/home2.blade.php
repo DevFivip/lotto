@@ -89,7 +89,7 @@
                         <div class="card mb-2">
                             <h5 class="card-header d-flex justify-content-between align-items-center">
                                 {{$admin}}
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{str_replace(' ', '', $admin)}}">Detalles</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{str_replace('.', '',str_replace(',', '',str_replace(' ', '', $admin)))}}">Detalles</button>
                                 <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
                             </h5>
                             <div class="card-body table-responsive">
@@ -123,7 +123,7 @@
 
 
                         <!-- Modal -->
-                        <div class="modal fade" id="{{str_replace(' ', '', $admin)}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="{{str_replace('.', '',str_replace(',', '',str_replace(' ', '', $admin)))" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
