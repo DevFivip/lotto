@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-        date_default_timezone_set('America/Lima');
+        date_default_timezone_set('America/Caracas');
 
         // if (request()->server->has('HTTP_X_ORIGINAL_HOST')) {
         //     url()->forceRootUrl(
