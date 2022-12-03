@@ -44,20 +44,7 @@ class SetSorteoCommand extends Command
             // return 'reset off';
         }
 
-        $s2 = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
-        if (!!$s2) {
-            $s2->status = 0;
-            $s2->update();
-            // return $s->schedule . ' ' . 'off';
-        } else {
-
-            $sorteos2 = Schedule::where('sorteo_type_id', '=', 2)->get();
-            foreach ($sorteos2 as $sorteo2) {
-                $sorteo2->status = 1;
-                $sorteo2->update();
-            }
-            // return 'reset off';
-        }
+     
 
         return 'reset off';
     }
