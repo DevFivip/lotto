@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 
-class CloseHorarioLottoActivoRD extends Command
+class CloserHorarioLottoReyCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sorteo:closelottoactivord';
+    protected $signature = 'sorteo:closelottorey';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Cerrar Loteria LottoActivoRD';
+    protected $description = 'Close Lotto Rey';
 
     /**
      * Create a new command instance.
@@ -38,13 +38,13 @@ class CloseHorarioLottoActivoRD extends Command
      */
     public function handle()
     {
-        $s = Schedule::where('status', 1)->where('sorteo_type_id', 5)->first();
+        $s = Schedule::where('status', 1)->where('sorteo_type_id', 6)->first();
         if (!!$s) {
             $s->status = 0;
             $s->update();
             return $s->schedule . ' ' . 'off';
         } else {
-            $sorteos = Schedule::where('sorteo_type_id', 5)->get();
+            $sorteos = Schedule::where('sorteo_type_id', 6)->get();
             foreach ($sorteos as $sorteo) {
                 $sorteo->status = 1;
                 $sorteo->update();

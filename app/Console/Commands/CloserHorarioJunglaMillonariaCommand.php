@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 
-class CloseHorarioLottoActivoRD extends Command
+class CloserHorarioJunglaMillonariaCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sorteo:closelottoactivord';
+    protected $signature = 'sorteo:closejunglamillonaria';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Cerrar Loteria LottoActivoRD';
+    protected $description = 'Cerrar jungla millonaria';
 
     /**
      * Create a new command instance.
