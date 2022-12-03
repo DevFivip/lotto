@@ -44,17 +44,17 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('03:50'); // reset granjita open all
 
         // Selva Paraiso PERU
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('08:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('09:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('10:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('11:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('12:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('13:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('14:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('15:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('16:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('17:40');
-        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('18:40');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('08:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('09:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('10:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('11:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('12:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('13:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('14:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('15:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('16:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('17:50');
+        $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('18:50');
 
         $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('03:47'); // reset selva paraiso
 
