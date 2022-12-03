@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('exchange:dolarToday')->everyFourMinutes();
+        //  $schedule->command('exchange:dolarToday')->everyFourMinutes();
 
          $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('08:40');
          $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('09:40');
@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('17:40');
          $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('18:40');
 
-         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('22:10'); // reset granjita open all
+         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('03:50'); // reset granjita open all
 
 
 

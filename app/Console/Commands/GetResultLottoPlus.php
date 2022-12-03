@@ -7,6 +7,7 @@ use App\Models\Animal;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GetResultLottoPlus extends Command
 {
@@ -42,7 +43,8 @@ class GetResultLottoPlus extends Command
     public function handle()
     {
 
-        $url = env('APP_SERVIDOR_LOTTO_LOCO') . '/last-result';
+         $url = env('APP_SERVIDOR_LOTTO_LOCO') . '/last-result';
+        //$url = 'https://api.lottoplus.plus/last-result';
         $response = Http::post($url);
         $body = $response->json();
 
@@ -51,7 +53,7 @@ class GetResultLottoPlus extends Command
         $schedule = Schedule::where('schedule', $body['schedule'])->where('sorteo_type_id', 4)->first();
         $res = ResultController::storeDirectLottoPlus($body['number'],$schedule->id);
         // dd($res);
-        $this->info('Resultados Actualizados');
+        $this->info('resultados actualizados');
         return 0;
     }
 }

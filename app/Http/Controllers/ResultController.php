@@ -16,15 +16,12 @@ use Illuminate\Http\Request;
 
 class ResultController extends Controller
 {
+    public $dt = 0;
 
-    public $dt;
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('timezone');
-
-        $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-        $this->dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
 
     }
     /**
@@ -68,6 +65,10 @@ class ResultController extends Controller
      */
     public function store(Request $request)
     {
+
+          
+        $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
 
         $data = $request->all();
         $schedule_id = $data['schedule_id'];
@@ -114,8 +115,8 @@ class ResultController extends Controller
 
         if ($r) {
 
-            $all_registers = RegisterDetail::where('winner', 0)->where("sorteo_type_id", $sorteo_type_id)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $all_registers = RegisterDetail::where('winner', 0)->where("sorteo_type_id", $sorteo_type_id)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers as $register) {
                 $register->winner = 1;
@@ -133,7 +134,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
@@ -462,6 +463,9 @@ class ResultController extends Controller
     }
     public static function storeDirectLottoPlus($animal_number, $schedule_id)
     {
+  
+        $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
 
         $animal = Animal::where('sorteo_type_id', 4)->where('number', $animal_number)->first();
         $old = Result::where('sorteo_type_id', 4)->orderBy('id', 'DESC')->first();
@@ -489,8 +493,8 @@ class ResultController extends Controller
 
         if ($r) {
 
-            $all_registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $all_registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
 
             // dd(date('Y-m-d'), $registers);
 
@@ -513,7 +517,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $registers_losers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
