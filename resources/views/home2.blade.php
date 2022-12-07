@@ -47,6 +47,10 @@
                         <div class="card mb-2">
                             <h5 class="card-header d-flex justify-content-between align-items-center">
                                 Balance General
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_balancegeneral">Detalles</button>
+                                <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
+                            </h5>
                             </h5>
                             <div class="card-body table-responsive">
                                 <table class="table">
@@ -76,6 +80,74 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+                    <!-- MODAL DEL BALANCE GENRAL -->
+
+
+
+
+                    <div class="modal fade" id="modal_balancegeneral" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">Balance General</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <td>Loteria</td>
+                                            <td>Moneda</td>
+                                            <td>Venta</td>
+                                            <td>Premios</td>
+                                            <td>Comisión</td>
+                                            <td>Balance</td>
+                                        </tr>
+                                        @foreach($loteria_balance as $name => $totales)
+                                        @php
+                                        $res = $totales->toArray();
+                                        @endphp
+                                        @foreach($res as $moneda => $to)
+                                        @foreach($to as $identify => $row)
+                                       
+                                            @if($identify == count($to) -1 )
+                                            @php
+                                       
+                                            $balance_total = ($row['total_monto'] - $row['premio_total']) - $row['comision_total'];
+                                            @endphp
+                                            <tr>
+                                                <td>{{$name}}</td>
+                                                <td>{{$moneda}}</td>
+                                                <td></td>
+                                                <td>{{number_format($row['total_monto'],2,',','.')}}</td>
+                                                <td>{{number_format($row['premio_total'],2,',','.')}}</td>
+                                                <td>{{number_format($row['comision_total'],2,',','.')}}</td>
+                                                <td><b class="@if($balance_total < 0) text-danger @endif">{{number_format($balance_total,2,',','.')}}</b></td>
+                                                
+                                            </tr>
+                                            @endif
+
+                                        @endforeach
+                                        @endforeach
+
+                                        @endforeach
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL DEL BALANCE GENRAL -->
+
+
+
                 </div>
 
                 <div class="row mt-1">
@@ -162,7 +234,7 @@
                                                 <td>{{$to->simbolo}} {{number_format($to->premio_total,2,',','.')}}</td>
                                                 <td>{{$to->simbolo}} {{number_format($to->comision_total,2,',','.')}}</td>
                                                 <td><b class="@if($balance_total < 0) text-danger @endif">{{$to->simbolo}} {{number_format($balance_total,2,',','.')}}</b></td>
-                                     
+
                                             </tr>
                                             @endif
 
