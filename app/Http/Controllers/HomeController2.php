@@ -415,6 +415,46 @@ class HomeController2 extends Controller
 
             });
 
+
+            $loterias = $results->groupBy('loteria_name');
+            $loteria_balance = $loterias->map(function ($v) {
+                $m = $v->groupBy('currency');
+                $tm = $m->each(function ($e) {
+                    $total_monto = $e->sum('monto_total');
+                    $comision_total = $e->sum('comision_total');
+                    $premio_total = $e->sum('premio_total');
+                    $animalitos_vendidos = $e->sum('animalitos_vendidos');
+
+                    // dd($total_monto,$comision_total,$premio_total,$animalitos_vendidos);
+                    // $e-> totales = [
+                    //     'total_monto' => $total_monto,
+                    //     'comision_total' => $comision_total,
+                    //     'premio_total' => $premio_total,
+                    //     'animalitos_vendidos' => $animalitos_vendidos,
+                    // ];
+
+                    $r = collect([
+                        'total_monto' => $total_monto,
+                        'comision_total' => $comision_total,
+                        'premio_total' => $premio_total,
+                        //'animalitos_vendidos' => $animalitos_vendidos,
+                    ]);
+
+                    $e->push($r);
+                    return $e;
+                });
+                return $tm;
+
+                // dd($tm);
+                // dd($m);
+                // dd($v);
+                // $total = $v->sum(function($q){
+                //     return $q->monto_total;
+                // });
+                // dd($total);
+
+            });
+
             $balance_money_group = $results->groupBy('currency');
 
             $balance_general = $balance_money_group->each(function ($ghh) {
@@ -436,11 +476,9 @@ class HomeController2 extends Controller
                 return $ghh;
             });
 
-            
-            dd($balance_general);
 
 
-            return view('home2', compact('results', 'gg', 'balance_general'));
+            return view('home2', compact('results', 'gg', 'balance_general','loteria_balance'));
         }
         if (auth()->user()->role_id == 3) {
 
