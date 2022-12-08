@@ -69,7 +69,7 @@ class SendWinnerLottoPlusCommand extends Command
                     'user' => env('APP_LOTTO_USER'),
                     'password' => env('APP_LOTTO_PASSWORD')
                 ])
-                    ->retry(3, 1000)
+                    ->retry(1, 2000)
                     ->post($endpoint . '/register-lotto-valid', $an);
                 $re = $response->body();
 
