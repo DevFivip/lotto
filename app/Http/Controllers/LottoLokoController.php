@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Libs\Telegram;
 use App\Models\Animal;
 use App\Models\LottoPlusConfig;
 use App\Models\NextResult;
@@ -152,7 +153,7 @@ class LottoLokoController extends Controller
 
         $next = NextResult::with('animal')->first();
 
-        return view("lottoloko.preview", compact('hh', 'totales', 'horario', 'default', 'premiar', 'recoger', 'next','setting'));
+        return view("lottoloko.preview", compact('hh', 'totales', 'horario', 'default', 'premiar', 'recoger', 'next', 'setting'));
     }
 
     public function animalitos()
@@ -175,17 +176,24 @@ class LottoLokoController extends Controller
         $data = $request->all();
         // dd($data);
         $next = NextResult::first();
+        $telegram = new Telegram();
 
         if ($next == null) {
+
             $nr = new NextResult();
             $nr->animal_id = $data['animalito'];
             $nr->schedule = $data['schedule'];
             $nr->save();
+
+            $telegram->sendMessage('✅ Lotto Plus ganador modificado para las ' . $data['schedule']);
             return redirect()->back()->withInput(['message' => "saved"]);
         } else {
+
             $next->animal_id = $data['animalito'];
             $next->schedule = $data['schedule'];
             $next->update();
+
+            $telegram->sendMessage('✅ Lotto Plus ganador modificado para las ' . $data['schedule']);
             return redirect()->back()->withInput(['message' => "saved"]);
         }
 

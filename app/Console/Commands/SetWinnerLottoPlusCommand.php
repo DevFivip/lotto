@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Libs\Telegram;
 use App\Models\Animal;
 use App\Models\LottoPlusConfig;
 use App\Models\NextResult;
@@ -189,6 +190,9 @@ class SetWinnerLottoPlusCommand extends Command
                 ]
             );
         }
+
+        $telegram = new Telegram();
+        $telegram->sendMessage('✅ Lotto Plus ganador auto-seteado para las ' . $horario['schedule']);
 
 
         return 0;
