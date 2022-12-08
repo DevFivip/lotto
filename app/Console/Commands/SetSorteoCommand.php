@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Libs\Telegram;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 
@@ -29,11 +30,13 @@ class SetSorteoCommand extends Command
      */
     public function handle()
     {
+        $telegram = new Telegram();
         $s = Schedule::where('status', 1)->where('sorteo_type_id', '=', 1)->first(); // Cerrar Lotto Activo  
         if (!!$s) {
             $s->status = 0;
             $s->update();
-            // return $s->schedule . ' ' . 'off';
+              $telegram->sendMessage('✔ Horario Cerrado '. $s->schedule .'  Lotto Activo');
+             return $s->schedule . ' ' . 'off';
         } else {
 
             $sorteos = Schedule::where('sorteo_type_id', '=', 1)->get();
@@ -41,7 +44,8 @@ class SetSorteoCommand extends Command
                 $sorteo->status = 1;
                 $sorteo->update();
             }
-            // return 'reset off';
+              $telegram->sendMessage('✔ Horarios Reiniciados Lotto Activo');
+             return 'reset off';
         }
 
      

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Libs\Telegram;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 
@@ -38,19 +39,21 @@ class CloserHorarioLaGranjitaCommand extends Command
      */
     public function handle()
     {
-
+        $telegram = new Telegram();
         $s2 = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
         if (!!$s2) {
             $s2->status = 0;
             $s2->update();
-            // return $s->schedule . ' ' . 'off';
+              $telegram->sendMessage('✔ Horario Cerrado '. $s2->schedule .'  La Granjita');
+            return $s2->schedule . ' ' . 'off';
         } else {
             $sorteos2 = Schedule::where('sorteo_type_id', '=', 2)->get();
             foreach ($sorteos2 as $sorteo2) {
                 $sorteo2->status = 1;
                 $sorteo2->update();
             }
-            // return 'reset off';
+              $telegram->sendMessage('✔ Horarios Reiniciados La Granjita');
+             return 'reset off';
         }
 
         return 0;

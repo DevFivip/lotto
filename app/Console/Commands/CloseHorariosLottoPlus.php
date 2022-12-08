@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Libs\Telegram;
 use App\Models\Schedule;
+
 use Illuminate\Console\Command;
 
 class CloseHorariosLottoPlus extends Command
@@ -38,11 +40,12 @@ class CloseHorariosLottoPlus extends Command
      */
     public function handle()
     {
-
+        $telegram = new Telegram();
         $s = Schedule::where('status', 1)->where('sorteo_type_id', 4)->first();
         if (!!$s) {
             $s->status = 0;
             $s->update();
+            $telegram->sendMessage('✔ Horario Cerrado '. $s->schedule .'  Lotto Plus');
             return $s->schedule . ' ' . 'off';
         } else {
             $sorteos = Schedule::where('sorteo_type_id', 4)->get();
@@ -51,6 +54,7 @@ class CloseHorariosLottoPlus extends Command
                 $sorteo->is_send = 0;
                 $sorteo->update();
             }
+            $telegram->sendMessage('✔ Horarios Reiniciados Lotto Plus');
             return 'reset off';
         }
 

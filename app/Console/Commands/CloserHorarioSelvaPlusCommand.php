@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Libs\Telegram;
 use App\Models\Schedule;
 use Illuminate\Console\Command;
 
@@ -38,10 +39,12 @@ class CloserHorarioSelvaPlusCommand extends Command
      */
     public function handle()
     {
+        $telegram = new Telegram();
         $s = Schedule::where('status', 1)->where('sorteo_type_id', 11)->first();
         if (!!$s) {
             $s->status = 0;
             $s->update();
+              $telegram->sendMessage('✔ Horario Cerrado '. $s->schedule .'  Selva Plus');
             return $s->schedule . ' ' . 'off';
         } else {
             $sorteos = Schedule::where('sorteo_type_id', 11)->get();
@@ -49,6 +52,7 @@ class CloserHorarioSelvaPlusCommand extends Command
                 $sorteo->status = 1;
                 $sorteo->update();
             }
+              $telegram->sendMessage('✔ Horarios Reiniciados Selva Plus');
             return 'reset off';
         }
 
