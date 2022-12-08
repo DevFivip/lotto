@@ -38,13 +38,13 @@ class CloserHorarioJunglaMillonariaCommand extends Command
      */
     public function handle()
     {
-        $s = Schedule::where('status', 1)->where('sorteo_type_id', 5)->first();
+        $s = Schedule::where('status', 1)->where('sorteo_type_id', 9)->first();
         if (!!$s) {
             $s->status = 0;
             $s->update();
             return $s->schedule . ' ' . 'off';
         } else {
-            $sorteos = Schedule::where('sorteo_type_id', 5)->get();
+            $sorteos = Schedule::where('sorteo_type_id', 9)->get();
             foreach ($sorteos as $sorteo) {
                 $sorteo->status = 1;
                 $sorteo->update();
