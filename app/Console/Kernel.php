@@ -134,7 +134,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('16:54');
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('17:54');
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('18:54');
-
+        
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('03:58'); // reset granjita open all
 
 

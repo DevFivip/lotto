@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Libs\Telegram;
 use App\Models\Animal;
 use App\Models\Exchange;
 use App\Models\Moneda;
@@ -22,7 +23,6 @@ class ResultController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('timezone');
-
     }
     /**
      * Display a listing of the resource.
@@ -66,7 +66,7 @@ class ResultController extends Controller
     public function store(Request $request)
     {
 
-          
+
         $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
 
@@ -115,8 +115,8 @@ class ResultController extends Controller
 
         if ($r) {
 
-            $all_registers = RegisterDetail::where('winner', 0)->where("sorteo_type_id", $sorteo_type_id)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $all_registers = RegisterDetail::where('winner', 0)->where("sorteo_type_id", $sorteo_type_id)->where('schedule_id', $schedule_id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
+            $registers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers as $register) {
                 $register->winner = 1;
@@ -134,7 +134,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $registers_losers = RegisterDetail::where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->where('sorteo_type_id', $sorteo_type_id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
@@ -163,307 +163,10 @@ class ResultController extends Controller
             return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
         }
     }
-    public static function storeDirect($animal_number, $schedule_id) //store de lotto
-    {
 
-        // $schedule_id = $data['schedule_id'];
-        // $animal_number = $data['animal_id'];
-
-        $animal = Animal::where('sorteo_type_id', 1)->where('number', $animal_number)->first();
-
-        $old = Result::where('sorteo_type_id', 1)->orderBy('id', 'DESC')->first();
-
-        if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-            return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-        }
-
-        $r =  Result::create([
-            'schedule_id' => $schedule_id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 1,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 1)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 1)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 1)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 1];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-    public static function storeDirectGranjita($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 2)->where('number', $animal_number)->first();
-
-        $old = Result::where('sorteo_type_id', 2)->orderBy('id', 'DESC')->first();
-
-        //obtener la posicion del horario
-        $horarios = Schedule::where('sorteo_type_id', 2)->get();
-        $hora = $horarios[$schedule_id];
-
-        if ($old->schedule_id ==  $hora->id && $old->animal_id == $animal->id) {
-            return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-        }
-
-        $r =  Result::create([
-            'schedule_id' =>  $hora->id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 2,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 2)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', '!=', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 2];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-    public static function storeDirectSelvaParaiso($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 3)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', 3)->orderBy('id', 'DESC')->first();
-
-           //obtener la posicion del horario
-           $horarios = Schedule::where('sorteo_type_id', 2)->get();
-           $hora = $horarios[$schedule_id];
-   
-
-        if (!!$old) {
-            if ($old->schedule_id == $hora->id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r =  Result::create([
-            'schedule_id' => $hora->id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 3,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 3)->where('winner', 0)->where('schedule_id', $hora->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 3)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 3)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 2];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
     public static function storeDirectLottoPlus($animal_number, $schedule_id)
     {
-  
+
         $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
 
@@ -493,8 +196,8 @@ class ResultController extends Controller
 
         if ($r) {
 
-            $all_registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $all_registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
+            $registers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
 
             // dd(date('Y-m-d'), $registers);
 
@@ -517,7 +220,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at","=", $dt->format('Y-m-d'))->get();
+            $registers_losers = RegisterDetail::where('sorteo_type_id', 4)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at", "=", $dt->format('Y-m-d'))->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
@@ -562,504 +265,11 @@ class ResultController extends Controller
             // return [$registers->count(), $registers_losers->count()];
         }
     }
-    public static function storeDirectLottoActivoRD($animal_number, $schedule_id,$sorteo_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', $sorteo_id)->orderBy('id', 'DESC')->first();
-
-        $horarios = Schedule::where('sorteo_type_id', $sorteo_id)->get();
-        $hora = $horarios[$schedule_id];
-
-
-        if (!!$old) {
-            if ($old->schedule_id == $hora->id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r = Result::create([
-            'schedule_id' => $hora->id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 7,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => $sorteo_id];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-
-    public static function storeDirectLottoRey($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 6)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', 6)->orderBy('id', 'DESC')->first();
-
-        if (!!$old) {
-            if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r = Result::create([
-            'schedule_id' => $schedule_id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 6,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 6)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 6)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 6)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 6];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-
-    public static function storeDirectChanceAnimalitos($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 7)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', 7)->orderBy('id', 'DESC')->first();
-
-        if (!!$old) {
-            if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r = Result::create([
-            'schedule_id' => $schedule_id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 7,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 7)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 7)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 7)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 7];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-
-    public static function storeDirectTropiGana($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 8)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', 8)->orderBy('id', 'DESC')->first();
-
-        if (!!$old) {
-            if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r = Result::create([
-            'schedule_id' => $schedule_id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 8,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 8)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 8)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 8)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 8];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-
-    public static function storeDirectJunglaMillonaria($animal_number, $schedule_id)
-    {
-
-        $animal = Animal::where('sorteo_type_id', 9)->where('number', $animal_number)->first();
-        $old = Result::where('sorteo_type_id', 9)->orderBy('id', 'DESC')->first();
-
-        if (!!$old) {
-            if ($old->schedule_id == $schedule_id && $old->animal_id == $animal->id) {
-                return ['valid' => false, 'message' => 'ALERTA! Registros Similares, no se pueden guardar los resultados'];
-            }
-        }
-
-        $r = Result::create([
-            'schedule_id' => $schedule_id,
-            'animal_id' => $animal->id,
-            'sorteo_type_id' => 9,
-        ]);
-
-        $totalMonedas = Moneda::all()->toArray();
-        $change = Exchange::all()->toArray();
-
-        // dd($data);
-
-        $amount_winners = 0;
-        $amount_home_usd = 0;
-
-        if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', 9)->where('winner', 0)->where('schedule_id', $schedule_id)->get();
-            $registers = RegisterDetail::where('sorteo_type_id', 9)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', $animal->id)->get();
-
-            // dd(date('Y-m-d'), $registers);
-
-            foreach ($registers as $register) {
-                $register->winner = 1;
-                $register->update();
-
-                //calcular el monto en dolares de los premios
-
-
-
-                // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
-                $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
-
-
-                $amount_winners += ($register->monto * 30) / $change[$key2]['change_usd'];
-
-                $reg = Register::find($register->register_id);
-                $reg->has_winner = 1;
-                $reg->update();
-            }
-
-            $registers_losers = RegisterDetail::where('sorteo_type_id', 9)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->get();
-
-            foreach ($registers_losers as $register_loser) {
-                $register_loser->winner = -1;
-                $register_loser->update();
-
-
-
-                // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
-                $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
-
-                $amount_home_usd += $register_loser->monto / $change[$key4]['change_usd'];
-                // $reg = Register::find($register->register_id);
-                // $reg->has_winner = -1;
-                // $reg->update();
-            }
-
-            $st = $r->update([
-                'quantity_plays' => $all_registers->count(),
-                'quantity_winners' => $registers->count(),
-                'quantity_lossers' => $registers_losers->count(),
-                'amount_winners_usd' => $amount_winners,
-                'amount_home_usd' => $amount_home_usd,
-                'amount_balance_usd' => $amount_home_usd - $amount_winners,
-            ]);
-
-            //eliminar si el nuevo  el igual al anterior pero sin cantidades
-            // $old =  Result::find($st->id - 1);
-            // if (
-            //     $old->animal_id === $st->animal_id
-            //     && $old->schedule === $st->schedule
-            //     && $all_registers->count() == 0
-            //     &&  $registers->count()
-            //     && $registers_losers->count() == 0
-            // ) {
-            //     $st->delete();
-            //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
-            // } else {
-            return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 9];
-            // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
-            // }
-
-            // return [$registers->count(), $registers_losers->count()];
-        }
-    }
-
 
     public static function storeDirectGeneric($animal_number, $schedule_id, $sorteo_id)
     {
 
+        $telegram = new Telegram();
         $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
         $old = Result::where('sorteo_type_id', $sorteo_id)->orderBy('id', 'DESC')->first();
 
@@ -1088,9 +298,9 @@ class ResultController extends Controller
         $amount_home_usd = 0;
 
         if ($r) {
-
-            $all_registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
-            $registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $__sorteo = SorteosType::find($sorteo_id);
+            $all_registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->whereDate("created_at", "=", $this->dt->format('Y-m-d'))->get();
+            $registers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $hora->id)->where('animal_id', $animal->id)->whereDate("created_at", "=", $this->dt->format('Y-m-d'))->get();
 
             // dd(date('Y-m-d'), $registers);
 
@@ -1113,7 +323,7 @@ class ResultController extends Controller
                 $reg->update();
             }
 
-            $registers_losers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at","=", $this->dt->format('Y-m-d'))->get();
+            $registers_losers = RegisterDetail::where('sorteo_type_id', $sorteo_id)->where('winner', 0)->where('schedule_id', $schedule_id)->where('animal_id', '!=', $animal->id)->whereDate("created_at", "=", $this->dt->format('Y-m-d'))->get();
 
             foreach ($registers_losers as $register_loser) {
                 $register_loser->winner = -1;
@@ -1151,6 +361,8 @@ class ResultController extends Controller
             //     $st->delete();
             //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
             // } else {
+
+            $telegram->sendMessage('✅ ' . $__sorteo->name . ' Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
             return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => $sorteo_id];
             // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
             // }
@@ -1159,47 +371,6 @@ class ResultController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
 
