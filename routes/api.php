@@ -26,15 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/send-results-complement', function (Request $request) {
 
     $data = $request->all();
-
     // return $data;
     $schedule = Schedule::where('sorteo_type_id', 1)->where('status', 0)->first();
 
-    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-    $output->writeln("<info>$schedule</info>");
+    // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+    // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'],1);
-        $response['sorteo'] = $schedule->schedule;
+        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 1);
+
         // dd($response);
         return response()->json($response, 200);
     } else {
@@ -51,11 +50,10 @@ Route::post('/send-results-granjita', function (Request $request) {
 
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 2)->first();
-    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-    $output->writeln("<info>$schedule</info>");
+    // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+    // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
         $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 2);
-
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
@@ -67,7 +65,7 @@ Route::post('/send-results-selvaParaiso', function (Request $request) {
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 3)->first();
     if ($schedule) {
-        $response = ResultController::storeDirectSelvaParaiso($data['numero'], $data['schedule_id']);
+        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 3);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
@@ -88,7 +86,6 @@ Route::post('/send-results-lottoactivord', function (Request $request) {
 });
 
 Route::post('/send-results-lottorey', function (Request $request) {
-
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 6)->first();
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
@@ -105,11 +102,8 @@ Route::post('/send-results-chanceanimalitos', function (Request $request) {
 
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 7)->first();
-
     if ($schedule) {
-
         $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 7);
-
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
@@ -120,8 +114,8 @@ Route::post('/send-results-tropigana', function (Request $request) {
 
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 8)->first();
-    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-    $output->writeln("<info>$schedule</info>");
+    // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+    // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
         $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 8);
         return response()->json($response, 200);
@@ -144,6 +138,5 @@ Route::post('/send-results-junglamillonaria', function (Request $request) {
 
 
 Route::post('/save_soteo_semanal', function (Request $request) {
-
     $data = $request->all();
 });
