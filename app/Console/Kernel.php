@@ -29,17 +29,17 @@ class Kernel extends ConsoleKernel
     {
         //  $schedule->command('exchange:dolarToday')->everyFourMinutes();
         //LA GRANJITA
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('08:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('09:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('10:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('11:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('12:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('13:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('14:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('15:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('16:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('17:40');
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('18:40');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('08:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('09:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('10:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('11:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('12:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('13:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('14:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('15:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('16:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('17:45');
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('18:45');
 
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('03:50'); // reset granjita open all
 
@@ -75,7 +75,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('03:55'); // reset lotto activo rd open all
 
 
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:20');
+        // $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('09:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('10:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('11:20');
@@ -86,6 +86,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('16:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('17:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('18:20');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('19:20');
 
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('03:49'); // reset lotto activo rd open all
 
