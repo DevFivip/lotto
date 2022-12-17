@@ -71,6 +71,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('16:21');
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('17:21');
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('18:21');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('18:21');
 
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('03:55'); // reset lotto activo rd open all
 
@@ -135,7 +136,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('16:54');
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('17:54');
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('18:54');
-        
+
         $schedule->command('sorteo:closejunglamillonaria')->timezone('America/Caracas')->at('03:58'); // reset granjita open all
 
 

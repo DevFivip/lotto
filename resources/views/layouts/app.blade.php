@@ -39,6 +39,7 @@ $l = $_SERVER['REQUEST_URI']
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    @yield('scripts')
 </head>
 
 <body>

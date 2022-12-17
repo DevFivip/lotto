@@ -45,6 +45,9 @@ Route::resource('/schedules', ScheduleController::class);
 Route::resource('/resultados', ResultController::class);
 Route::resource('/cash-admins', CashAdminController::class);
 
+Route::get('/chart', [App\Http\Controllers\JugadasController::class, 'plays']);
+Route::get('/choose', [App\Http\Controllers\JugadasController::class, 'choose']);
+
 Route::get('/tickets-repeat', [App\Http\Controllers\TicketController::class, 'repeat']);
 
 Route::post('/tickets/makepay/{id}', [App\Http\Controllers\RegisterController::class, 'payAnimalito']);
