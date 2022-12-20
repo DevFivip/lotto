@@ -19,7 +19,7 @@
                         <span class="strong">{{$errors->first()}}</span>
                     </div>
                     @endif
-                    
+
                     <form action="/chart">
 
                         <div class="row mb-3">
@@ -51,6 +51,19 @@
 
 
                     </form>
+
+
+                    <div class="col-md-10">
+
+                        @foreach($loterias as $loteria)
+                        <h3>{{$loteria->name}}</h3>
+                        @foreach($loteria->schedules as $horario)
+
+                        <a class='btn btn-primary' href="/chart/detail?loteria_id={{$loteria->id}}&created_at={{$fechaHoy}}&schedule={{$horario->schedule}}">{{$horario->schedule}}</a>
+                        @endforeach
+                        @endforeach
+
+                    </div>
 
                 </div>
             </div>

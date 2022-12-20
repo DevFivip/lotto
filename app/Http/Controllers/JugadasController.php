@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\SorteosType;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,8 +60,11 @@ class JugadasController extends Controller
 
     public function choose()
     {
-        $loterias = SorteosType::where('status', 1)->get();
-        return view('plays.index', compact('loterias'));
+        $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
+        $fechaHoy = $dt->format('Y-m-d');
+        $loterias = SorteosType::with('schedules')->where('status', 1)->get();
+        return view('plays.index', compact('loterias', 'fechaHoy'));
     }
 
     public function detail(Request $request)
