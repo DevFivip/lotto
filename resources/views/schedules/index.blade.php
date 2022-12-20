@@ -40,7 +40,7 @@
                             <td> <span class="fw-bold" x-text="fecha_cierre"></span> <br> <span class="form-text">{{$schedule->interval_end_utc}}</span></td>
                             <td>
                                 <div x-data="listener()" class="btn-group">
-                                    <!-- <a href="/{{$resource}}/{{$schedule->id}}/edit" class="btn btn-primary">Editar</a> -->
+                                    <a href="/{{$resource}}/{{$schedule->id}}/limits" class="btn btn-primary">Limites</a>
                                     @if($schedule->status == 1)
                                     <button @click="handleLock" id="{{$schedule->id}}" class="btn btn-danger">Desactivar</button>
                                     @else

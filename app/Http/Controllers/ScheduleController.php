@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScheduleRequest;
+use App\Models\Animal;
+use App\Models\AnimalitoScheduleLimit;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
 {
@@ -33,7 +36,7 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        
+
         $resource = $this->resource;
         return view('schedules.create', compact('resource'));
         //
@@ -112,6 +115,66 @@ class ScheduleController extends Controller
             return true;
         } else {
             return false;
+        }
+    }
+
+
+    public function limits($schedule_id)
+    {
+        $schedule = Schedule::find($schedule_id);
+
+        $animals = Animal::where('sorteo_type_id', $schedule->sorteo_type_id)->orderBy('number', "ASC")->get();
+        $limits = AnimalitoScheduleLimit::where('schedule_id', $schedule->id)->get();
+
+        $animals = $animals->map(function ($v, $k)  use ($limits) {
+
+            foreach ($limits as $key => $value) {
+                if ($value->animal_id == $v->id) {
+                    //  dd($v, $value);
+                    $v->limit = $value->limit;
+                }
+            }
+
+            return $v;
+        });
+
+        // dd($a);
+
+        return view('schedules.limits', compact('animals', 'schedule'));
+    }
+
+    public function limits_save(Request $request)
+    {
+
+        try {
+            //code...
+
+            $data = $request->all();
+            $schedule_id = $data['schedule_id'];
+            $animals = $data['animal'];
+
+            // // dd($data);
+
+            foreach ($animals as $animal_id => $limit) {
+
+                // validar si ya existe el registro 
+                $fund  = AnimalitoScheduleLimit::where('schedule_id', $schedule_id)->where('animal_id', $animal_id)->first();
+                // dd($fund);
+
+                if ($fund == null) {
+                    if ($limit !== null) {
+                        AnimalitoScheduleLimit::create(['schedule_id' => $schedule_id, 'animal_id' => $animal_id, 'limit' => $limit]);
+                    }
+                } else {
+                    $fund->limit = $limit;
+                    $fund->update();
+                }
+            }
+
+            return redirect()->back()->with('success', 'Nuevos Limites Guardados');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th);
         }
     }
 }

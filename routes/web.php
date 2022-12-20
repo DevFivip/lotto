@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SorteosController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Models\Result;
@@ -42,11 +43,20 @@ Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
 Route::resource('/schedules', ScheduleController::class);
+
 Route::resource('/resultados', ResultController::class);
 Route::resource('/cash-admins', CashAdminController::class);
+Route::resource('/sorteos', SorteosController::class);
+Route::post('/sorteos/{id}/crear-limites', [App\Http\Controllers\SorteosController::class, 'limitesSettings']);
+
+
 
 Route::get('/chart', [App\Http\Controllers\JugadasController::class, 'plays']);
+Route::get('/chart/detail', [App\Http\Controllers\JugadasController::class, 'detail']);
 Route::get('/choose', [App\Http\Controllers\JugadasController::class, 'choose']);
+Route::get('/schedules/{schedule_id}/limits', [App\Http\Controllers\ScheduleController::class, 'limits']);
+Route::post('/schedules/save', [App\Http\Controllers\ScheduleController::class, 'limits_save']);
+
 
 Route::get('/tickets-repeat', [App\Http\Controllers\TicketController::class, 'repeat']);
 

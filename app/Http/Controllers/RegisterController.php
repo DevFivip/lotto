@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\AnimalitoScheduleLimit;
 use App\Models\Caja;
 use App\Models\Exchange;
 use App\Models\Register;
@@ -49,7 +50,7 @@ class RegisterController extends Controller
         return DB::transaction(function () use ($request) {
             $data = $request->all();
             $user = auth()->user();
-            $admin = User::select(['id', 'limit'])->where('id', $user->parent_id)->first();
+            // $admin = User::select(['id', 'limit'])->where('id', $user->parent_id)->first();
             $caja = Caja::select(['id'])->where('user_id', $user->id)->where('status', 1)->first();
             // dd($user,$admin);
             //validar
@@ -93,8 +94,6 @@ class RegisterController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $animalito = $data['detalles'][$i];
 
-
-                    // dd($animalito);
 
                     if (!isset($animalito['type']['id'])) {
                         $type = $animalito['sorteo_type_id'];
@@ -177,37 +176,53 @@ class RegisterController extends Controller
     public function checkItem($animal_id, $horario_id, $taquilla_id, $admin_id)
     {
 
-        $r = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
-        $r2 = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt = $dt->setTimezone(new DateTimeZone("America/Caracas"));
+
+        $r = DB::select("SELECT count(*) as cantidad , SUM(monto / exchanges.change_usd ) as total_actual FROM register_details
+        LEFT JOIN exchanges on register_details.moneda_id = exchanges.moneda_id
+        WHERE animal_id = ? AND schedule_id = ? AND DATE(register_details.created_at) = DATE(?)", [$animal_id, $horario_id, $dt->format('Y-m-d')]);
+
+        $r2 = DB::select("SELECT count(*) as cantidad , SUM(monto / exchanges.change_usd ) as total_actual FROM register_details
+        LEFT JOIN exchanges on register_details.moneda_id = exchanges.moneda_id
+        WHERE user_id = ? AND animal_id = ? AND schedule_id = ? AND DATE(register_details.created_at) = DATE(?)", [$taquilla_id, $animal_id, $horario_id, $dt->format('Y-m-d')]);
+
+        error_log(json_encode($r));
+
+        // $r = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
+        //$r2 = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
         // $r3 = RegisterDetail::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('admin_id', $admin_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
 
-        $cantidad = $r->count();
-        $exchange = Exchange::all()->toArray();
-        $_mapexchange = [];
+        $cantidad = $r[0]->cantidad;
+        // $exchange = Exchange::all()->toArray();
+        // $_mapexchange = [];
 
         // dd($cantidad,$exchange);
 
-        foreach ($exchange as $key => $value) {
-            array_push($_mapexchange, $value['id']);
-        }
+        // foreach ($exchange as $key => $value) {
+        //     array_push($_mapexchange, $value['id']);
+        // }
 
-        $monto = 0;
-        $monto_taquilla = 0;
+        $monto = $r[0]->total_actual ? $r[0]->total_actual : 0;
+        $monto_taquilla = $r2[0]->total_actual ? $r2[0]->total_actual : 0;
         $monto_admin = 0;
 
-        foreach ($r as $item) {
-            $k = array_search($item->moneda_id, $_mapexchange);
-            $_exchange = $exchange[$k];
-            $change = $item->monto / $_exchange['change_usd'];
-            $monto += $change;
-        }
 
-        foreach ($r2 as $item2) {
-            $k = array_search($item2->moneda_id, $_mapexchange);
-            $_exchange = $exchange[$k];
-            $change2 = $item2->monto / $_exchange['change_usd'];
-            $monto_taquilla += $change2;
-        }
+
+
+        // foreach ($r as $item) {
+        //     $k = array_search($item->moneda_id, $_mapexchange);
+        //     $_exchange = $exchange[$k];
+        //     $change = $item->monto / $_exchange['change_usd'];
+        //     $monto += $change;
+        // }
+
+        // foreach ($r2 as $item2) {
+        //     $k = array_search($item2->moneda_id, $_mapexchange);
+        //     $_exchange = $exchange[$k];
+        //     $change2 = $item2->monto / $_exchange['change_usd'];
+        //     $monto_taquilla += $change2;
+        // }
 
         // foreach ($r3 as $item3) {
         //     $k = array_search($item3->moneda_id, $_mapexchange);
@@ -230,11 +245,14 @@ class RegisterController extends Controller
 
         // dd($limit_admin, $limit_personal);
         $user_id = auth()->user()->id;
+
+
         $resp =  $this->checkItem($animal_id, $horario_id, $taquilla_id, $admin_id);
         //  dd($resp);
         $animal = Animal::find($animal_id);
         $horario = Schedule::with('type')->find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
+        $validacionHorario = AnimalitoScheduleLimit::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->first();
         $err = [];
 
         // dd($horario->status);
@@ -267,41 +285,107 @@ class RegisterController extends Controller
         }
         // End validate horas lotto plus
 
-        // dd($animal->limit_cant);
 
-        if (!isset($animal->limit_cant)) {
-            if (count($err) >= 1) {
-                return ['status' => false, 'messages' => $err[0]];
-            } else {
-                return ['status' => true];
-            }
-        };
-
-        if ($resp[0] > $animal->limit_cant) {
-            array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
-        }
-
-        // Validate
-        // Valores actuales
 
         $actual_monto = floatval($monto / $exchange->change_usd);
 
 
-        // dd('this', $resp[2], $actual_monto, $limit_personal);
+        ############################
+        ############################
+        ############################
+        ##VALIDACIONES DEL SISTEMA##
+        ############################
+        ############################
+        ############################
 
+        // error_log(json_encode($resp));
+        // error_log($validacionHorario->limit);
+
+        if ($resp[1] > $validacionHorario->limit) {
+            array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+        }
+
+
+        if ($resp[2] > $validacionHorario->limit) {
+            array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+        }
+
+        // TODO: validacion de limites por usuarios y por loteria
+        // if ($resp[1] > $validacionHorario->limit) {
+        //     array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+        // }
+
+
+
+
+
+        ############################
+        ############################
+        ############################
+        ##VALIDACIONES DEL SISTEMA##
+        ############################
+        ############################
+        ############################
+
+
+
+
+        ############################
+        ############################
+        ############################
+        ##VALIDACIONES DEL USUARIO##
+        ############################
+        ############################
+        ############################
+        //
         if ($limit_personal != 0) {
-            // dd('those', $resp[2] + $actual_monto .' > '. $limit_personal , $actual_monto);
-
             if (($resp[2] +  $actual_monto) > floatval($limit_personal)) {
-                array_push($err, ' ' . 'Tu limite de venta (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario');
+
+                array_push($err, ' ' . ' Tu limite de venta por sorteo (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario, Error 1003 no authorizado');
             }
         }
+        if (($resp[1] +  $actual_monto) > $validacionHorario->limit) {
+            array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excede lo estipulado, intente para otro horario, Error 1004 no authorizado');
+        }
+        //
+        ############################
+        ############################
+        ############################
+        ##VALIDACIONES DEL USUARIO##
+        ############################
+        ############################
+        ############################
+
+
+
+
+        // dd($animal->limit_cant);
+
+        // if (!isset($animal->limit_cant)) {
+        //     if (count($err) >= 1) {
+        //         return ['status' => false, 'messages' => $err[0]];
+        //     } else {
+        //         return ['status' => true];
+        //     }
+        // };
+
+        // if ($resp[0] > $animal->limit_cant) {
+        //     array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+        // }
+
+        // Validate
+        // Valores actuales
+
+        // $actual_monto = floatval($monto / $exchange->change_usd);
+
+
+        // dd('this', $resp[2], $actual_monto, $limit_personal);
+
+
 
         // dd($resp[1], $actual_monto, $animal->limit_price_usd);
 
-        if (($resp[1] +  $actual_monto) > $animal->limit_price_usd) {
-            array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
-        }
+
 
         // if ($limit_admin != 0) {
 

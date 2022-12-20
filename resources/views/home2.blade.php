@@ -97,7 +97,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body table-responsive">
-                                    <table class="table">
+                                <table class="table">
                                         <tr>
                                             <td>Loteria</td>
                                             <td>Moneda</td>
@@ -115,7 +115,6 @@
                                        
                                             @if($identify == count($to) -1 )
                                             @php
-                                       
                                             $balance_total = ($row['total_monto'] - $row['premio_total']) - $row['comision_total'];
                                             @endphp
                                             <tr>

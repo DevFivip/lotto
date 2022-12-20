@@ -18,6 +18,7 @@
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     <a href="/payments" class="list-group-item list-group-item-action">Metodos de Pago</a>
     <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
+    <a href="/sorteos" class="list-group-item list-group-item-action">Sorteos</a>
     <a href="/lottoloko" class="list-group-item list-group-item-action">⭐Lotto Plus</a>
 
     @endif
