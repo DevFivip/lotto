@@ -57,6 +57,32 @@
 
                     <div id="chart"></div>
 
+                    @if($top)
+                    <div class="col mt-3">
+                        <table class="table">
+                            <tr>
+                                <td>Animalito</td>
+                                <td>Numero</td>
+                                <td>Cantidad</td>
+                                <td>Ventas Bs</td>
+                                <td>Ventas USD</td>
+                            </tr>
+                            @foreach($top as $to)
+                            <tr>
+                                <td>{{$to->nombre}}</td>
+                                <td>{{$to->number}}</td>
+                                <td>{{$to->cantidad}}</td>
+                                <td> {{number_format($to->monto_bs,2,',','.')}}</td>
+                                <td> {{number_format($to->monto_usd,2,',','.')}}</td>
+                                <!-- <td>{{ $to->monto_usd}}</td> -->
+                            </tr>
+
+                            @endforeach
+                        </table>
+                    </div>
+                    @endif
+
+
                     <h3 class="mt-3">Grafica detallada por hora</h3>
                     <div class="col mt-3">
                         @foreach($schedule as $s)

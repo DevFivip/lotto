@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use App\Models\SorteosType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -47,8 +48,9 @@ class JugadasController extends Controller
 
             $loteria = SorteosType::find($loteria_id);
             $loteria_name = $loteria->name;
+            $top = false;
 
-            return view('plays.chart', compact('jugadas', 'monto_total', 'premio_total', 'schedule', 'max_riesgo', 'min_riesgo', 'loteria_name', 'loteria_id', 'created_at'));
+            return view('plays.chart', compact('jugadas', 'monto_total', 'premio_total', 'schedule', 'max_riesgo', 'min_riesgo', 'loteria_name', 'loteria_id', 'created_at', 'top'));
         } catch (\Throwable $th) {
             return redirect('/choose')->withErrors('⚠️' . $th->getMessage());
         }
@@ -63,13 +65,13 @@ class JugadasController extends Controller
     public function detail(Request $request)
     {
 
-
         try {
             $data = $request->all();
 
             $loteria_id = $data['loteria_id'];
             $created_at = $data['created_at'];
             $schedule = $data['schedule'];
+            $horario = Schedule::where('schedule', $schedule)->where('sorteo_type_id', $loteria_id)->first();
 
             $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
         SUM(monto) AS monto_total,
@@ -103,7 +105,26 @@ class JugadasController extends Controller
             $loteria = SorteosType::find($loteria_id);
             $loteria_name = $loteria->name;
 
-            return view('plays.chart', compact('jugadas', 'monto_total', 'premio_total', 'schedule', 'max_riesgo', 'min_riesgo', 'loteria_name', 'loteria_id', 'created_at'));
+            $top = DB::select("SELECT animal_id,
+            animals.nombre,number,
+            COUNT(*) cantidad,
+            SUM(monto) as monto_bs,
+            SUM(monto / exchanges.change_usd) as monto_usd
+            
+            FROM register_details
+            
+            LEFT JOIN exchanges ON register_details.moneda_id = exchanges.id
+            LEFT JOIN animals ON register_details.animal_id = animals.id
+            
+            
+            WHERE DATE(register_details.created_at) = DATE(?)
+            and register_details.schedule_id = ?
+            and register_details.moneda_id = 1
+            
+            GROUP BY animal_id
+            order by monto_usd DESC", [$created_at, $horario->id]);
+
+            return view('plays.chart', compact('jugadas', 'monto_total', 'premio_total', 'schedule', 'max_riesgo', 'min_riesgo', 'loteria_name', 'loteria_id', 'created_at', 'top'));
         } catch (\Throwable $th) {
             return redirect('/choose')->withErrors('⚠️' . $th->getMessage());
         }
