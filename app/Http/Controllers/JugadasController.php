@@ -81,7 +81,7 @@ class JugadasController extends Controller
         LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
         WHERE DATE(register_details.created_at) = DATE(?)
         and sorteo_type_id = ?
-        and schedule_id = ?
+        and schedule = ?
         and register_details.moneda_id = 1
         group by createdAt", [$created_at, $created_at, $created_at, $loteria_id, $schedule]);
 
