@@ -56,6 +56,13 @@
                 <div class="card-body">
 
                     <div id="chart"></div>
+
+                    <h3 class="mt-3">Grafica detallada por hora</h3>
+                    <div class="col mt-3">
+                        @foreach($schedule as $s)
+                        <a class='btn btn-primary' href="/chart/detail?loteria_id={{$loteria_id}}&created_at={{$created_at}}&schedule={{$s}}">{{$s}}</a>
+                        @endforeach
+                    </div>
                     <script>
                         let jugadas = @json($jugadas);
                         let monto_total = @json($monto_total);
@@ -89,7 +96,7 @@
                             ],
                             chart: {
                                 height: 400,
-                                type: "line",
+                                type: "area",
                                 zoom: {
                                     enabled: true,
                                 },
@@ -117,9 +124,9 @@
                                 },
                             },
                             markers: {
-                                size: 0,
+                                size: 2,
                                 hover: {
-                                    sizeOffset: 6,
+                                    sizeOffset: 5,
                                 },
                             },
                             xaxis: {
