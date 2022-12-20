@@ -79,19 +79,18 @@ class JugadasController extends Controller
             $horario = Schedule::where('schedule', $schedule)->where('sorteo_type_id', $loteria_id)->first();
 
             $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
-        SUM(monto) AS monto_total,
-        SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total ,
-        (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo DESC Limit 1) * sorteos_types.premio_multiplication as max_riesgo,
-        (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo ASC Limit 1) * sorteos_types.premio_multiplication as min_riesgo,
-        DATE_FORMAT(from_unixtime(unix_timestamp(register_details.created_at) - unix_timestamp(register_details.created_at) mod 80), '%Y-%m-%d %H:%i:00') as createdAt 
-        FROM register_details
-        LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
-        WHERE DATE(register_details.created_at) = DATE(?)
-        and sorteo_type_id = ?
-        and schedule = ?
-        and register_details.moneda_id = 1
-        group by createdAt", [$created_at, $created_at, $created_at, $loteria_id, $schedule]);
-
+            SUM(monto) AS monto_total,
+            SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total ,
+            (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo DESC Limit 1) * sorteos_types.premio_multiplication as max_riesgo,
+            (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo ASC Limit 1) * sorteos_types.premio_multiplication as min_riesgo,
+            DATE_FORMAT(from_unixtime(unix_timestamp(register_details.created_at) - unix_timestamp(register_details.created_at) mod 80), '%Y-%m-%d %H:%i:00') as createdAt 
+            FROM register_details
+            LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
+            WHERE DATE(register_details.created_at) = DATE(?)
+            and sorteo_type_id = ?
+            and schedule = ?
+            and register_details.moneda_id = 1
+            group by createdAt", [$created_at, $created_at, $created_at, $loteria_id, $schedule]);
 
             $coll = new Collection($jugadas);
             $jugadas = $coll->pluck('jugadas')->toArray();
@@ -110,24 +109,27 @@ class JugadasController extends Controller
             $loteria = SorteosType::find($loteria_id);
             $loteria_name = $loteria->name;
 
-            $top = DB::select("SELECT animal_id,
+            $top = DB::select("SELECT register_details.animal_id as animl,
             animals.nombre,number,
             COUNT(*) cantidad,
             SUM(monto) as monto_bs,
-            SUM(monto / exchanges.change_usd) as monto_usd
+            SUM(monto / exchanges.change_usd) as monto_usd,
+            animalito_schedule_limits.limit
             
             FROM register_details
             
             LEFT JOIN exchanges ON register_details.moneda_id = exchanges.id
             LEFT JOIN animals ON register_details.animal_id = animals.id
+            LEFT JOIN animalito_schedule_limits ON register_details.animal_id = animalito_schedule_limits.animal_id AND animalito_schedule_limits.schedule_id = ?
             
             
             WHERE DATE(register_details.created_at) = DATE(?)
             and register_details.schedule_id = ?
             and register_details.moneda_id = 1
             
-            GROUP BY animal_id
-            order by monto_usd DESC", [$created_at, $horario->id]);
+            GROUP BY animl
+            
+            order by cantidad DESC", [$horario->id, $created_at, $horario->id]);
 
             return view('plays.chart', compact('jugadas', 'monto_total', 'premio_total', 'schedule', 'max_riesgo', 'min_riesgo', 'loteria_name', 'loteria_id', 'created_at', 'top'));
         } catch (\Throwable $th) {

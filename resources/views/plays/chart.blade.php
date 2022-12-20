@@ -66,6 +66,7 @@
                                 <td>Cantidad</td>
                                 <td>Ventas Bs</td>
                                 <td>Ventas USD</td>
+                                <td>Limite</td>
                             </tr>
                             @foreach($top as $to)
                             <tr>
@@ -74,7 +75,7 @@
                                 <td>{{$to->cantidad}}</td>
                                 <td> {{number_format($to->monto_bs,2,',','.')}}</td>
                                 <td> {{number_format($to->monto_usd,2,',','.')}}</td>
-                                <!-- <td>{{ $to->monto_usd}}</td> -->
+                                <td> {{number_format($to->limit,2,',','.')}}</td>
                             </tr>
 
                             @endforeach
