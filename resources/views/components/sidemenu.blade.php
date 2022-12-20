@@ -13,6 +13,7 @@
     <a href="/cash-admins/{{auth()->user()->id}}" class="list-group-item list-group-item-action">Caja Administrativa</a>
     @endif
     @if(auth()->user()->role_id == 1)
+    
     <a href="/cash-admins" class="list-group-item list-group-item-action">Cajas Administrativas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
@@ -20,6 +21,7 @@
     <a href="/schedules" class="list-group-item list-group-item-action">Horarios</a>
     <a href="/sorteos" class="list-group-item list-group-item-action">Sorteos</a>
     <a href="/lottoloko" class="list-group-item list-group-item-action">⭐Lotto Plus</a>
+    <a href="/choose" class="list-group-item list-group-item-action">📈 Actividad</a>
 
     @endif
     <a href="/resultados" class="list-group-item list-group-item-action">Resultados</a>
