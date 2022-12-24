@@ -61,7 +61,7 @@ class SetWinnerLottoPlusCommand extends Command
         $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone('America/Caracas'));
 
-        // dd($dt);
+        // dddt);
 
         $details = RegisterDetail::with(['animal', 'exchange'])
             ->whereIn('admin_id', $so)
@@ -83,6 +83,7 @@ class SetWinnerLottoPlusCommand extends Command
             $data['total_monto_usd'] = $v->sum(function ($a) {
                 return ($a->monto / $a->exchange->change_usd);
             });
+
             $data['total_recompensa_usd'] = $v->sum(function ($a) {
                 return (($a->monto * 32) / $a->exchange->change_usd);
             });
@@ -177,6 +178,16 @@ class SetWinnerLottoPlusCommand extends Command
         // dd($arr_premiar);
 
         $nextR = NextResult::first();
+
+
+        // RAND PARA EL 24 y el 25
+
+        $default['animal_id'] = rand(115,152);
+
+
+        // END RAND PARA EL 24 y el 25
+
+
 
         if ($nextR) {
             $nextR->animal_id = $default['animal_id'];
