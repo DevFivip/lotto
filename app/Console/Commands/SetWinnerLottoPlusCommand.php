@@ -7,6 +7,7 @@ use App\Models\Animal;
 use App\Models\LottoPlusConfig;
 use App\Models\NextResult;
 use App\Models\RegisterDetail;
+use App\Models\Result;
 use App\Models\Schedule;
 use App\Models\User;
 use DateTime;
@@ -182,7 +183,22 @@ class SetWinnerLottoPlusCommand extends Command
 
         // RAND PARA EL 24 y el 25
 
-        $default['animal_id'] = rand(115,152);
+        // obtenet los ultimos 10 id de los resultados de lotto plus
+
+
+
+        $gg = Result::where('sorteo_type_id', 4)->limit(10)->orderBy('id', 'DESC')->get();
+        $ff = $gg->pluck('id');
+        $rand = rand(115, 152);
+
+        while ($ff->search($rand) != false) {
+            $rand = rand(115, 152);
+        }
+
+
+
+        $default['animal_id'] = $rand;
+
 
 
         // END RAND PARA EL 24 y el 25
