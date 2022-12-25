@@ -46,6 +46,15 @@ class SendWinnerLottoPlusCommand extends Command
     {
         $telegram = new Telegram();
         $endpoint = env('APP_SERVIDOR_LOTTO_LOCO');
+
+
+        //DESACTIVAR EL ENVIO DE RESULTADOS DE LOTTO PLUS
+        return 0;
+        // END DESACTIVAR EL ENVIO DE RESULTADOS DE LOTTO PLUS
+
+
+
+
         try {
             $animalito = NextResult::with('animal')->first();
             $schedule = Schedule::where('schedule', $animalito->schedule)->where('sorteo_type_id', 4)->first();
