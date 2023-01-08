@@ -63,18 +63,18 @@ class Kernel extends ConsoleKernel
 
 
         // LOTTO ACTIVO RD
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('08:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('09:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('10:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('11:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('12:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('13:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('14:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('15:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('16:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('17:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('18:21');
-        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('18:21');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('08:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('09:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('10:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('11:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('12:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('13:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('14:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('15:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('16:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('17:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('18:29');
+        $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('19:29');
 
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('03:55'); // reset lotto activo rd open all
 
@@ -176,7 +176,6 @@ class Kernel extends ConsoleKernel
 
 
 
-
         // Lotto Activo Reducir limites
         $schedule->command('sorteo:reduce 1 1')->timezone('America/Caracas')->at('08:40');
         $schedule->command('sorteo:reduce 1 2')->timezone('America/Caracas')->at('09:40');
@@ -204,9 +203,24 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:reduce 2 35')->timezone('America/Caracas')->at('18:40');
 
 
+        $schedule->command('sorteo:reduce 5 36')->timezone('America/Caracas')->at('08:20');
+        $schedule->command('sorteo:reduce 5 37')->timezone('America/Caracas')->at('09:20');
+        $schedule->command('sorteo:reduce 5 38')->timezone('America/Caracas')->at('10:20');
+        $schedule->command('sorteo:reduce 5 39')->timezone('America/Caracas')->at('11:20');
+        $schedule->command('sorteo:reduce 5 40')->timezone('America/Caracas')->at('12:20');
+        $schedule->command('sorteo:reduce 5 41')->timezone('America/Caracas')->at('13:20');
+        $schedule->command('sorteo:reduce 5 42')->timezone('America/Caracas')->at('14:20');
+        $schedule->command('sorteo:reduce 5 43')->timezone('America/Caracas')->at('15:20');
+        $schedule->command('sorteo:reduce 5 44')->timezone('America/Caracas')->at('16:20');
+        $schedule->command('sorteo:reduce 5 45')->timezone('America/Caracas')->at('17:20');
+        $schedule->command('sorteo:reduce 5 46')->timezone('America/Caracas')->at('18:20');
+        $schedule->command('sorteo:reduce 5 46')->timezone('America/Caracas')->at('19:20');
+
+
 
         $schedule->command('sorteo:resetlimit 1')->timezone('America/Caracas')->at('03:40');
         $schedule->command('sorteo:resetlimit 2')->timezone('America/Caracas')->at('03:41');
+        $schedule->command('sorteo:resetlimit 5')->timezone('America/Caracas')->at('03:42');
 
 
 
