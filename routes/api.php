@@ -78,7 +78,7 @@ Route::post('/send-results-lottoactivord', function (Request $request) {
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 5)->first(); //cambiar en producction
 
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 5);
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 5);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);

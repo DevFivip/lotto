@@ -14,6 +14,8 @@ use App\Models\SorteosType;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
@@ -227,7 +229,6 @@ class ResultController extends Controller
                 $register_loser->update();
 
 
-
                 // $key =  array_search($register_loser->moneda_id, array_column($totalMonedas, 'id'));
                 $key4 =  array_search($register_loser->moneda_id, array_column($change, 'moneda_id'));
 
@@ -258,7 +259,9 @@ class ResultController extends Controller
             //     $st->delete();
             //     return redirect('/resultados')->withErrors('Resultados no guardados, debido a que es igual a la jugada anterior y no posse jugadas activas');
             // } else {
+
             return ['animal' => $animal->nombre, 'valid' => true, 'message' => 'Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count(), 'sorteo_type_id' => 4];
+
             // return redirect('/resultados')->withErrors('Resultados guardados, Cantidad de Jugadas Registradas ' . $all_registers->count() . ' ,cantidad de Ganadores ' . $registers->count() . ' Cantidad de Perdedores ' . $registers_losers->count());
             // }
 
@@ -270,7 +273,6 @@ class ResultController extends Controller
     {
         $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
-
 
         $telegram = new Telegram();
         $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
@@ -312,7 +314,6 @@ class ResultController extends Controller
                 //calcular el monto en dolares de los premios
 
 
-
                 // $key =  array_search($register->moneda_id, array_column($totalMonedas, 'id'));
                 $key2 =  array_search($register->moneda_id, array_column($change, 'moneda_id'));
 
@@ -340,6 +341,7 @@ class ResultController extends Controller
                 // $reg->has_winner = -1;
                 // $reg->update();
             }
+
 
             $st = $r->update([
                 'quantity_plays' => $all_registers->count(),
@@ -370,6 +372,89 @@ class ResultController extends Controller
 
             // return [$registers->count(), $registers_losers->count()];
         }
+    }
+
+    public static function storeDirectGeneric2($animal_number, $schedule_position, $sorteo_id)
+    {
+
+        $old = Result::where('sorteo_type_id', $sorteo_id)->orderBy('id', 'DESC')->first();
+        $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
+        $horarios = Schedule::where('sorteo_type_id', $sorteo_id)->get();
+        $hora = $horarios[$schedule_position];
+
+        $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
+        $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
+
+        // error_log($dt->format('Y-m-d'));
+        // error_log($animal);
+        // error_log($hora);
+
+        $jugadas_horario = DB::select(DB::raw("SELECT COUNT(*) AS total_jugadas FROM `register_details` where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id]);
+        $jugadas_ganadores = DB::select(DB::raw("SELECT COUNT(*) AS total_ganadores FROM `register_details` where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id and animal_id = :animal_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id, 'animal_id' => $animal->id]);
+
+        DB::select(DB::raw("UPDATE `register_details` set winner = 1 where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id and animal_id = :animal_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id, 'animal_id' => $animal->id]);
+        DB::select(DB::raw("UPDATE `register_details` set winner = -1 where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id and animal_id != :animal_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id, 'animal_id' => $animal->id]);
+
+        // $winners = DB::select(DB::raw("SELECT register_id, COUNT(*) AS cuenta FROM `register_details` where date(created_at) = date(':fecha_inicio') and schedule_id = :schedule_id and winner = 1 GROUP BY register_id", ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id]));
+        // $jugadas_horario = DB::select(DB::raw("SELECT * FROM `register_details` where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id]);
+
+        // error_log(json_encode($jugadas_horario));
+        // error_log($jugadas_horario[0]->total_jugadas);
+        // error_log($jugadas_ganadores[0]->total_ganadores);
+        // error_log($jugadas_horario[0]->total_jugadas - $jugadas_ganadores[0]->total_ganadores);
+
+        if (!!$old) {
+            if ($old->schedule_id == $hora->id && $old->animal_id == $animal->id) {
+                return ['valid' => false, 'message' => 'ALERTA! Similares, no se pueden guardar los resultados'];
+            }
+        }
+
+
+        $total =  DB::select(DB::raw("SELECT 
+        SUM(monto) AS monto_total,
+        SUM(monto * (users.comision) / 100) AS comision_total,
+        SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total,
+        
+        SUM(monto / exchanges.change_usd ) AS usd_monto_total,
+        SUM((monto * (users.comision) / 100) /  exchanges.change_usd)  AS usd_comision_total,
+        SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) / exchanges.change_usd , 0 )) AS usd_premio_total,
+        
+        COUNT(*) AS animalitos_vendidos
+        FROM register_details  
+        LEFT JOIN monedas ON register_details.moneda_id = monedas.id
+        LEFT JOIN exchanges ON register_details.moneda_id = exchanges.moneda_id
+        LEFT JOIN users ON users.id = register_details.user_id
+        
+        LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
+        WHERE DATE(register_details.created_at) = DATE(:fecha_inicio)
+
+        AND register_details.schedule_id = :schedule_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id]);
+
+
+        // obtener el id de los tickets para settearlos como ganadores
+        $registerIds =  DB::select(DB::raw("SELECT register_id, COUNT(*) AS cuenta FROM `register_details` where date(created_at) = DATE(:fecha_inicio) and schedule_id = :schedule_id and winner = 1 GROUP BY register_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id]);
+
+
+        $registerIds = new Collection($registerIds);
+
+        $registerIds =  $registerIds->pluck('register_id');
+
+        $reg = Register::whereIn('id', $registerIds)->update(['has_winner' => 1]);
+
+        $r = Result::create([
+            'schedule_id' => $hora->id,
+            'animal_id' => $animal->id,
+            'sorteo_type_id' => $sorteo_id,
+            'quantity_plays' => $jugadas_horario[0]->total_jugadas,
+            'quantity_lossers' => $jugadas_horario[0]->total_jugadas - $jugadas_ganadores[0]->total_ganadores,
+            'quantity_winners' => $jugadas_ganadores[0]->total_ganadores,
+            'amount_home_usd' =>  $total[0]->usd_monto_total,
+            'amount_winners_usd' => $total[0]->usd_premio_total,
+            'amount_balance_usd' => ($total[0]->usd_monto_total - $total[0]->usd_comision_total) - $total[0]->usd_premio_total
+        ]);
+
+
+        return $r;
     }
 
     public function destroy($id)
