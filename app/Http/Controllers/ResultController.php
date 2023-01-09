@@ -453,7 +453,6 @@ class ResultController extends Controller
             'amount_balance_usd' => ($total[0]->usd_monto_total - $total[0]->usd_comision_total) - $total[0]->usd_premio_total
         ]);
 
-
         return $r;
     }
 

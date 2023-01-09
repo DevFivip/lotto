@@ -72,6 +72,19 @@ Route::post('/send-results-selvaParaiso', function (Request $request) {
     }
 });
 
+Route::post('/send-results-lottoactivo', function (Request $request) {
+
+    $data = $request->all();
+    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 1)->first(); //cambiar en producction
+
+    if ($schedule) {
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 1);
+        return response()->json($response, 200);
+    } else {
+        return response()->json(['valid' => false], 200);
+    }
+});
+
 Route::post('/send-results-lottoactivord', function (Request $request) {
 
     $data = $request->all();
