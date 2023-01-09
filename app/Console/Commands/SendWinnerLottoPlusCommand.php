@@ -49,7 +49,7 @@ class SendWinnerLottoPlusCommand extends Command
 
 
         //DESACTIVAR EL ENVIO DE RESULTADOS DE LOTTO PLUS
-        return 0;
+        // return 0;
         // END DESACTIVAR EL ENVIO DE RESULTADOS DE LOTTO PLUS
 
 
