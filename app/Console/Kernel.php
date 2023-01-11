@@ -214,13 +214,39 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:reduce 5 44')->timezone('America/Caracas')->at('16:10');
         $schedule->command('sorteo:reduce 5 45')->timezone('America/Caracas')->at('17:10');
         $schedule->command('sorteo:reduce 5 46')->timezone('America/Caracas')->at('18:10');
-        $schedule->command('sorteo:reduce 5 46')->timezone('America/Caracas')->at('19:10');
+        $schedule->command('sorteo:reduce 5 47')->timezone('America/Caracas')->at('19:10');
 
+        $schedule->command('sorteo:reduce 6 48')->timezone('America/Caracas')->at('09:10');
+        $schedule->command('sorteo:reduce 6 49')->timezone('America/Caracas')->at('10:10');
+        $schedule->command('sorteo:reduce 6 50')->timezone('America/Caracas')->at('11:10');
+        $schedule->command('sorteo:reduce 6 51')->timezone('America/Caracas')->at('12:10');
+        $schedule->command('sorteo:reduce 6 52')->timezone('America/Caracas')->at('13:10');
+        $schedule->command('sorteo:reduce 6 53')->timezone('America/Caracas')->at('14:10');
+        $schedule->command('sorteo:reduce 6 54')->timezone('America/Caracas')->at('15:10');
+        $schedule->command('sorteo:reduce 6 55')->timezone('America/Caracas')->at('16:10');
+        $schedule->command('sorteo:reduce 6 56')->timezone('America/Caracas')->at('17:10');
+        $schedule->command('sorteo:reduce 6 57')->timezone('America/Caracas')->at('18:10');
+        $schedule->command('sorteo:reduce 6 58')->timezone('America/Caracas')->at('19:10');
+
+
+        $schedule->command('sorteo:reduce 3 113')->timezone('America/Lima')->at('08:40');
+        $schedule->command('sorteo:reduce 3 114')->timezone('America/Lima')->at('09:40');
+        $schedule->command('sorteo:reduce 3 115')->timezone('America/Lima')->at('10:40');
+        $schedule->command('sorteo:reduce 3 116')->timezone('America/Lima')->at('11:40');
+        $schedule->command('sorteo:reduce 3 117')->timezone('America/Lima')->at('12:40');
+        $schedule->command('sorteo:reduce 3 118')->timezone('America/Lima')->at('13:40');
+        $schedule->command('sorteo:reduce 3 119')->timezone('America/Lima')->at('14:40');
+        $schedule->command('sorteo:reduce 3 120')->timezone('America/Lima')->at('15:40');
+        $schedule->command('sorteo:reduce 3 121')->timezone('America/Lima')->at('16:40');
+        $schedule->command('sorteo:reduce 3 122')->timezone('America/Lima')->at('17:40');
+        $schedule->command('sorteo:reduce 3 123')->timezone('America/Lima')->at('18:40');
 
 
         $schedule->command('sorteo:resetlimit 1')->timezone('America/Caracas')->at('03:40');
         $schedule->command('sorteo:resetlimit 2')->timezone('America/Caracas')->at('03:41');
-        $schedule->command('sorteo:resetlimit 5')->timezone('America/Caracas')->at('03:42');
+        $schedule->command('sorteo:resetlimit 3')->timezone('America/Caracas')->at('03:42');
+        $schedule->command('sorteo:resetlimit 5')->timezone('America/Caracas')->at('03:43');
+        $schedule->command('sorteo:resetlimit 6')->timezone('America/Caracas')->at('03:44');
 
 
 

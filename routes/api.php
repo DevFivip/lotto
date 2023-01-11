@@ -65,7 +65,7 @@ Route::post('/send-results-selvaParaiso', function (Request $request) {
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 3)->first();
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 3);
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 3);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
@@ -104,7 +104,7 @@ Route::post('/send-results-lottorey', function (Request $request) {
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
     // $output->writeln("<info>$data</info>");
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 6);
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 6);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
