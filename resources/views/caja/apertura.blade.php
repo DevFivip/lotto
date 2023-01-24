@@ -32,7 +32,7 @@
                         <div class="row mb-3">
                             <label for="Nfecha_apertura" class="col-md-4 col-form-label text-md-end">Fecha de Apertura</label>
                             <div class="col-md-6">
-                                <input readonly id="Nfecha_apertura" type="datetime-local" class="form-control @error('Nfecha_apertura') is-invalid @enderror" value="" name="Nfecha_apertura" required autocomplete="Nfecha_apertura" />
+                                <input id="Nfecha_apertura" type="datetime-local" class="form-control @error('Nfecha_apertura') is-invalid @enderror" value="" name="Nfecha_apertura" required autocomplete="Nfecha_apertura" />
                                 @error('Nfecha_apertura')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
