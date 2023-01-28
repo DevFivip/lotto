@@ -87,12 +87,30 @@
                                                 @foreach($usuarios as $usuario)
                                                 @if(isset($filter['user_id']))
                                                 @if($filter['user_id'] == $usuario->id)
-                                                <option selected value="{{$usuario->id}}">{{$usuario->name}}-{{$usuario->taquilla_name}}</option>
+                                                <option selected value="{{$usuario->id}}">{{$usuario->taquilla_name}}-{{$usuario->name}}</option>
                                                 @else
                                                 @endif
                                                 @endif
 
-                                                <option value="{{$usuario->id}}">{{$usuario->name}}-{{$usuario->taquilla_name}}</option>
+                                                <option value="{{$usuario->id}}">{{$usuario->taquilla_name}}-{{$usuario->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="animal_id" class="form-label">Animalito</label>
+                                            <select multiple id="animal_id" name="animal_id[]" class="form-select">
+                                                <option></option>
+                                                @foreach($animalitos as $animal)
+                                                @if(isset($filter['animal_id']))
+                                                @if($filter['animal_id'] == $animal->id)
+                                                <option selected value="{{$animal->id}}">{{$animal->type->name}} {{$animal->number}} {{$animal->nombre}}</option>
+                                                @else
+                                                @endif
+                                                @endif
+                                                @if(isset($animal->type))
+                                                <option value="{{$animal->id}}">{{$animal->type->name}} {{$animal->number}} {{$animal->nombre}}</option>
+                                                @endif
                                                 @endforeach
                                             </select>
                                         </div>
