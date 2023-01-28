@@ -37,8 +37,8 @@
                                                 <option value="500">500 por pagina</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="status" class="form-label">Ticket Estado</label>
+                                        <div class="col-md-2">
+                                            <label for="status" class="form-label">Estado</label>
                                             <select name="has_winner" id="status" class="form-select">
                                                 @if(isset($filter['has_winner']))
 
@@ -58,6 +58,29 @@
                                                 <option value="0">Pendientes y Perdedores</option>
                                             </select>
                                         </div>
+                                        @if(auth()->user()->role_id != 3)
+                                        <div class="col-md-2">
+                                            <label for="status" class="form-label">Validez</label>
+                                            <select name="status" id="status" class="form-select">
+                                                @if(isset($filter['status']))
+
+                                                @if($filter['status'] == 1)
+                                                <option selected value="1">Correcto</option>
+
+                                                @endif
+
+                                                @if($filter['status'] == 0)
+                                                <option selected value="0">Eliminado</option>
+
+                                                @endif
+
+                                                @endif
+                                                <option></option>
+                                                <option value="1">Correcto</option>
+                                                <option value="0">Eliminado</option>
+                                            </select>
+                                        </div>
+                                        @endif
                                         <div class="col-md-4">
                                             <label for="moneda_id" class="form-label">Moneda</label>
                                             <select id="moneda_id" name="moneda_id" class="form-select">
@@ -154,7 +177,7 @@
                                     @if($ticket->status == 1)
                                     <span class="badge bg-warning text-dark">Correcto</span>
                                     @elseif($ticket->status == 0)
-                                    <span class="badge bg-danger">Cancelado</span>
+                                    <span class="badge bg-danger">Eliminado</span>
                                     @else($ticket->status == 2)
                                     <span class="badge bg-success">Pagado</span>
                                     @endif
@@ -162,7 +185,7 @@
                                     <span class="badge bg-primary">Ganador</span>
                                     @endif
                                 </td>
-                                <td>{{$ticket->created_at}}</td>
+                                <td>{{$ticket->created_at}} @if($ticket->status == 0) <br> <small class="text-danger">{{$ticket->updated_at}} </small> @endif </td>
                                 <td>{{$ticket->code}}</td>
                                 <td> <span class="fw-bold">{{$ticket->user->taquilla_name}}</span> <br> {{$ticket->user->name}}</td>
                                 <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total,'2',',','.')}}</td>
@@ -170,6 +193,7 @@
                                 <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total_premios_pagados,2,',','.')}}</td>
                                 <td>{{$ticket->moneda->currency}} {{$ticket->moneda->simbolo}} {{number_format($ticket->total_premios_pendientes,2,',','.')}}</td>
                                 <td>
+                                    @if($ticket->status != 0)
                                     <div class="dropdown">
                                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -184,6 +208,7 @@
                                             @endif
                                         </ul>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

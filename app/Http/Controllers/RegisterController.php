@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use DateTime;
 use DateTimeZone;
+use Illuminate\Support\Collection;
 
 class RegisterController extends Controller
 {
@@ -43,7 +44,18 @@ class RegisterController extends Controller
 
 
     }
+    public function validateInLine($arry)
+    {
 
+        $arr = new Collection($arry);
+
+        $cc = $arr->map(function ($item, $k) {
+
+            return $item->animal_id . ' ' . $item->monto;
+        });
+
+        return $cc;
+    }
 
     public function create(Request $request)
     {
@@ -608,7 +620,6 @@ class RegisterController extends Controller
 
         $detalles = RegisterDetail::where('register_id', $register_id)->get();
 
-
         $valid = $detalles->filter(function ($item) {
             //buscar si el sorteo está disponible
 
@@ -620,10 +631,13 @@ class RegisterController extends Controller
         });
 
         if (auth()->user()->role_id == 1) {
+
             $detalles->each(function ($item) {
                 $item->delete();
             });
-            $register->delete();
+
+            $register->status = 0;
+            $register->update();
 
             return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
         } else if ($detalles->count() != $valid->count()) {
@@ -632,8 +646,8 @@ class RegisterController extends Controller
             $detalles->each(function ($item) {
                 $item->delete();
             });
-            $register->delete();
-
+            $register->status = 0;
+            $register->update();
             return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
         }
 

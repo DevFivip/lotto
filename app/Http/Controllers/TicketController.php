@@ -31,6 +31,9 @@ class TicketController extends Controller
         if (auth()->user()->role_id == 1) {
             $tickets = Register::with(['user', 'moneda', 'detalles'])->orderBy('id', 'desc');
 
+            if (isset($filter['status'])) {
+                $tickets = $tickets->where('status', $filter['status']);
+            }
             if (isset($filter['has_winner'])) {
                 $tickets = $tickets->where('has_winner', $filter['has_winner']);
             }
@@ -75,6 +78,10 @@ class TicketController extends Controller
         } elseif (auth()->user()->role_id == 2) {
             $tickets = Register::with(['user', 'moneda', 'detalles'])->where('admin_id', auth()->user()->id)->orderBy('id', 'desc');
 
+            if (isset($filter['status'])) {
+                $tickets = $tickets->where('status', $filter['status']);
+            }
+            
             if (isset($filter['has_winner'])) {
                 $tickets = $tickets->where('has_winner', $filter['has_winner']);
             }
@@ -122,7 +129,7 @@ class TicketController extends Controller
             $usuarios = User::where('parent_id', auth()->user()->id)->orderBy('taquilla_name', 'desc')->get();
         } elseif (auth()->user()->role_id == 3) {
             // $padre = auth()->user()->parent_id;
-            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('user_id', auth()->user()->id)->orderBy('id', 'desc');
+            $tickets = Register::with(['user', 'moneda', 'detalles'])->where('user_id', auth()->user()->id)->where('status', 1)->orderBy('id', 'desc');
 
             if (isset($filter['has_winner'])) {
                 $tickets = $tickets->where('has_winner', $filter['has_winner']);
@@ -160,7 +167,6 @@ class TicketController extends Controller
 
                 $tickets = $tickets->whereIn('id', $ids);
             }
-
 
             $tickets = $tickets->paginate(isset($filter['_perPage']) ? $filter['_perPage'] : 10)->appends(request()->query());
             $usuarios = null;
@@ -204,7 +210,6 @@ class TicketController extends Controller
                         $reward_porcent = 30;
                         break;
                 }
-
 
                 if ($item->winner == 1 &&  $item->status == 1) {
                     return  floatval($item->monto * $reward_porcent);
