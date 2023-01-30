@@ -40,10 +40,16 @@ class SetWinnerLottoPlusCommand extends Command
 
         // horario is_send no enviado  =  0
         // el ultimo que no se a enviado
+        $restric = rand(9, 20);
 
         $setting = LottoPlusConfig::first();
 
         $horario = Schedule::where('is_send', 0)->where('sorteo_type_id', 4)->orderBy('id', 'ASC')->first();
+
+        $animalesAnteriores = Result::where('sorteo_type_id', 4)->orderBy('id', 'ASC')->limit($restric)->get();
+
+        // error_log($animalesAnteriores);
+
         // dd($horario->schedule);
         //obtener socios 
         $socios = User::where('is_socio', 1)->get();
@@ -145,26 +151,68 @@ class SetWinnerLottoPlusCommand extends Command
         *Default
         */
 
-        $arr_bas = $hh->filter(function ($v, $k) use ($totales) {
-            if ($v['total_recompensa_usd'] < $totales['balance_80']) {
+
+
+
+
+        /*
+         *Eliminar del array los numeros que ya hayan salido
+         */
+
+
+        $hhNoRepets =  $hh->filter(function ($v, $k) use ($animalesAnteriores) {
+            //  dd($v,$animalesAnteriores->pluck('animal_id'));
+            if (!in_array($v['animal_id'], $animalesAnteriores->pluck('animal_id')->toArray(), true)) {
+                // dd($v);
+                return $v;
+            }
+        });
+
+        $hhReperts =  $hh->filter(function ($v, $k) use ($animalesAnteriores) {
+            //  dd($v,$animalesAnteriores->pluck('animal_id'));
+            if (in_array($v['animal_id'], $animalesAnteriores->pluck('animal_id')->toArray(), true)) {
+                // dd($v);
                 return $v;
             }
         });
 
 
-        /*
-        *Premiar
-        */
-        $premiar = [];
-        $premiar[] = $hh->sortByDesc('total_recompensa_usd')->first();
-        $premiar[] = $hh->sortByDesc('total_jugadas')->first();
+        if ($hhNoRepets->count() != 0) {
+            $arr_bas = $hhNoRepets->filter(function ($v, $k) use ($totales) {
+                if ($v['total_recompensa_usd'] < $totales['balance_80']) {
+                    return $v;
+                }
+            });
+        } else {
+            $arr_bas = $hhReperts->filter(function ($v, $k) use ($totales) {
+                if ($v['total_recompensa_usd'] < $totales['balance_80']) {
+                    return $v;
+                }
+            });
+        }
+
+
+
+        // /*
+        // *Premiar
+        // */
+
+        // $premiar = [];
+        // $premiar[] = $hh->sortByDesc('total_recompensa_usd')->first();
+        // $premiar[] = $hh->sortByDesc('total_jugadas')->first();
+
+
+        // dd($arr_bas);
+        // error_log($hh);
+        // error_log(json_encode($premiar));
 
         /*
         *Recoger
         */
-        $recoger = [];
-        $recoger[] = $hh->sortBy('total_recompensa_usd')->first();
-        $recoger[] = $hh->sortBy('total_jugadas')->first();
+
+        // $recoger = [];
+        // $recoger[] = $hh->sortBy('total_recompensa_usd')->first();
+        // $recoger[] = $hh->sortBy('total_jugadas')->first();
 
 
         $first = $arr_bas->first();
@@ -179,7 +227,6 @@ class SetWinnerLottoPlusCommand extends Command
         // dd($arr_premiar);
 
         $nextR = NextResult::first();
-
 
         if ($nextR) {
             $nextR->animal_id = $default['animal_id'];
