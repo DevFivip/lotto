@@ -2,6 +2,7 @@
     <a href="/home" class="list-group-item list-group-item-action">Inicio</a>
     @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
     <a href="/tickets/create" class="list-group-item list-group-item-action">Taquilla</a>
+    <a href="/tickets/create" class="list-group-item list-group-item-action disabled">Bingo 🎱</a>
     @endif
     <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a>
     @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)

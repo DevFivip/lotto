@@ -62,6 +62,10 @@ $l = $_SERVER['REQUEST_URI']
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tickets/create"> + Nuevo Ticket</a>
                         </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <!-- <a class="nav-link" href="/tickets/create"> + Nuevo Ticket</a> -->
+                            <a href="/tickets/create" class="nav-link disabled">Bingo 🎱</a>
+                        </li>
                         @endif
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tickets">Listado de Tickets</a>
