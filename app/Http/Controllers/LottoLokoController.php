@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 class LottoLokoController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function preview()
     {
         // horario is_send no enviado  =  0

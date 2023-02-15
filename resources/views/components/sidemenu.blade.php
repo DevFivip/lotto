@@ -13,8 +13,11 @@
     @if(auth()->user()->role_id == 2)
     <a href="/cash-admins/{{auth()->user()->id}}" class="list-group-item list-group-item-action">Caja Administrativa</a>
     @endif
+    @if(auth()->user()->id == 16)
+    <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
+    @endif
     @if(auth()->user()->role_id == 1)
-    
+
     <a href="/cash-admins" class="list-group-item list-group-item-action">Cajas Administrativas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>

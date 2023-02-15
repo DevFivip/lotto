@@ -83,6 +83,13 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/cash-admins/{{auth()->user()->id}}">Caja Administrativa</a>
                         </li>
                         @endif
+                        
+                        @if(auth()->user()->id == 16)
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/animals">Animales</a>
+                        </li>
+                        @endif
+
                         @if(auth()->user()->role_id == 1)
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/cash-admins">Cajas Administrativas</a>
