@@ -31,8 +31,26 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //  $schedule->command('exchange:dolarToday')->everyFourMinutes();
-        //LA GRANJITA
 
+
+        // LOTTO ACTIVO
+
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('08:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('09:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('10:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('11:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('12:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('13:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('14:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('15:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('16:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('17:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('18:59');
+
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('03:50'); // reset lotto activo open all
+
+
+        //LA GRANJITA
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('08:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('09:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('10:59');
@@ -45,7 +63,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('17:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('18:59');
 
-        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('03:50'); // reset granjita open all
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('23:50'); // reset granjita open all
 
         // Selva Paraiso PERU
         $schedule->command('sorteo:closeselvaparaiso')->timezone('America/Lima')->at('08:51');
@@ -327,6 +345,68 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:checkresult 3 121')->timezone('America/Lima')->at('17:13');
         $schedule->command('sorteo:checkresult 3 122')->timezone('America/Lima')->at('18:13');
         $schedule->command('sorteo:checkresult 3 123')->timezone('America/Lima')->at('19:13');
+
+
+
+        // LOTTO PLUS 
+
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('07:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('08:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('09:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('10:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('11:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('12:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('13:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('14:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('15:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('16:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('17:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('18:58');
+        $schedule->command('loko:default')->timezone('America/Caracas')->at('19:58');
+
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('07:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('08:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('09:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('10:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('11:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('12:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('13:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('14:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('15:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('16:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('17:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('18:59');
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('19:59');
+
+        $schedule->command('loko:close')->timezone('America/Caracas')->at('23:35'); // reiniciar loteria
+
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('08:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('09:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('10:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('11:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('12:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('13:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('14:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('15:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('16:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('17:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('18:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('19:01');
+        $schedule->command('loko:send')->timezone('America/Caracas')->at('20:01');
+
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('08:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('09:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('10:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('11:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('12:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('13:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('14:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('15:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('16:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('17:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('18:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('19:05');
+        $schedule->command('loko:get')->timezone('America/Caracas')->at('20:05');
 
 
 
