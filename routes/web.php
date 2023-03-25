@@ -11,6 +11,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SorteosController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TripletaController;
 use App\Http\Controllers\UserController;
 use App\Models\Result;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,7 @@ Route::resource('/usuarios', UserController::class);
 Route::resource('/cajas', CajaController::class);
 Route::resource('/caja-registers', CajaRegisterController::class);
 Route::resource('/tickets', TicketController::class);
+Route::resource('/tripletas', TripletaController::class);
 Route::resource('/animals', AnimalController::class);
 Route::resource('/customers', CustomerController::class);
 Route::resource('/payments', PaymentController::class);
@@ -49,6 +51,8 @@ Route::resource('/cash-admins', CashAdminController::class);
 Route::resource('/sorteos', SorteosController::class);
 Route::post('/sorteos/{id}/crear-limites', [App\Http\Controllers\SorteosController::class, 'limitesSettings']);
 
+Route::get('/tripletas/print/{code}', [App\Http\Controllers\TripletaController::class, 'print']);
+Route::get('/tripletas/pay/{code}', [App\Http\Controllers\TripletaController::class, 'pay']);
 
 
 Route::get('/chart', [App\Http\Controllers\JugadasController::class, 'plays']);
@@ -59,6 +63,15 @@ Route::post('/schedules/save', [App\Http\Controllers\ScheduleController::class, 
 
 
 Route::get('/tickets-repeat', [App\Http\Controllers\TicketController::class, 'repeat']);
+Route::get('/POS', [App\Http\Controllers\TicketController::class, 'POS']);
+
+// Route::get('/bingo/create', [App\Http\Controllers\BingoController::class, 'create'])->name('bingo.create');
+// Route::post('/bingo/store', [App\Http\Controllers\BingoController::class, 'store'])->name('bingo.store');
+// Route::get('/bingo', [App\Http\Controllers\BingoController::class, 'index'])->name('bingo.index');
+// Route::get('/bingo/transferir-creditos', [App\Http\Controllers\BingoController::class, 'transferirCreditos'])->name('bingo.transferircreditos');
+// Route::get('/bingo/print', [App\Http\Controllers\BingoController::class, 'print']);
+// Route::delete('/bingo', [App\Http\Controllers\BingoController::class, 'destroy']);
+
 
 Route::post('/tickets/makepay/{id}', [App\Http\Controllers\RegisterController::class, 'payAnimalito']);
 Route::get('/tickets/pay/{code}', [App\Http\Controllers\TicketController::class, 'pay']);
@@ -66,6 +79,13 @@ Route::post('/ticket-register', [App\Http\Controllers\RegisterController::class,
 Route::post('/ticket-validate/{code}', [App\Http\Controllers\TicketController::class, 'validateToPay']);
 Route::get('/print-direct/{code}', [App\Http\Controllers\RegisterController::class, 'print_direct']);
 Route::get('/print/{code}', [App\Http\Controllers\RegisterController::class, 'print']);
+
+// Route::get('/wallets', [App\Http\Controllers\WalletController::class, 'index'])->name('wallets.index');
+// Route::get('/wallets/create', [App\Http\Controllers\WalletController::class, 'create'])->name('wallets.create');
+// Route::post('/wallets', [App\Http\Controllers\WalletController::class, 'store'])->name('wallets.store');
+
+// Route::get('/wallets/transferencia-bingo-coin', [App\Http\Controllers\WalletController::class, 'bingoCoin'])->name('wallets.bCoin');
+
 
 Route::get('/print2/{code}', [App\Http\Controllers\RegisterController::class, 'print2']);
 Route::get('/report-caja/{id}', [App\Http\Controllers\CajaController::class, 'report']);

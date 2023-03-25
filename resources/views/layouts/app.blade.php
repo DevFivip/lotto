@@ -60,16 +60,25 @@ $l = $_SERVER['REQUEST_URI']
                     <ul class="navbar-nav me-auto">
                         @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
                         <li class="nav-item d-block d-sm-none">
-                            <a class="nav-link" href="/tickets/create"> + Nuevo Ticket</a>
+                            <a class="nav-link" href="/tickets/create">+ Ticket Animalitos</a>
                         </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tripletas/create">+ Ticket Tripletas</a>
+                        </li>
+
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tickets">Listado de Animalitos</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tickets">Listado de Tripletas</a>
+                        </li>
+
                         <li class="nav-item d-block d-sm-none">
                             <!-- <a class="nav-link" href="/tickets/create"> + Nuevo Ticket</a> -->
                             <a href="/tickets/create" class="nav-link disabled">Bingo 🎱</a>
                         </li>
                         @endif
-                        <li class="nav-item d-block d-sm-none">
-                            <a class="nav-link" href="/tickets">Listado de Tickets</a>
-                        </li>
+
                         @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/usuarios">Usuarios</a>
@@ -83,7 +92,7 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/cash-admins/{{auth()->user()->id}}">Caja Administrativa</a>
                         </li>
                         @endif
-                        
+
                         @if(auth()->user()->id == 16)
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/animals">Animales</a>

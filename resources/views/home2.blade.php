@@ -16,6 +16,11 @@
                     </div>
                     @endif
 
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Las Tripletas</strong> ya se encuenta disponible.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
                     Hola, {{auth()->user()->name}}
 
                     <div class="d-grid gap-1 mt-1">
@@ -97,7 +102,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body table-responsive">
-                                <table class="table">
+                                    <table class="table">
                                         <tr>
                                             <td>Loteria</td>
                                             <td>Moneda</td>
@@ -112,22 +117,22 @@
                                         @endphp
                                         @foreach($res as $moneda => $to)
                                         @foreach($to as $identify => $row)
-                                       
-                                            @if($identify == count($to) -1 )
-                                            @php
-                                            $balance_total = ($row['total_monto'] - $row['premio_total']) - $row['comision_total'];
-                                            @endphp
-                                            <tr>
-                                                <td>{{$name}}</td>
-                                                <td>{{$moneda}}</td>
-                                                <td></td>
-                                                <td>{{number_format($row['total_monto'],2,',','.')}}</td>
-                                                <td>{{number_format($row['premio_total'],2,',','.')}}</td>
-                                                <td>{{number_format($row['comision_total'],2,',','.')}}</td>
-                                                <td><b class="@if($balance_total < 0) text-danger @endif">{{number_format($balance_total,2,',','.')}}</b></td>
-                                                
-                                            </tr>
-                                            @endif
+
+                                        @if($identify == count($to) -1 )
+                                        @php
+                                        $balance_total = ($row['total_monto'] - $row['premio_total']) - $row['comision_total'];
+                                        @endphp
+                                        <tr>
+                                            <td>{{$name}}</td>
+                                            <td>{{$moneda}}</td>
+                                            <td></td>
+                                            <td>{{number_format($row['total_monto'],2,',','.')}}</td>
+                                            <td>{{number_format($row['premio_total'],2,',','.')}}</td>
+                                            <td>{{number_format($row['comision_total'],2,',','.')}}</td>
+                                            <td><b class="@if($balance_total < 0) text-danger @endif">{{number_format($balance_total,2,',','.')}}</b></td>
+
+                                        </tr>
+                                        @endif
 
                                         @endforeach
                                         @endforeach

@@ -213,11 +213,11 @@
                                     <div class="d-grid gap-1 mt-1">
                                         <button x-show="turn" style="display: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <!-- <a href="/tickets" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Listado</a> -->
+                                             <a href="/tripletas/create" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Tripletas</a> 
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repeatTicketModal"><i class="fa-solid fa-repeat"></i> Repetir</button>
                                             <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>
-                                            <a href="/balance-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i> Caja</a>
+                                            <!-- <a href="/balance-caja/{{$caja->id}}" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i> Caja</a> -->
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMenuSettings"><i class="fa-solid fa-bars"></i> Menu</button>
                                         </div>
                                     </div>
