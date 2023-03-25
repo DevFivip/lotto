@@ -156,6 +156,10 @@ class TripletaController extends Controller
             return redirect('/tripletas')->withErrors('⚠️ Usuario desactivado contactate con tu proveedor');
         }
 
+        if (auth()->user()->role_id == 1) {
+            return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
+        }
+
         if (auth()->user()->role_id == 2) {
             return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
         }
