@@ -110,7 +110,7 @@ class CheckTripletasWinnerCommand extends Command
         }
 
 
-        DB::select("UPDATE tripleta_details SET sorteo_left = sorteo_left - 1 where sorteo_left > 0 and sorteo_id = 1");
+        DB::select("UPDATE tripleta_details SET sorteo_left = sorteo_left - 1 where sorteo_left > 0 and sorteo_id = $loteria_id");
 
         $telegram->sendMessage('✔ Actualizacion de la Tripleta');
 
