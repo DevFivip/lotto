@@ -12,8 +12,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <div class="col-md-12 col-12">
-
+                        <div class="col-md-12 col-12" style="max-height: 55vh; overflow: auto;">
                             <template x-for="(detalle, index) in ticket.detalles" :key="index">
                                 <div class="row mb-3">
                                     <div class="col-md-10 col-10">
