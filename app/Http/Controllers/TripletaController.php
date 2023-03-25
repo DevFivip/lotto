@@ -205,21 +205,21 @@ class TripletaController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $triple = $data['detalles'][$i];
                     $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
-                    $s = $schedules->filter(function ($k, $v) {
-                        if ($k->status == 1) {
-                            return $k;
-                        }
-                    });
+                    // $s = $schedules->filter(function ($k, $v) {
+                    //     if ($k->status == 1) {
+                    //         return $k;
+                    //     }
+                    // });
 
-                    $ss = $s->toArray();
-                    $sss = array_keys($ss);
+                    // $ss = $s->toArray();
+                    // $sss = array_keys($ss);
 
                     TripletaDetail::create([
                         'tripleta_id' => $tripleta->id,
                         'animal_1' => $triple['_1ero'],
                         'animal_2' => $triple['_2do'],
                         'animal_3' => $triple['_3ero'],
-                        'position_last_sorteo' => $sss[0],
+                        'position_last_sorteo' => 0,
                         'sorteo_id' => $triple['_sorteo_type'],
                         'total' => $triple['_monto'],
                         'sorteo_left' => 11,
