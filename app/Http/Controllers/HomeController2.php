@@ -95,7 +95,8 @@ class HomeController2 extends Controller
                     LEFT JOIN users u ON t.user_id = u.id
                     LEFT JOIN users a ON a.id = u.parent_id
 
-                    WHERE DATE(td.created_at) >= DATE(:fecha_inicio)
+                    WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                    and t.status != 0
                     GROUP BY u.id ,m.id, sorteo_type_id
                     ORDER BY u.id
                     "), ['fecha_inicio' => $dt->format('Y-m-d')]);
@@ -160,7 +161,8 @@ class HomeController2 extends Controller
                     LEFT JOIN users u ON t.user_id = u.id
                     LEFT JOIN users a ON a.id = u.parent_id
 
-                    WHERE DATE(td.created_at) >= DATE(:fecha_inicio)
+                    WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                    and t.status != 0
                     GROUP BY u.id ,m.id, sorteo_type_id
                     ORDER BY u.id
                     "), ['fecha_inicio' => $dt->format('Y-m-d')]);
@@ -228,6 +230,7 @@ class HomeController2 extends Controller
                 LEFT JOIN users u ON t.user_id = u.id
                 LEFT JOIN users a ON a.id = u.parent_id
                 WHERE (DATE(td.created_at) BETWEEN DATE(:fecha_inicio) AND DATE(:fecha_fin))
+                and t.status != 0
                 GROUP BY u.id ,m.id, sorteo_type_id
                 ORDER BY u.id
                 "), ['fecha_inicio' => $dt->format('Y-m-d') . ' 00:00:00', 'fecha_fin' =>  $dt2->format('Y-m-d') . ' 23:59:59']);
@@ -367,7 +370,8 @@ class HomeController2 extends Controller
                 LEFT JOIN users u ON t.user_id = u.id
                 LEFT JOIN users a ON a.id = u.parent_id
 
-                WHERE DATE(td.created_at) >= DATE(:fecha_inicio) and t.admin_id = :admin_id
+                WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                and t.status != 0 and t.admin_id = :admin_id
                 GROUP BY u.id ,m.id, sorteo_type_id
                 ORDER BY u.id "), ['fecha_inicio' => $dt->format('Y-m-d'), "admin_id" => auth()->user()->id]);
                 $results = array_merge($results, $result_tripletas);
@@ -433,7 +437,8 @@ class HomeController2 extends Controller
                 LEFT JOIN users u ON t.user_id = u.id
                 LEFT JOIN users a ON a.id = u.parent_id
 
-                WHERE DATE(td.created_at) >= DATE(:fecha_inicio) and t.admin_id = :admin_id
+                WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                and t.status != 0 and t.admin_id = :admin_id
                 GROUP BY u.id ,m.id, sorteo_type_id
                 ORDER BY u.id "), ['fecha_inicio' => $dt->format('Y-m-d'), "admin_id" => auth()->user()->id]);
                 $results = array_merge($results, $result_tripletas);
@@ -501,7 +506,8 @@ class HomeController2 extends Controller
                 LEFT JOIN users u ON t.user_id = u.id
                 LEFT JOIN users a ON a.id = u.parent_id
 
-                WHERE (DATE(td.created_at) BETWEEN DATE(:fecha_inicio) AND DATE(:fecha_fin)) 
+                WHERE (DATE(td.created_at) BETWEEN DATE(:fecha_inicio) AND DATE(:fecha_fin))
+                and t.status != 0 
                 and t.admin_id = :admin_id
                 GROUP BY u.id ,m.id, sorteo_type_id
                 ORDER BY u.id "), ['fecha_inicio' => $dt->format('Y-m-d') . ' 00:00:00', 'fecha_fin' =>  $dt2->format('Y-m-d') . ' 23:59:59', "admin_id" => auth()->user()->id]);
@@ -666,6 +672,7 @@ class HomeController2 extends Controller
                 LEFT JOIN users a ON a.id = u.parent_id
 
                 WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                and t.status != 0 
                 and t.user_id = :user_id
                 GROUP BY u.id, m.id, sorteo_type_id
                 ORDER BY u.id
@@ -732,6 +739,7 @@ class HomeController2 extends Controller
                 LEFT JOIN users a ON a.id = u.parent_id
 
                 WHERE DATE(td.created_at) >= DATE(:fecha_inicio) 
+                and t.status != 0 
                 and t.user_id = :user_id
                 GROUP BY u.id, m.id, sorteo_type_id
                 ORDER BY u.id "), ['fecha_inicio' => $dt->format('Y-m-d'), "user_id" => auth()->user()->id]);
@@ -799,10 +807,10 @@ class HomeController2 extends Controller
                 LEFT JOIN users u ON t.user_id = u.id
                 LEFT JOIN users a ON a.id = u.parent_id
 
-                WHERE (DATE(td.created_at) BETWEEN DATE(:fecha_inicio) AND DATE(:fecha_fin)
+                WHERE (DATE(td.created_at) BETWEEN DATE(:fecha_inicio) AND DATE(:fecha_fin))
                 and t.user_id = :user_id
                 GROUP BY u.id, m.id, sorteo_type_id
-                ORDER BY u.id "), ['fecha_inicio' => $dt->format('Y-m-d') . ' 00:00:00', 'fecha_fin' =>  $dt2->format('Y-m-d') . ' 23:59:59', "user_id" => auth()->user()->id]);
+                "), ['fecha_inicio' => $dt->format('Y-m-d') . ' 00:00:00', 'fecha_fin' =>  $dt2->format('Y-m-d') . ' 23:59:59', "user_id" => auth()->user()->id]);
 
                 $results = array_merge($results, $result_tripletas);
             }
