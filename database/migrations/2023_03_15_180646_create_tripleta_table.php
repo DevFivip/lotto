@@ -17,7 +17,7 @@ class CreateTripletaTable extends Migration
 
         Schema::create('tripletas', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->foreignId('caja_id')->constrained('cajas');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('admin_id')->constrained('users');
