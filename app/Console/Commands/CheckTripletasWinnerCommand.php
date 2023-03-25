@@ -66,7 +66,13 @@ class CheckTripletasWinnerCommand extends Command
         // dd($last_result_lotery, $animalito);
 
         // buscar donde se encuentra un registro del animalito
-        $fund = DB::select("SELECT * FROM tripleta_details where sorteo_left > 0 and sorteo_id = ? AND animal_1 = ? OR  animal_2 = ? OR  animal_3 = ?", [$horario->sorteo_type_id, $animalito->number, $animalito->number, $animalito->number]);
+        // $fund = DB::select("SELECT * FROM tripleta_details where sorteo_left > 0 and sorteo_id = ? AND animal_1 = ? OR  animal_2 = ? OR  animal_3 = ?", [$horario->sorteo_type_id, $animalito->number, $animalito->number, $animalito->number]);
+        $fund = DB::select("SELECT * 
+                FROM tripleta_details 
+                WHERE sorteo_left > 0
+                  AND sorteo_id = ? 
+                  AND (animal_1 = ? OR animal_2 = ? OR animal_3 = ?) 
+                ORDER BY id ASC", [$horario->sorteo_type_id, $animalito->number, $animalito->number, $animalito->number]);
 
         foreach ($fund as $tripleta) {
             $v = 0;
