@@ -38,6 +38,20 @@
     <!-- <a href="/tickets" class="list-group-item list-group-item-action">Tickets</a> -->
     @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
     <a href="/usuarios" class="list-group-item list-group-item-action">Usuarios</a>
+    <a href="#" class="list-group-item list-group-item-action" @click="openAnimalitos =! openAnimalitos">Animalitos</a>
+    <template x-if="openAnimalitos">
+        <span style="margin-left: 2vh;">
+            <a href="/tickets/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tickets.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
+            <a href="/tickets" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tickets.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
+        </span>
+    </template>
+    <a href="#" class="list-group-item list-group-item-action" @click="openTripletas =! openTripletas"> Tripletas</a>
+    <template x-if="openTripletas">
+        <span style="margin-left: 2vh;">
+            <a href="/tripletas/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tripletas.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
+            <a href="/tripletas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tripletas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
+        </span>
+    </template>
     @endif
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
     <!-- <a href="/caja-registers" class="list-group-item list-group-item-action">Cajas Register</a> -->
