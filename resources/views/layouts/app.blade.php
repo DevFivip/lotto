@@ -70,7 +70,7 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/tickets">Listado de Animalitos</a>
                         </li>
                         <li class="nav-item d-block d-sm-none">
-                            <a class="nav-link" href="/tickets">Listado de Tripletas</a>
+                            <a class="nav-link" href="/tripletas">Listado de Tripletas</a>
                         </li>
 
                         <li class="nav-item d-block d-sm-none">
@@ -80,6 +80,14 @@ $l = $_SERVER['REQUEST_URI']
                         @endif
 
                         @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
+                        
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tickets">Listado de Animalitos</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tripletas">Listado de Tripletas</a>
+                        </li>
+
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/usuarios">Usuarios</a>
                         </li>
