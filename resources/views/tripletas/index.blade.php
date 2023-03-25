@@ -207,7 +207,7 @@
             openFilter: false,
             handleDelete: async function(code) {
                 if (confirm("¿Seguro deseas eliminar este tripletas?") == true) {
-                    const res = await fetch('/register/' + code, {
+                    const res = await fetch('/tripletas/' + code, {
                         method: 'DELETE',
                         headers: {
                             "Content-Type": "application/json",
@@ -266,53 +266,6 @@
         return {
             fecha_inicial: f1 + ' ' + f2,
             fecha_cierre: f3 + ' ' + f4,
-        }
-    }
-
-    function converter2(q, k) {
-        date = new Date(q);
-        w = date.getTimezoneOffset()
-        yourDate = new Date(date.getTime())
-        f1 = yourDate.toLocaleDateString();
-        f2 = yourDate.toLocaleTimeString();
-
-        if (!!k) {
-            date = new Date(k);
-            r = date.getTimezoneOffset()
-            yourDate = new Date(date.getTime() - (r * 60 * 1000))
-            f3 = yourDate.toLocaleDateString();
-            f4 = yourDate.toLocaleTimeString();
-
-        } else {
-            f3 = '';
-            f4 = '';
-        }
-
-
-        return {
-            fecha_inicial: f1 + ' ' + f2,
-            fecha_cierre: f3 + ' ' + f4,
-        }
-    }
-
-    function listener() {
-        window.CSRF_TOKEN = '{{ csrf_token() }}';
-        return {
-            handleLock: async function(e) {
-                id = e.target.id
-                if (confirm("¿Seguro deseas Bloquear?") == true) {
-                    const res = await fetch('/tripletas/' + id, {
-                        method: 'DELETE',
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRF-Token": window.CSRF_TOKEN
-                        },
-                    })
-                    location.reload()
-                }
-            }
         }
     }
 </script>
