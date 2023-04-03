@@ -40,7 +40,7 @@ class SetWinnerLottoPlusCommand extends Command
 
         // horario is_send no enviado  =  0
         // el ultimo que no se a enviado
-        $restric = rand(9, 20);
+        $restric = 12;
 
         $setting = LottoPlusConfig::first();
 
