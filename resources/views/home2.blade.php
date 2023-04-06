@@ -21,6 +21,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
+                    <div class="alert alert-info alert-dismissible fade show" role="alert" >
+                        <span class="glyphicon glyphicon-info-sign"></span>🚨 Según las loterías de Venezuela que han confirmado: <br>El <strong>jueves 06 de abril:</strong> <br><strong>- No</strong> realizarán sorteos: Lotto Rey, La Granjita<br> <strong>- Sí</strong> realizarán: Lotto Activo, Lotto Activo RD, Lotto Plus, Selva Paraiso <br>El <strong>viernes 07 de abril:</strong> NO hay sorteos. <br>Vuelven los sorteos el <strong>sábado 08 de abril</strong> con horario habitual.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
                     Hola, {{auth()->user()->name}}
 
                     <div class="d-grid gap-1 mt-1">
