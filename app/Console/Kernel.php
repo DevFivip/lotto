@@ -98,7 +98,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('03:55'); // reset lotto activo rd open all
 
 
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:20');
+        // $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:20');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('09:29');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('10:29');
         $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('11:29');
