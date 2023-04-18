@@ -203,20 +203,21 @@ class TripletaController extends Controller
                 ]);
 
                 for ($i = 0; $i < count($data['detalles']); $i++) {
+
                     $triple = $data['detalles'][$i];
+
                     $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
 
                     $primerSorteo = $schedules->filter(function ($k, $v) {
 
-                        //    dd($k);
                         $hora_limite = $k->interval_end_utc;
 
-                        // $hora_pasada = explode(" ", $hora_pasada);
+
                         $hora_limite = explode(" ", $hora_limite);
-                        // $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
+
                         $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
                         $limite = new Datetime($hora_limite[1], new DateTimeZone('America/Caracas'));
-                        // dd($actual,$limite);
+       
 
                         if ($k->status == 1) {
                             if ($actual > $limite) {
@@ -230,8 +231,7 @@ class TripletaController extends Controller
                             }
                         }
                     });
-
-                    // dd($primerSorteo->toArray());
+  
 
                     $cantidad = $schedules->count();
                     $horarios =  $schedules->toArray();
@@ -241,13 +241,13 @@ class TripletaController extends Controller
                     $h = array_merge($horarios, $horarios2);
                     $h2 = array_merge($h, $horarios3);
 
-                    $i = $primerSorteo->first()->positionIndex + 10;
-                    $ultimoSorteo = $h2[$i];
-
-                    // dd($primerSorteo->first(),$ultimoSorteo);
+                    $ii = $primerSorteo->first()->positionIndex + 10;
+                    $ultimoSorteo = $h2[$ii];
 
 
-                    TripletaDetail::create([
+             
+
+                   TripletaDetail::create([
                         'tripleta_id' => $tripleta->id,
                         'animal_1' => $triple['_1ero'],
                         'animal_2' => $triple['_2do'],
@@ -257,8 +257,13 @@ class TripletaController extends Controller
                         'total' => $triple['_monto'],
                         'sorteo_left' => $primerSorteo->first()->sorteos_left,
                         'primer_sorteo' => $primerSorteo->first()->schedule,
-                        'ultimo_sorteo' => $ultimoSorteo['schedule'],1
+                        'ultimo_sorteo' => $ultimoSorteo['schedule'],
                     ]);
+
+
+
+
+
                 }
 
                 return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $tripleta->code], 200);
