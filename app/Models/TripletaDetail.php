@@ -21,6 +21,8 @@ class TripletaDetail extends Model
         'animal_3_has_win',
         'sorteo_id',
         'total',
+        'primer_sorteo',
+        'ultimo_sorteo'
     ];
 
     public function sorteo()

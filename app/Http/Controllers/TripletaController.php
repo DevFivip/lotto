@@ -205,14 +205,47 @@ class TripletaController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
                     $triple = $data['detalles'][$i];
                     $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
-                    // $s = $schedules->filter(function ($k, $v) {
-                    //     if ($k->status == 1) {
-                    //         return $k;
-                    //     }
-                    // });
 
-                    // $ss = $s->toArray();
-                    // $sss = array_keys($ss);
+                    $primerSorteo = $schedules->filter(function ($k, $v) {
+
+                        //    dd($k);
+                        $hora_limite = $k->interval_end_utc;
+
+                        // $hora_pasada = explode(" ", $hora_pasada);
+                        $hora_limite = explode(" ", $hora_limite);
+                        // $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
+                        $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
+                        $limite = new Datetime($hora_limite[1], new DateTimeZone('America/Caracas'));
+                        // dd($actual,$limite);
+
+                        if ($k->status == 1) {
+                            if ($actual > $limite) {
+                                $k->sorteos_left = 12;
+                                $k->positionIndex = $v;
+                                return $k;
+                            } else {
+                                $k->sorteos_left = 11;
+                                $k->positionIndex = $v;
+                                return $k;
+                            }
+                        }
+                    });
+
+                    // dd($primerSorteo->toArray());
+
+                    $cantidad = $schedules->count();
+                    $horarios =  $schedules->toArray();
+                    $horarios2 =  $schedules->toArray();
+                    $horarios3 =  $schedules->toArray();
+
+                    $h = array_merge($horarios, $horarios2);
+                    $h2 = array_merge($h, $horarios3);
+
+                    $i = $primerSorteo->first()->positionIndex + 10;
+                    $ultimoSorteo = $h2[$i];
+
+                    // dd($primerSorteo->first(),$ultimoSorteo);
+
 
                     TripletaDetail::create([
                         'tripleta_id' => $tripleta->id,
@@ -222,7 +255,9 @@ class TripletaController extends Controller
                         'position_last_sorteo' => 0,
                         'sorteo_id' => $triple['_sorteo_type'],
                         'total' => $triple['_monto'],
-                        'sorteo_left' => 11,
+                        'sorteo_left' => $primerSorteo->first()->sorteos_left,
+                        'primer_sorteo' => $primerSorteo->first()->schedule,
+                        'ultimo_sorteo' => $ultimoSorteo['schedule'],1
                     ]);
                 }
 
@@ -323,7 +358,7 @@ class TripletaController extends Controller
             // $this->fpdf->Text(2, $line_start + 5, 'Total');
             $this->fpdf->Text(40, $line_start, $ticket->moneda->simbolo . ' ' . number_format($detalle->total, 2, ".", ","));
             $line_start += $spacing;
-            $this->fpdf->Text(2, $line_start, $detalle->sorteo->name);
+            $this->fpdf->Text(2, $line_start, $detalle->sorteo->name . ' '.$detalle->primer_sorteo. ' '.$detalle->ultimo_sorteo );
 
             $line_start += $spacing - 1.5;
         }

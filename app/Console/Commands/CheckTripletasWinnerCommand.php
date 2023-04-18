@@ -70,6 +70,7 @@ class CheckTripletasWinnerCommand extends Command
         $fund = DB::select("SELECT * 
                 FROM tripleta_details 
                 WHERE sorteo_left > 0
+                  AND sorteo_left < 12
                   AND sorteo_id = ? 
                   AND (animal_1 = ? OR animal_2 = ? OR animal_3 = ?) 
                 ORDER BY id ASC", [$horario->sorteo_type_id, $animalito->number, $animalito->number, $animalito->number]);
