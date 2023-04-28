@@ -111,3 +111,9 @@ Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::clas
 
 // Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);
 // Route::post('/send-results-complement', [App\Http\Controllers\ScrappingController::class, 'getResult']);
+
+
+
+Route::get('/schedules-admin', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'index']);
+Route::get('/schedules-admin/{id}/limits', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'edit']);
+Route::post('/schedules-admin/save', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'update']);
