@@ -1,6 +1,6 @@
 <div class="list-group" x-data="{openBingo:'{{strpos(Route::currentRouteName(),"bingo")}}',openAnimalitos:'{{ strpos(Route::currentRouteName(),"tickets")}}',openTripletas:'{{ strpos(Route::currentRouteName(),"tripletas")}}',openWallet:'{{ strpos(Route::currentRouteName(),"wallets")}}'}">
     <a href="/home" class="list-group-item list-group-item-action"> Inicio</a>
-    @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
+    @if(auth()->user()->role_id == 3)
 
     <a href="#" class="list-group-item list-group-item-action" @click="openAnimalitos =! openAnimalitos">Animalitos</a>
     <template x-if="openAnimalitos">
@@ -57,6 +57,7 @@
     <!-- <a href="/caja-registers" class="list-group-item list-group-item-action">Cajas Register</a> -->
     @if(auth()->user()->role_id == 2)
     <a href="/cash-admins/{{auth()->user()->id}}" class="list-group-item list-group-item-action">Caja Administrativa</a>
+    <a href="/schedules-admin" class="list-group-item list-group-item-action">Horarios</a>
     @endif
     @if(auth()->user()->id == 16)
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>

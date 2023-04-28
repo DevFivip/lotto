@@ -91,6 +91,9 @@ $l = $_SERVER['REQUEST_URI']
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/usuarios">Usuarios</a>
                         </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/schedules-admin">Horarios</a>
+                        </li>
                         @endif
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/cajas">Caja</a>
