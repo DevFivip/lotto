@@ -10,6 +10,7 @@ use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
 use App\Models\User;
+use App\Models\UserAnimalitoSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -199,7 +200,6 @@ class RegisterController extends Controller
         LEFT JOIN exchanges on register_details.moneda_id = exchanges.moneda_id
         WHERE user_id = ? AND animal_id = ? AND schedule_id = ? AND DATE(register_details.created_at) = DATE(?)", [$taquilla_id, $animal_id, $horario_id, $dt->format('Y-m-d')]);
 
-        error_log(json_encode($r));
 
         // $r = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
         //$r2 = RegisterDetail::select(['id', 'monto', 'moneda_id'])->where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', $taquilla_id)->where('created_at', '>=', date('Y-m-d') . ' 00:00:00')->get();
@@ -265,6 +265,8 @@ class RegisterController extends Controller
         $horario = Schedule::with('type')->find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
         $validacionHorario = AnimalitoScheduleLimit::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->first();
+        $validacionUserAdminHorario = UserAnimalitoSchedule::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', auth()->user()->parent_id)->first();
+
         $err = [];
 
         // dd($horario->status);
@@ -359,6 +361,7 @@ class RegisterController extends Controller
         if (($resp[1] +  $actual_monto) > $validacionHorario->limit) {
             array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excede lo estipulado, intente para otro horario, Error 1004 no authorizado');
         }
+
         //
         ############################
         ############################
@@ -371,42 +374,47 @@ class RegisterController extends Controller
 
 
 
-        // dd($animal->limit_cant);
-
-        // if (!isset($animal->limit_cant)) {
-        //     if (count($err) >= 1) {
-        //         return ['status' => false, 'messages' => $err[0]];
-        //     } else {
-        //         return ['status' => true];
-        //     }
-        // };
-
-        // if ($resp[0] > $animal->limit_cant) {
-        //     array_push($err, 'Limite de venta de unidades de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
-        // }
-
-        // Validate
-        // Valores actuales
-
-        // $actual_monto = floatval($monto / $exchange->change_usd);
-
-
-        // dd('this', $resp[2], $actual_monto, $limit_personal);
 
 
 
-        // dd($resp[1], $actual_monto, $animal->limit_price_usd);
+        ############################
+        ############################
+        ############################
+        ###VALIDACIONES DEL ADMIN###
+        ############################
+        ############################
+        ############################
+
+
+        if (!!$validacionUserAdminHorario) {
+            // error_log(json_encode($validacionUserAdminHorario));
+
+            if ($validacionUserAdminHorario->limit == 0) {
+                array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excedió el limite Administrativo, intente para otro horario');
+            }
+
+            if ($resp[1] > $validacionUserAdminHorario->limit) {
+                array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido el limite Administrativo, intente para otro horario');
+            }
+
+            if ($resp[2] > $validacionUserAdminHorario->limit) {
+                array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido el limite Administrativo, intente para otro horario');
+            }
+
+        }
 
 
 
-        // if ($limit_admin != 0) {
 
-        //     // dd($resp[3],$actual_monto,$limit_admin);
+        ############################
+        ############################
+        ############################
+        ###VALIDACIONES DEL ADMIN###
+        ############################
+        ############################
+        ############################
 
-        //     if (($resp[3] +  $actual_monto) > $limit_admin) {
-        //         array_push($err, ' El limite de venta de tu banquero (' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede , intente para otro horario');
-        //     }
-        // }
+
 
 
         if (count($err) >= 1) {
