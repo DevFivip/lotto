@@ -221,7 +221,7 @@ class TripletaController extends Controller
 
                         if ($k->status == 1) {
                             if ($actual > $limite) {
-                                $k->sorteos_left = 12;
+                                $k->sorteos_left = 11;
                                 $k->positionIndex = $v;
                                 return $k;
                             } else {

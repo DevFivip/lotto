@@ -75,6 +75,7 @@
                         5. Si los tres animalitos seleccionados son resultado de los 11 sorteos posteriores al sorteo inmediatamente posterior a la hora de la apuesta, la combinación de 3 animalitos resulta ganadora <br>
 
                         6. Si no se cumplen las condiciones anteriores, el jugador pierde la apuesta y no recibe ningún pago. <br>
+                        7. Las Tripletas de (Lotto Activo y La Granjita cerraran sus jugadas 20 min antes del sorteo)
                         <!-- Es importante tener en cuenta que las reglas específicas de la apuesta pueden variar según el corredor de apuestas o el casino -->
 
                     </div>
@@ -167,9 +168,14 @@
                 localStorage.setItem('moneda', JSON.stringify(moneda[0]))
             },
             validateItems: function() {
+                if(this.total > 100){
+                    this.toast(`Limite Total debe ser Menor o Igual a 100`, 6000);
+                    return false
+                }
                 empty1 = this.ticket.detalles.find(e => e._1ero == '');
                 empty2 = this.ticket.detalles.find(e => e._2do == '');
                 empty3 = this.ticket.detalles.find(e => e._3ero == '');
+
                 monto = this.ticket.detalles.find(e => e._monto == '' || e._monto == 0 || e._monto < 0.5);
 
                 if (empty1 == undefined && empty2 == undefined && empty3 == undefined && monto == undefined) {
