@@ -151,6 +151,9 @@ class TripletaController extends Controller
      */
     public function create()
     {
+        if (true) {
+            return redirect('/tripletas')->withErrors('⚠️ Tripletas en mantenimiento');
+        }
 
         if (auth()->user()->status == 0) {
             return redirect('/tripletas')->withErrors('⚠️ Usuario desactivado contactate con tu proveedor');
