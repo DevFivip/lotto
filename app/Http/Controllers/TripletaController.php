@@ -151,9 +151,9 @@ class TripletaController extends Controller
      */
     public function create()
     {
-        if (true) {
-            return redirect('/tripletas')->withErrors('⚠️ Tripletas en mantenimiento');
-        }
+        // if (true) {
+        //     return redirect('/tripletas')->withErrors('⚠️ Tripletas en mantenimiento');
+        // }
 
         if (auth()->user()->status == 0) {
             return redirect('/tripletas')->withErrors('⚠️ Usuario desactivado contactate con tu proveedor');
@@ -184,6 +184,38 @@ class TripletaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function validateCombinacion($triple)
+    {
+
+        // dd($triple);
+        $fund = DB::select("SELECT * FROM tripleta_details
+        WHERE sorteo_left > 1
+          AND sorteo_left < 12
+          AND sorteo_id = ? 
+          AND ? IN (animal_1, animal_2, animal_3)
+          AND ? IN (animal_1, animal_2, animal_3)
+          AND ? IN (animal_1, animal_2, animal_3) 
+        ORDER BY id ASC", [$triple['_sorteo_type'], $triple['_1ero'], $triple['_2do'], $triple['_3ero']]);
+
+        if (count($fund) > 0) {
+            $total = 0;
+            foreach ($fund as $value) {
+                $total += $value->total;
+            }
+            $total += $triple['_monto'];
+            // dd($total);
+            // error_log($total);
+
+            if ($total <= 100) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
     public function store(Request $request)
     {
 
@@ -196,7 +228,7 @@ class TripletaController extends Controller
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
 
                 $tripleta = Tripleta::create([
-                    'code' => Str::random(10),
+                    'code' => Str::random(5),
                     'caja_id' => $caja->id,
                     'user_id' => $user->id,
                     'admin_id' => $user->parent_id,
@@ -205,36 +237,37 @@ class TripletaController extends Controller
                     'status' => 1,
                 ]);
 
+                $errors = [];
+
                 for ($i = 0; $i < count($data['detalles']); $i++) {
 
                     $triple = $data['detalles'][$i];
+
+                    // dd($triple);
+                    $valid = $this->validateCombinacion($triple);
+                    if (!$valid) {
+                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    }
+
 
                     $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
 
                     $primerSorteo = $schedules->filter(function ($k, $v) {
 
-                        $hora_limite = $k->interval_end_utc;
+                        // $hora_limite = $k->interval_end_utc;
 
+                        // $hora_limite = explode(" ", $hora_limite);
 
-                        $hora_limite = explode(" ", $hora_limite);
-
-                        $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
-                        $limite = new Datetime($hora_limite[1], new DateTimeZone('America/Caracas'));
-       
+                        // $actual = new DateTime(date('H:i:s'), new DateTimeZone('America/Caracas'));
+                        // $limite = new Datetime($hora_limite[1], new DateTimeZone('America/Caracas'));
 
                         if ($k->status == 1) {
-                            if ($actual > $limite) {
-                                $k->sorteos_left = 11;
-                                $k->positionIndex = $v;
-                                return $k;
-                            } else {
-                                $k->sorteos_left = 11;
-                                $k->positionIndex = $v;
-                                return $k;
-                            }
+                            $k->sorteos_left = 11;
+                            $k->positionIndex = $v;
+                            return $k;
                         }
                     });
-  
+
 
                     $cantidad = $schedules->count();
                     $horarios =  $schedules->toArray();
@@ -248,9 +281,9 @@ class TripletaController extends Controller
                     $ultimoSorteo = $h2[$ii];
 
 
-             
 
-                   TripletaDetail::create([
+
+                    TripletaDetail::create([
                         'tripleta_id' => $tripleta->id,
                         'animal_1' => $triple['_1ero'],
                         'animal_2' => $triple['_2do'],
@@ -262,11 +295,6 @@ class TripletaController extends Controller
                         'primer_sorteo' => $primerSorteo->first()->schedule,
                         'ultimo_sorteo' => $ultimoSorteo['schedule'],
                     ]);
-
-
-
-
-
                 }
 
                 return response()->json(['valid' => true, 'message' => ['Ticket guardado'], 'code' => $tripleta->code], 200);
@@ -366,7 +394,7 @@ class TripletaController extends Controller
             // $this->fpdf->Text(2, $line_start + 5, 'Total');
             $this->fpdf->Text(40, $line_start, $ticket->moneda->simbolo . ' ' . number_format($detalle->total, 2, ".", ","));
             $line_start += $spacing;
-            $this->fpdf->Text(2, $line_start, $detalle->sorteo->name . ' '.$detalle->primer_sorteo. ' '.$detalle->ultimo_sorteo );
+            $this->fpdf->Text(2, $line_start, $detalle->sorteo->name . ' ' . $detalle->primer_sorteo . ' ' . $detalle->ultimo_sorteo);
 
             $line_start += $spacing - 1.5;
         }
