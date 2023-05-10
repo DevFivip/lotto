@@ -188,6 +188,8 @@ class TripletaController extends Controller
     public function validateCombinacion($triple)
     {
 
+
+
         // dd($triple);
         $fund = DB::select("SELECT * FROM tripleta_details
         WHERE sorteo_left > 1
@@ -242,6 +244,12 @@ class TripletaController extends Controller
                 for ($i = 0; $i < count($data['detalles']); $i++) {
 
                     $triple = $data['detalles'][$i];
+
+                    $validSorteo = SorteosType::find($triple['_sorteo_type']);
+
+                    if ($validSorteo->status == 0) {
+                        return response()->json(["valid" => false, 'messages' => ["La loteria " . $validSorteo->name . " no se encuentra disponible en estos momentos "]], 403);
+                    }
 
                     // dd($triple);
                     $valid = $this->validateCombinacion($triple);
