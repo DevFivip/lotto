@@ -34,6 +34,7 @@
                                             </div>
                                             <div class="col-md-4 col-6">
                                                 <select x-model="detalle._sorteo_type" class='form-select' name="" id="">
+                                                    <option value="null"> --Seleccione--</option>
                                                     <template x-for="(sorteo, index) in sorteos" :key="index">
                                                         <option :value="sorteo.id.toString()" x-text="sorteo.name"></option>
                                                     </template>
@@ -144,7 +145,7 @@
                     _2do: '',
                     _3ero: '',
                     _monto: 0,
-                    _sorteo_type: "1",
+                    _sorteo_type: false,
                 }],
                 total: 0,
             },
@@ -168,7 +169,14 @@
                 localStorage.setItem('moneda', JSON.stringify(moneda[0]))
             },
             validateItems: function() {
-                if(this.total > 100){
+                isNull = this.ticket.detalles.find(e => e._sorteo_type == false);
+                // console.log(isNull)
+                // debugger
+                if (isNull) {
+                    this.toast(`Seleccione un sorteo valido`, 6000);
+                    return false
+                }
+                if (this.total > 100) {
                     this.toast(`Limite Total debe ser Menor o Igual a 100`, 6000);
                     return false
                 }
