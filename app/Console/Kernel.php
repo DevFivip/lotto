@@ -270,17 +270,17 @@ class Kernel extends ConsoleKernel
 
 
 
-        // $schedule->command('sorteo:checkresult 1 1')->timezone('America/Caracas')->at('09:15');
-        // $schedule->command('sorteo:checkresult 1 2')->timezone('America/Caracas')->at('10:15');
-        // $schedule->command('sorteo:checkresult 1 3')->timezone('America/Caracas')->at('11:15');
-        // $schedule->command('sorteo:checkresult 1 4')->timezone('America/Caracas')->at('12:15');
-        // $schedule->command('sorteo:checkresult 1 5')->timezone('America/Caracas')->at('13:15');
-        // $schedule->command('sorteo:checkresult 1 6')->timezone('America/Caracas')->at('14:15');
-        // $schedule->command('sorteo:checkresult 1 7')->timezone('America/Caracas')->at('15:15');
-        // $schedule->command('sorteo:checkresult 1 8')->timezone('America/Caracas')->at('16:15');
-        // $schedule->command('sorteo:checkresult 1 9')->timezone('America/Caracas')->at('17:15');
-        // $schedule->command('sorteo:checkresult 1 10')->timezone('America/Caracas')->at('18:15');
-        // $schedule->command('sorteo:checkresult 1 11')->timezone('America/Caracas')->at('19:15');
+        $schedule->command('sorteo:checkresult 1 1')->timezone('America/Caracas')->at('09:15');
+        $schedule->command('sorteo:checkresult 1 2')->timezone('America/Caracas')->at('10:15');
+        $schedule->command('sorteo:checkresult 1 3')->timezone('America/Caracas')->at('11:15');
+        $schedule->command('sorteo:checkresult 1 4')->timezone('America/Caracas')->at('12:15');
+        $schedule->command('sorteo:checkresult 1 5')->timezone('America/Caracas')->at('13:15');
+        $schedule->command('sorteo:checkresult 1 6')->timezone('America/Caracas')->at('14:15');
+        $schedule->command('sorteo:checkresult 1 7')->timezone('America/Caracas')->at('15:15');
+        $schedule->command('sorteo:checkresult 1 8')->timezone('America/Caracas')->at('16:15');
+        $schedule->command('sorteo:checkresult 1 9')->timezone('America/Caracas')->at('17:15');
+        $schedule->command('sorteo:checkresult 1 10')->timezone('America/Caracas')->at('18:15');
+        $schedule->command('sorteo:checkresult 1 11')->timezone('America/Caracas')->at('19:15');
 
         $schedule->command('sorteo:checkresult 4 12')->timezone('America/Caracas')->at('08:06');
         $schedule->command('sorteo:checkresult 4 13')->timezone('America/Caracas')->at('09:06');
@@ -414,17 +414,17 @@ class Kernel extends ConsoleKernel
 
         // tripleta verificacion
 
-        // $schedule->command('tripleta:check 1 0')->timezone('America/Caracas')->at('09:20');
-        // $schedule->command('tripleta:check 1 1')->timezone('America/Caracas')->at('10:20');
-        // $schedule->command('tripleta:check 1 2')->timezone('America/Caracas')->at('11:20');
-        // $schedule->command('tripleta:check 1 3')->timezone('America/Caracas')->at('12:20');
-        // $schedule->command('tripleta:check 1 4')->timezone('America/Caracas')->at('13:20');
-        // $schedule->command('tripleta:check 1 5')->timezone('America/Caracas')->at('14:20');
-        // $schedule->command('tripleta:check 1 6')->timezone('America/Caracas')->at('15:20');
-        // $schedule->command('tripleta:check 1 7')->timezone('America/Caracas')->at('16:20');
-        // $schedule->command('tripleta:check 1 8')->timezone('America/Caracas')->at('17:20');
-        // $schedule->command('tripleta:check 1 9')->timezone('America/Caracas')->at('18:20');
-        // $schedule->command('tripleta:check 1 10')->timezone('America/Caracas')->at('19:20');
+         $schedule->command('tripleta:check 1 0')->timezone('America/Caracas')->at('09:20');
+         $schedule->command('tripleta:check 1 1')->timezone('America/Caracas')->at('10:20');
+         $schedule->command('tripleta:check 1 2')->timezone('America/Caracas')->at('11:20');
+         $schedule->command('tripleta:check 1 3')->timezone('America/Caracas')->at('12:20');
+         $schedule->command('tripleta:check 1 4')->timezone('America/Caracas')->at('13:20');
+         $schedule->command('tripleta:check 1 5')->timezone('America/Caracas')->at('14:20');
+         $schedule->command('tripleta:check 1 6')->timezone('America/Caracas')->at('15:20');
+         $schedule->command('tripleta:check 1 7')->timezone('America/Caracas')->at('16:20');
+         $schedule->command('tripleta:check 1 8')->timezone('America/Caracas')->at('17:20');
+         $schedule->command('tripleta:check 1 9')->timezone('America/Caracas')->at('18:20');
+         $schedule->command('tripleta:check 1 10')->timezone('America/Caracas')->at('19:20');
 
         $schedule->command('tripleta:check 4 0')->timezone('America/Caracas')->at('08:21');
         $schedule->command('tripleta:check 4 1')->timezone('America/Caracas')->at('09:21');
