@@ -17,7 +17,7 @@
                     @endif
 
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Lotto Activo</strong> está de vuelta 🎈🎉.
+                        <strong>Lotto Activo</strong> se encuentra desactivado temporalmente.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
