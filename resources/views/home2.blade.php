@@ -18,7 +18,7 @@
 
                     @if($admin && $admin->status === 0)
                     <div class="alert alert-warning" role="alert">
-                        <strong>Alerta</strong> tu cuenta se encuantra desactivada por tu administador.
+                        <strong>Atención</strong> ponte en contacto con tu administrador para continuar generando tickets.
                     </div>
                     @endif
 
