@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use DateTime;
 use DateTimeZone;
 
@@ -21,7 +22,7 @@ class HomeController2 extends Controller
     //
     public function index(Request $request)
     {
-
+        $admin = User::find($request->user()->parent_id);
 
         if (count($request->all()) > 1) {
             $data = $request->all();
@@ -307,7 +308,7 @@ class HomeController2 extends Controller
             });
 
 
-            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance'));
+            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance', 'admin'));
         }
 
         if (auth()->user()->role_id == 2) {
@@ -609,7 +610,7 @@ class HomeController2 extends Controller
                 return $ghh;
             });
 
-            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance'));
+            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance', 'admin'));
         }
         if (auth()->user()->role_id == 3) {
 
@@ -889,7 +890,7 @@ class HomeController2 extends Controller
             });
 
 
-            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance'));
+            return view('home2', compact('results', 'gg', 'balance_general', 'loteria_balance', 'admin'));
         }
     }
 }

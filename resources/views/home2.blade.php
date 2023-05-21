@@ -16,9 +16,14 @@
                     </div>
                     @endif
 
+                    @if($admin && $admin->status === 0)
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Alerta</strong> tu cuenta se encuantra desactivada por tu administador.
+                    </div>
+                    @endif
+
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Lotto Activo</strong> se encuentra desactivado temporalmente.
-                        <br>Se procedera a eliminar las jugadas de lotto activo y las tripletas de hoy día 19/05/2023.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
