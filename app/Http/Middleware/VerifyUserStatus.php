@@ -15,7 +15,17 @@ class VerifyUserStatus
         $user = $request->user();
 
         // usurios administrativos
-        if ($user && $user->role_id == 3) {
+        if ($user && $user->role_id == 1) {
+            return $next($request);
+        }
+
+        // usurios administrativos
+        if ($user && $user->role_id == 2  && $user->status == 1) {
+            return $next($request);
+        }
+
+        // usurios administrativos
+        if ($user && $user->role_id == 3  && $user->status == 1) {
             $admin = User::find($user->parent_id);
 
             if ($admin->status === 0) {
@@ -25,11 +35,11 @@ class VerifyUserStatus
             return $next($request);
         }
 
-        // Verifica si el usuario existe y su estado es igual a 1
-        if ($user && $user->status === 1) {
-            // Si el usuario tiene estado 1, pasa la solicitud al siguiente middleware
-            return $next($request);
-        }
+        // // Verifica si el usuario existe y su estado es igual a 1
+        // if ($user && $user->status === 1) {
+        //     // Si el usuario tiene estado 1, pasa la solicitud al siguiente middleware
+        //     return $next($request);
+        // }
 
 
         // Session::flush();
