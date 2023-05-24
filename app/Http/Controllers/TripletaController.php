@@ -167,6 +167,13 @@ class TripletaController extends Controller
             return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
         }
 
+        if (auth()->user()->role_id == 3) {
+            $admin = User::find(auth()->user()->parent_id);
+            if ($admin->status == 0) {
+                return redirect('/tickets')->withErrors('⚠️ Ponte en contacto con tu administrador para realizar tickets');
+            }
+        }
+
         if (auth()->user()->sorteos == null) {
             $sorteos = SorteosType::where('status', 1)->get();
         } else {

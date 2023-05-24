@@ -81,7 +81,7 @@ class TicketController extends Controller
             if (isset($filter['status'])) {
                 $tickets = $tickets->where('status', $filter['status']);
             }
-            
+
             if (isset($filter['has_winner'])) {
                 $tickets = $tickets->where('has_winner', $filter['has_winner']);
             }
@@ -172,7 +172,7 @@ class TicketController extends Controller
             $usuarios = null;
         }
 
-        $ticket =  $tickets->each(function ($ticket) {
+        $tickets->each(function ($ticket) {
 
             $ticket->total_premios = $ticket->detalles->sum(function ($item) {
 
@@ -224,13 +224,14 @@ class TicketController extends Controller
 
         $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
         $animalitos = Animal::with('type')->get();
-        // dd($animalitos[1]->type->name);
 
         return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos'));
     }
 
     public function create()
     {
+
+
 
         if (auth()->user()->status == 0) {
             return redirect('/tickets')->withErrors('⚠️ Usuario desactivado contactate con tu proveedor');
@@ -240,13 +241,19 @@ class TicketController extends Controller
             return redirect('/tickets')->withErrors('⚠️ Los Administradores no pueden crear tickets');
         }
 
+        if (auth()->user()->role_id == 3) {
+            $admin = User::find(auth()->user()->parent_id);
+            if ($admin->status == 0) {
+                return redirect('/tickets')->withErrors('⚠️ Ponte en contacto con tu administrador para realizar tickets');
+            }
+        }
+
         // validar apertura de caja
 
         $caja = Caja::where('user_id', auth()->user()->id)->where('status', 1)->first();
 
 
         if (!!$caja) {
-
             if (auth()->user()->sorteos == null) {
                 $sorteos = SorteosType::where('status', 1)->get();
                 // dd('isnull');
