@@ -35,13 +35,6 @@ class VerifyUserStatus
             return $next($request);
         }
 
-        // // Verifica si el usuario existe y su estado es igual a 1
-        // if ($user && $user->status === 1) {
-        //     // Si el usuario tiene estado 1, pasa la solicitud al siguiente middleware
-        //     return $next($request);
-        // }
-
-
         // Session::flush();
         // Auth::logout();
         // return route('login');
