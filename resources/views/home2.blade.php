@@ -23,8 +23,7 @@
                     @endif
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Lotto Activo Regalos</strong> ya se encuentra disponible 🎉🎈 <br>
-                         Ponte en contacto con tu administrador en caso de no tener disponible esta loteria.
+                        <strong>Lotto Activo</strong> ya se encuentra disponible 🎉🎈 <br>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
