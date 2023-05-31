@@ -195,8 +195,6 @@ class TripletaController extends Controller
     public function validateCombinacion($triple)
     {
 
-
-
         // dd($triple);
         $fund = DB::select("SELECT * FROM tripleta_details
         WHERE sorteo_left > 1
@@ -212,6 +210,102 @@ class TripletaController extends Controller
             foreach ($fund as $value) {
                 $total += $value->total;
             }
+            $total += $triple['_monto'];
+            // dd($total);
+            // error_log($total);
+
+            if ($total <= 100) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+    public function validateCombinacion1($triple, $user)
+    {
+
+        // dd($triple);
+        $fund = DB::select("SELECT t.id, t.animal_1, t.animal_2, t.animal_3, t.total,t2.user_id
+            FROM tripleta_details AS t
+            LEFT JOIN tripletas AS t2 ON t2.id = t.tripleta_id
+            WHERE t.sorteo_left > 8
+              AND t.sorteo_left < 12
+              AND t.sorteo_id = ? 
+              AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+              AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+              AND t2.user_id = ?
+            ORDER BY t.id ASC", [$triple['_sorteo_type'], $triple['_1ero'], $triple['_3ero'], $user->id]);
+
+        if (count($fund) > 0) {
+            $total = 0;
+            foreach ($fund as $value) {
+                $total += $value->total;
+            }
+            $total += $triple['_monto'];
+
+            if ($total <= 100) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+    public function validateCombinacion2($triple, $user)
+    {
+
+        // dd($triple);
+        $fund = DB::select("SELECT t.id, t.animal_1, t.animal_2, t.animal_3, t.total,t2.user_id
+            FROM tripleta_details AS t
+            LEFT JOIN tripletas AS t2 ON t2.id = t.tripleta_id
+            WHERE t.sorteo_left > 8
+              AND t.sorteo_left < 12
+              AND t.sorteo_id = ? 
+              AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+              AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+              AND t2.user_id = ?
+            ORDER BY t.id ASC", [$triple['_sorteo_type'], $triple['_1ero'], $triple['_2do'], $user->id]);
+
+        if (count($fund) > 0) {
+            $total = 0;
+            foreach ($fund as $value) {
+                $total += $value->total;
+            }
+            $total += $triple['_monto'];
+
+            if ($total <= 100) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+    public function validateCombinacion3($triple, $user)
+    {
+
+        // dd($triple);
+        $fund = DB::select("SELECT t.id, t.animal_1, t.animal_2, t.animal_3, t.total,t2.user_id
+        FROM tripleta_details AS t
+        LEFT JOIN tripletas AS t2 ON t2.id = t.tripleta_id
+        WHERE t.sorteo_left > 8
+          AND t.sorteo_left < 12
+          AND t.sorteo_id = ? 
+          AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+          AND ? IN (t.animal_1, t.animal_2, t.animal_3)
+          AND t2.user_id = ?
+        ORDER BY t.id ASC", [$triple['_sorteo_type'], $triple['_2do'], $triple['_3ero'], $user->id]);
+
+        if (count($fund) > 0) {
+            $total = 0;
+            foreach ($fund as $value) {
+                $total += $value->total;
+            }
+
             $total += $triple['_monto'];
             // dd($total);
             // error_log($total);
@@ -262,6 +356,21 @@ class TripletaController extends Controller
                     $valid = $this->validateCombinacion($triple);
                     if (!$valid) {
                         return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    }
+
+                    $valid = $this->validateCombinacion1($triple, $user);
+                    if (!$valid) {
+                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . "  " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    }
+
+                    $valid = $this->validateCombinacion2($triple, $user);
+                    if (!$valid) {
+                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    }
+
+                    $valid = $this->validateCombinacion3($triple, $user);
+                    if (!$valid) {
+                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
                     }
 
 
