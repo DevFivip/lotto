@@ -358,20 +358,20 @@ class TripletaController extends Controller
                         return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
                     }
 
-                    $valid = $this->validateCombinacion1($triple, $user);
-                    if (!$valid) {
-                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . "  " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
-                    }
+                    // $valid = $this->validateCombinacion1($triple, $user);
+                    // if (!$valid) {
+                    //     return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . "  " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    // }
 
-                    $valid = $this->validateCombinacion2($triple, $user);
-                    if (!$valid) {
-                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
-                    }
+                    // $valid = $this->validateCombinacion2($triple, $user);
+                    // if (!$valid) {
+                    //     return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_1ero'] . " " . $triple['_2do'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    // }
 
-                    $valid = $this->validateCombinacion3($triple, $user);
-                    if (!$valid) {
-                        return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
-                    }
+                    // $valid = $this->validateCombinacion3($triple, $user);
+                    // if (!$valid) {
+                    //     return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
+                    // }
 
 
                     $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
