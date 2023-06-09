@@ -56,6 +56,7 @@ Route::middleware('verifyUserStatus')->group(function () {
 
     Route::get('/tripletas/print/{code}', [App\Http\Controllers\TripletaController::class, 'print']);
     Route::get('/tripletas/pay/{code}', [App\Http\Controllers\TripletaController::class, 'pay']);
+    Route::delete('/tripletas/delete/{code}/{codigo_eliminacion}', [App\Http\Controllers\TripletaController::class, 'eliminar']);
 
 
     Route::get('/chart', [App\Http\Controllers\JugadasController::class, 'plays']);
@@ -112,6 +113,7 @@ Route::get('/setting-impresora', function () {
 });
 
 Route::delete('/register/{code}', [App\Http\Controllers\RegisterController::class, 'destroy']);
+Route::delete('/register/delete/{code}/{codigo_eliminacion}', [App\Http\Controllers\RegisterController::class, 'eliminar']);
 
 // Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);
 // Route::post('/send-results-complement', [App\Http\Controllers\ScrappingController::class, 'getResult']);

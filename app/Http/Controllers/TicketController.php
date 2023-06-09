@@ -224,8 +224,8 @@ class TicketController extends Controller
 
         $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
         $animalitos = Animal::with('type')->get();
-
-        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos'));
+        $user = auth()->user();
+        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos','user'));
     }
 
     public function create()

@@ -202,9 +202,29 @@
 <script>
     function mounted() {
         window.CSRF_TOKEN = '{{ csrf_token() }}';
+        const user = @json($user);
         return {
+            user: user,
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             openFilter: false,
+            handleDeleteVerification: async function(code) {
+                const codigo_eliminacion = prompt('Ingrese codigo de verificación');
+                const res = await fetch('/tripletas/delete/' + code + '/' + codigo_eliminacion, {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-Token": window.CSRF_TOKEN
+                    },
+                })
+                body = await res.json();
+                if (body.valid) {
+                    location.reload()
+                } else {
+                    this.toast(body.message, 1000);
+                }
+            },
             handleDelete: async function(code) {
                 if (confirm("¿Seguro deseas eliminar este tripletas?") == true) {
                     const res = await fetch('/tripletas/' + code, {
@@ -218,13 +238,16 @@
                     })
 
                     body = await res.json();
-                    console.log(body)
+
                     if (body.valid) {
                         location.reload()
                     } else {
                         this.toast(body.message, 1000);
+                        if (this.user.role_id == 2 || this.user.role_id == 1) {
+                            this.handleDeleteVerification(code);
+                        }
+
                     }
-                    // alert()
                 }
             },
 

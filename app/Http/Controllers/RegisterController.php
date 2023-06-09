@@ -400,7 +400,6 @@ class RegisterController extends Controller
             if ($resp[2] > $validacionUserAdminHorario->limit) {
                 array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido el limite Administrativo, intente para otro horario');
             }
-
         }
 
 
@@ -672,6 +671,19 @@ class RegisterController extends Controller
 
         //     return response()->json(['valid' => true, 'message' => 'Ticket eliminado perfectamente'], 200);
         // }
+    }
+    public function eliminar($code, $codigo_eliminacion)
+    {
+
+        if ($codigo_eliminacion == 'xFivip20231') {
+            $register = Register::where('code', $code)->first();
+            RegisterDetail::where('register_id', $register->id)->delete();
+            $register->status = 0;
+            $register->update();
+            return response()->json(['valid' => true, 'message' => 'Delete succefully'], 200);
+        } else {
+            return response()->json(['valid' => false, 'message' => 'Codigo no válido'], 403);
+        }
     }
 
     public function payAnimalito(Request $request, $id)

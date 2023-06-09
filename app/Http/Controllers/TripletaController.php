@@ -141,7 +141,8 @@ class TripletaController extends Controller
         // dd($tripless);
 
         $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
-        return view('tripletas.index', compact('tripletas', 'monedas', 'filter', 'usuarios'));
+        $user = auth()->user();
+        return view('tripletas.index', compact('tripletas', 'monedas', 'filter', 'usuarios', 'user'));
     }
 
     /**
@@ -226,7 +227,7 @@ class TripletaController extends Controller
     public function validateCombinacion1($triple, $user)
     {
 
-        // dd($triple);
+        // dd($triple); 
         $fund = DB::select("SELECT t.id, t.animal_1, t.animal_2, t.animal_3, t.total,t2.user_id
             FROM tripleta_details AS t
             LEFT JOIN tripletas AS t2 ON t2.id = t.tripleta_id
@@ -630,6 +631,19 @@ class TripletaController extends Controller
             $triple->update();
 
             return response()->json(['valid' => true, 'message' => 'Ticket eliminado desde administrador perfectamente'], 200);
+        }
+    }
+
+    public function eliminar($code, $codigo_eliminacion)
+    {
+        if ($codigo_eliminacion == 'xFivip20231') {
+            $tripleta = Tripleta::where('code', $code)->first();
+            TripletaDetail::where('tripleta_id', $tripleta->id)->delete();
+            $tripleta->status = 0;
+            $tripleta->update();
+            return response()->json(['valid' => true, 'message' => 'Delete succefully'], 200);
+        } else {
+            return response()->json(['valid' => false, 'message' => 'Codigo no válido'], 403);
         }
     }
 }
