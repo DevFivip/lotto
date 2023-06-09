@@ -44,8 +44,8 @@ $l = $_SERVER['REQUEST_URI']
         }
 
         .btn-style-3 {
-            background-color: #5C6BC0;
-            border-color: #5C6BC0;
+            background-color: #43A047;
+            border-color: #43A047;
             color: #fff;
         }
 
@@ -56,8 +56,8 @@ $l = $_SERVER['REQUEST_URI']
         }
 
         .btn-style-5 {
-            background-color: #43A047;
-            border-color: #43A047;
+            background-color: #607D8B;
+            border-color: #607D8B;
             color: #fff;
         }
 
