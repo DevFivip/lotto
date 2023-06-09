@@ -46,7 +46,7 @@
                                     <template x-for="(animal, index) in animals">
                                         <template x-if="animal.sorteo_type_id == ticket.type_sorteo_id">
                                             <div class="d-grid gap-1 mt-1">
-                                                <button :class="!!!animal.selected ? 'btn-warning': 'btn-dark' " class="btn fw-bold" @click="handleClick(animal.number,animal.selected)">
+                                                <button :class="!!!animal.selected ? `btn-style-${animal.sorteo_type_id}`: 'btn-dark' " class="btn fw-bold" @click="handleClick(animal.number,animal.selected)">
                                                     <p class="p-0 m-0" x-text="animal.number"></p>
                                                     <p class="p-0 m-0" style="font-size: 8px;" x-text="animal.nombre"></p>
                                                 </button>
@@ -213,7 +213,7 @@
                                     <div class="d-grid gap-1 mt-1">
                                         <button x-show="turn" style="display: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkOut"><i class="fa-solid fa-floppy-disk"></i> Guardar <span x-text="_monedaSelected.simbolo"></span> <span x-text="total"></span></button>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                             <a href="/tripletas/create" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Tripletas</a> 
+                                            <a href="/tripletas/create" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Tripletas</a>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payTicketModal"><i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#repeatTicketModal"><i class="fa-solid fa-repeat"></i> Repetir</button>
                                             <a x-bind:href="'/reports/general?fecha_inicio='+fechaHoy+'&fecha_fin='+fechaHoy" class="btn btn-primary"><i class="fa-solid fa-print"></i> Reportes</a>

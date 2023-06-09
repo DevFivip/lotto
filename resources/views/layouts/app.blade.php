@@ -30,6 +30,51 @@ $l = $_SERVER['REQUEST_URI']
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <style>
+        .btn-style-1 {
+            background-color: #FF9800;
+            border-color: #FF9800;
+            color: #fff;
+        }
+
+        .btn-style-2 {
+            background-color: #EF5350;
+            border-color: #EF5350;
+            color: #fff;
+        }
+
+        .btn-style-3 {
+            background-color: #5C6BC0;
+            border-color: #5C6BC0;
+            color: #fff;
+        }
+
+        .btn-style-4 {
+            background-color: #5C6BC0;
+            border-color: #5C6BC0;
+            color: #fff;
+        }
+
+        .btn-style-5 {
+            background-color: #43A047;
+            border-color: #43A047;
+            color: #fff;
+        }
+
+        .btn-style-6 {
+            background-color: #3D5AFE;
+            border-color: #3D5AFE;
+            color: #fff;
+        }
+
+        .btn-style-7 {
+            background-color: #F4511E;
+            border-color: #F4511E;
+            color: #fff;
+        }
+    </style>
+
+
     <!-- Alpine Plugins -->
     <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.0.0/dist/moment.min.js" defer></script>
     <!-- Alpine Core -->
@@ -80,7 +125,7 @@ $l = $_SERVER['REQUEST_URI']
                         @endif
 
                         @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
-                        
+
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tickets">Listado de Animalitos</a>
                         </li>
