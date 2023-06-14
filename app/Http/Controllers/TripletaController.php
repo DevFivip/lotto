@@ -167,6 +167,10 @@ class TripletaController extends Controller
         if (auth()->user()->role_id == 2) {
             return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
         }
+        
+        if (auth()->user()->parent_id == 16) {
+            return redirect('/tripletas')->withErrors('⚠️ Tripleta desactivada');
+        }
 
         if (auth()->user()->role_id == 3) {
             $admin = User::find(auth()->user()->parent_id);
