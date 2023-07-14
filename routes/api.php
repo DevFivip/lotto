@@ -125,6 +125,18 @@ Route::post('/send-results-chanceanimalitos', function (Request $request) {
     }
 });
 
+Route::post('/send-results-selvaplus', function (Request $request) {
+
+    $data = $request->all();
+    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 11)->first();
+    if ($schedule) {
+        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 11);
+        return response()->json($response, 200);
+    } else {
+        return response()->json(['valid' => false], 200);
+    }
+});
+
 Route::post('/send-results-tropigana', function (Request $request) {
 
     $data = $request->all();
@@ -144,6 +156,28 @@ Route::post('/send-results-junglamillonaria', function (Request $request) {
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 9)->first();
     if ($schedule) {
         $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 9);
+        return response()->json($response, 200);
+    } else {
+        return response()->json(['valid' => false], 200);
+    }
+});
+
+Route::post('/send-results-ruletaactiva', function (Request $request) {
+    $data = $request->all();
+    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 12)->first();
+    if ($schedule) {
+        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 12);
+        return response()->json($response, 200);
+    } else {
+        return response()->json(['valid' => false], 200);
+    }
+});
+
+Route::post('/send-results-guacharo', function (Request $request) {
+    $data = $request->all();
+    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 10)->first();
+    if ($schedule) {
+        $response = ResultController::storeDirectGeneric($data['numero'], $data['schedule_id'], 10);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
