@@ -41,7 +41,7 @@ class SetWinnerLottoPlusCommand extends Command
 
     public function handle()
     {
-
+        $telegram = new Telegram();
         // horario is_send no enviado  =  0
         // el ultimo que no se a enviado
         $restric = 20;
@@ -118,19 +118,21 @@ class SetWinnerLottoPlusCommand extends Command
         // });
 
         $totales = $this->totales;
-
+        
         if ($hhNoRepets->count() != 0) {
             $arr_bas = $hhNoRepets->filter(function ($v, $k) use ($totales) {
                 if ($v['total_recompensa_usd'] < $totales['balance_80']) {
                     return $v;
                 }
             });
+            $telegram->sendMessage('$hhNoRepets de conteo 20');
         } else {
             $arr_bas = $hhNoRepets2->filter(function ($v, $k) use ($totales) {
                 if ($v['total_recompensa_usd'] < $totales['balance_80']) {
                     return $v;
                 }
             });
+            $telegram->sendMessage('$hhNoRepets de conteo 10');
         }
 
 
@@ -185,7 +187,7 @@ class SetWinnerLottoPlusCommand extends Command
             );
         }
 
-        $telegram = new Telegram();
+
         $telegram->sendMessage('✅ Lotto Plus ganador auto-seteado para las ' . $horario['schedule'] . ' ' . $first['animal'] . ' ' . $first['animal_numero']);
         $telegram->sendMessage('https://lotto.fivipsystem.com/lottoloko');
 
