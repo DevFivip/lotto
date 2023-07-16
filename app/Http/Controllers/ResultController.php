@@ -450,7 +450,8 @@ class ResultController extends Controller
             'quantity_winners' => $jugadas_ganadores[0]->total_ganadores,
             'amount_home_usd' =>  $total[0]->usd_monto_total,
             'amount_winners_usd' => $total[0]->usd_premio_total,
-            'amount_balance_usd' => ($total[0]->usd_monto_total - $total[0]->usd_comision_total) - $total[0]->usd_premio_total
+            'amount_balance_usd' => ($total[0]->usd_monto_total - $total[0]->usd_comision_total) - $total[0]->usd_premio_total,
+            'valid' => true
         ]);
 
         return $r;
@@ -465,18 +466,45 @@ class ResultController extends Controller
         //deshacer la actualizacion 
         $resultado = Result::find($id);
         // dd($resultado);
-        $registros = RegisterDetail::where('schedule_id', $resultado->schedule_id)->where('sorteo_type_id', $resultado->sorteo_type_id)
-            ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')
-            ->get();
-        // dd($dt->format('Y-m-d'), $registros->count());
+        // $registros = RegisterDetail::where('schedule_id', $resultado->schedule_id)->where('sorteo_type_id', $resultado->sorteo_type_id)
+        //     ->where('created_at', '>=', $dt->format('Y-m-d') . ' 00:00:00')
+        //     ->get();
+        // // dd($dt->format('Y-m-d'), $registros->count());
+
+        // $registros->each(function ($items) {
+        //     $items->winner = 0;
+        //     $items->update();
+        // });
 
 
-        $registros->each(function ($items) {
-            $items->winner = 0;
-            $items->update();
+        $rr = DB::select(DB::raw("UPDATE `register_details` set winner = 0 where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id and animal_id = :animal_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $resultado->schedule_id, 'animal_id' => $resultado->animal_id]);
+        // DB::select(DB::raw("UPDATE `register_details` set winner = -1 where date(created_at) = date(:fecha_inicio) and schedule_id = :schedule_id and animal_id != :animal_id"), ['fecha_inicio' => $dt->format('Y-m-d'), 'schedule_id' => $hora->id, 'animal_id' => $animal->id]);
+
+
+        $raw = DB::select(DB::raw("SELECT id,
+         (SELECT SUM( IF(register_details.winner = 1, monto, 0)) as total FROM `register_details` where register_id = registers.id) as total
+         from registers
+         WHERE date(created_at) =  date(:fecha_inicio)
+         ORDER by registers.id DESC"), ['fecha_inicio' => $dt->format('Y-m-d')]);
+
+        $raw = new Collection($raw);
+        dd($raw);
+
+        $fil = $raw->filter(function ($v, $k) {
+            if ($v->total > 0) {
+                return  $v;
+            }
         });
 
+        dd($fil->pluck('id'));
+
+
+        $ids =  $fil->pluck('id');
+
+        $reg = Register::whereIn('id', $ids)->update(['has_winner' => 0]);
+
         $resultado->delete();
+
         return ["valid" => true, 'message' => 'Registro eliminado correctamente'];
     }
 }

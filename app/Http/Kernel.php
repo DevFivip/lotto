@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'timezone' => \App\Http\Middleware\CheckTimeZone::class,
         'verifyUserStatus' => \App\Http\Middleware\VerifyUserStatus::class,
+        'rate_limit' => \App\Http\Middleware\RateLimitMiddleware::class,
     ];
 }

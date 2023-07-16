@@ -44,10 +44,9 @@ Route::post('/send-results-complement', function (Request $request) {
     // return $resultados;
     // return response()->json(['valid','response'],200);
 
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-granjita', function (Request $request) {
-
     $data = $request->all();
     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 2)->first();
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
@@ -58,7 +57,7 @@ Route::post('/send-results-granjita', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');
 
 Route::post('/send-results-selvaParaiso', function (Request $request) {
 
@@ -70,7 +69,7 @@ Route::post('/send-results-selvaParaiso', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-lottoactivo', function (Request $request) {
 
@@ -85,7 +84,7 @@ Route::post('/send-results-lottoactivo', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-lottoactivord', function (Request $request) {
 
@@ -98,7 +97,7 @@ Route::post('/send-results-lottoactivord', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-lottorey', function (Request $request) {
     $data = $request->all();
@@ -111,7 +110,7 @@ Route::post('/send-results-lottorey', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-chanceanimalitos', function (Request $request) {
 
@@ -123,7 +122,7 @@ Route::post('/send-results-chanceanimalitos', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-selvaplus', function (Request $request) {
 
@@ -135,7 +134,7 @@ Route::post('/send-results-selvaplus', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-tropigana', function (Request $request) {
 
@@ -149,7 +148,7 @@ Route::post('/send-results-tropigana', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-junglamillonaria', function (Request $request) {
     $data = $request->all();
@@ -160,7 +159,7 @@ Route::post('/send-results-junglamillonaria', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-ruletaactiva', function (Request $request) {
     $data = $request->all();
@@ -171,7 +170,7 @@ Route::post('/send-results-ruletaactiva', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 Route::post('/send-results-guacharo', function (Request $request) {
     $data = $request->all();
@@ -182,7 +181,7 @@ Route::post('/send-results-guacharo', function (Request $request) {
     } else {
         return response()->json(['valid' => false], 200);
     }
-});
+})->middleware('rate_limit');;
 
 
 
