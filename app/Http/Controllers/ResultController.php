@@ -488,7 +488,7 @@ class ResultController extends Controller
          ORDER by registers.id DESC"), ['fecha_inicio' => $dt->format('Y-m-d')]);
 
         $raw = new Collection($raw);
-        dd($raw);
+        // dd($raw);
 
         $fil = $raw->filter(function ($v, $k) {
             if ($v->total > 0) {
@@ -496,7 +496,7 @@ class ResultController extends Controller
             }
         });
 
-        dd($fil->pluck('id'));
+        // dd($fil->pluck('id'));
 
 
         $ids =  $fil->pluck('id');
