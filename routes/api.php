@@ -52,7 +52,7 @@ Route::post('/send-results-granjita', function (Request $request) {
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
     // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 2);
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id']+1, 2);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
