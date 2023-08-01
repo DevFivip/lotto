@@ -380,7 +380,7 @@ class ResultController extends Controller
         $old = Result::where('sorteo_type_id', $sorteo_id)->orderBy('id', 'DESC')->first();
         $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
         $horarios = Schedule::where('sorteo_type_id', $sorteo_id)->get();
-        $hora = $horarios[$schedule_position];
+        $hora = $horarios[$schedule_position+1];
 
         $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $dt = $dt2->setTimezone(new DateTimeZone("America/Caracas"));
@@ -496,7 +496,7 @@ class ResultController extends Controller
             }
         });
 
-        // dd($fil->pluck('id'));
+        // dd($fil->pluck('id'))
 
 
         $ids =  $fil->pluck('id');
