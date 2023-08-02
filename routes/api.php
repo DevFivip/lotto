@@ -48,7 +48,7 @@ Route::post('/send-results-complement', function (Request $request) {
 
 Route::post('/send-results-granjita', function (Request $request) {
     $data = $request->all();
-    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 2)->first();
+    $schedule = Schedule::where('status', 0)->where('create_at',null)->where('sorteo_type_id', 2)->first();
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
     // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
