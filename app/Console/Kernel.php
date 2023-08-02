@@ -51,6 +51,7 @@ class Kernel extends ConsoleKernel
 
 
         //LA GRANJITA
+        $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('07:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('08:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('09:59');
         $schedule->command('sorteo:granjitaclose')->timezone('America/Caracas')->at('10:59');
@@ -207,8 +208,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closeselvaplus')->timezone('America/Caracas')->at('18:55');
 
         $schedule->command('sorteo:closeselvaplus')->timezone('America/Caracas')->at('04:01'); // reset granjita open all
-
-
 
         // Lotto Activo Reducir limites
         $schedule->command('sorteo:reduce 1 1')->timezone('America/Caracas')->at('08:30');
