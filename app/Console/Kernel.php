@@ -367,17 +367,18 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:checkresult 4 23')->timezone('America/Caracas')->at('19:06');
         $schedule->command('sorteo:checkresult 4 24')->timezone('America/Caracas')->at('20:06');
 
-        $schedule->command('sorteo:checkresult 2 25')->timezone('America/Caracas')->at('09:15');
-        $schedule->command('sorteo:checkresult 2 26')->timezone('America/Caracas')->at('10:15');
-        $schedule->command('sorteo:checkresult 2 27')->timezone('America/Caracas')->at('11:15');
-        $schedule->command('sorteo:checkresult 2 28')->timezone('America/Caracas')->at('12:15');
-        $schedule->command('sorteo:checkresult 2 29')->timezone('America/Caracas')->at('13:15');
-        $schedule->command('sorteo:checkresult 2 30')->timezone('America/Caracas')->at('14:15');
-        $schedule->command('sorteo:checkresult 2 31')->timezone('America/Caracas')->at('15:15');
-        $schedule->command('sorteo:checkresult 2 32')->timezone('America/Caracas')->at('16:15');
-        $schedule->command('sorteo:checkresult 2 33')->timezone('America/Caracas')->at('17:15');
-        $schedule->command('sorteo:checkresult 2 34')->timezone('America/Caracas')->at('18:15');
-        $schedule->command('sorteo:checkresult 2 35')->timezone('America/Caracas')->at('19:15');
+        $schedule->command('sorteo:checkresult 2 135')->timezone('America/Caracas')->at('08:15');
+        $schedule->command('sorteo:checkresult 2 136')->timezone('America/Caracas')->at('09:15');
+        $schedule->command('sorteo:checkresult 2 137')->timezone('America/Caracas')->at('10:15');
+        $schedule->command('sorteo:checkresult 2 138')->timezone('America/Caracas')->at('11:15');
+        $schedule->command('sorteo:checkresult 2 139')->timezone('America/Caracas')->at('12:15');
+        $schedule->command('sorteo:checkresult 2 140')->timezone('America/Caracas')->at('13:15');
+        $schedule->command('sorteo:checkresult 2 141')->timezone('America/Caracas')->at('14:15');
+        $schedule->command('sorteo:checkresult 2 142')->timezone('America/Caracas')->at('15:15');
+        $schedule->command('sorteo:checkresult 2 143')->timezone('America/Caracas')->at('16:15');
+        $schedule->command('sorteo:checkresult 2 144')->timezone('America/Caracas')->at('17:15');
+        $schedule->command('sorteo:checkresult 2 145')->timezone('America/Caracas')->at('18:15');
+        $schedule->command('sorteo:checkresult 2 146')->timezone('America/Caracas')->at('19:15');
 
         $schedule->command('sorteo:checkresult 5 36')->timezone('America/Caracas')->at('08:45');
         $schedule->command('sorteo:checkresult 5 37')->timezone('America/Caracas')->at('09:45');
@@ -648,6 +649,44 @@ class Kernel extends ConsoleKernel
         $schedule->command('tripleta:check 12 8')->timezone('America/Caracas')->at('17:24');
         $schedule->command('tripleta:check 12 9')->timezone('America/Caracas')->at('18:24');
         $schedule->command('tripleta:check 12 10')->timezone('America/Caracas')->at('19:24');
+
+
+        
+        // CERRAR ANIMALITOS 
+        // NENECIO LOTTO ACTIVO
+        // GRABIELA GOMEZ LOTTO ACTIVO
+
+        $schedule->command('sorteo:closeadmin 118 1 1')->timezone('America/Caracas')->at('08:50');
+        $schedule->command('sorteo:closeadmin 118 1 2')->timezone('America/Caracas')->at('09:50');
+        $schedule->command('sorteo:closeadmin 118 1 3')->timezone('America/Caracas')->at('10:50');
+        $schedule->command('sorteo:closeadmin 118 1 4')->timezone('America/Caracas')->at('11:50');
+        $schedule->command('sorteo:closeadmin 118 1 5')->timezone('America/Caracas')->at('12:50');
+        $schedule->command('sorteo:closeadmin 118 1 6')->timezone('America/Caracas')->at('13:50');
+        $schedule->command('sorteo:closeadmin 118 1 7')->timezone('America/Caracas')->at('14:50');
+        $schedule->command('sorteo:closeadmin 118 1 8')->timezone('America/Caracas')->at('15:50');
+        $schedule->command('sorteo:closeadmin 118 1 9')->timezone('America/Caracas')->at('16:50');
+        $schedule->command('sorteo:closeadmin 118 1 10')->timezone('America/Caracas')->at('17:50');
+        $schedule->command('sorteo:closeadmin 118 1 11')->timezone('America/Caracas')->at('18:50');
+
+        // NENECIO LA GRANJITA
+        // GRABIELA GOMEZ LA GRANJITA
+        $schedule->command('sorteo:closeadmin 118 2 135')->timezone('America/Caracas')->at('07:45');
+        $schedule->command('sorteo:closeadmin 118 2 136')->timezone('America/Caracas')->at('08:45');
+        $schedule->command('sorteo:closeadmin 118 2 137')->timezone('America/Caracas')->at('09:45');
+        $schedule->command('sorteo:closeadmin 118 2 138')->timezone('America/Caracas')->at('10:45');
+        $schedule->command('sorteo:closeadmin 118 2 139')->timezone('America/Caracas')->at('11:45');
+        $schedule->command('sorteo:closeadmin 118 2 140')->timezone('America/Caracas')->at('12:45');
+        $schedule->command('sorteo:closeadmin 118 2 141')->timezone('America/Caracas')->at('13:45');
+        $schedule->command('sorteo:closeadmin 118 2 142')->timezone('America/Caracas')->at('14:45');
+        $schedule->command('sorteo:closeadmin 118 2 143')->timezone('America/Caracas')->at('15:45');
+        $schedule->command('sorteo:closeadmin 118 2 144')->timezone('America/Caracas')->at('16:45');
+        $schedule->command('sorteo:closeadmin 118 2 145')->timezone('America/Caracas')->at('17:45');
+        $schedule->command('sorteo:closeadmin 118 2 146')->timezone('America/Caracas')->at('18:45');
+
+
+
+        // reiniciar todos los limites
+        $schedule->command('sorteo:clearadmin')->timezone('America/Caracas')->at('20:45');
     }
 
     /**

@@ -40,11 +40,11 @@ class CloserHorarioLaGranjitaCommand extends Command
     public function handle()
     {
         $telegram = new Telegram();
-        $s2 = Schedule::where('status', 1)->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
+        $s2 = Schedule::where('status', 1)->whereNotIn('id', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35])->where('sorteo_type_id', '=', 2)->first(); // Cerrar Lotto Activo  
         if (!!$s2) {
             $s2->status = 0;
             $s2->update();
-              $telegram->sendMessage('✔ Horario Cerrado '. $s2->schedule .'  La Granjita');
+            $telegram->sendMessage('✔ Horario Cerrado ' . $s2->schedule . '  La Granjita');
             return $s2->schedule . ' ' . 'off';
         } else {
             $sorteos2 = Schedule::where('sorteo_type_id', '=', 2)->get();
@@ -52,8 +52,8 @@ class CloserHorarioLaGranjitaCommand extends Command
                 $sorteo2->status = 1;
                 $sorteo2->update();
             }
-              $telegram->sendMessage('✔ Horarios Reiniciados La Granjita');
-             return 'reset off';
+            $telegram->sendMessage('✔ Horarios Reiniciados La Granjita');
+            return 'reset off';
         }
 
         return 0;

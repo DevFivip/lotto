@@ -35,8 +35,8 @@ class SetSorteoCommand extends Command
         if (!!$s) {
             $s->status = 0;
             $s->update();
-              $telegram->sendMessage('✔ Horario Cerrado '. $s->schedule .'  Lotto Activo');
-             return $s->schedule . ' ' . 'off';
+            $telegram->sendMessage('✔ Horario Cerrado ' . $s->schedule . '  Lotto Activo');
+            return $s->schedule . ' ' . 'off';
         } else {
 
             $sorteos = Schedule::where('sorteo_type_id', '=', 1)->get();
@@ -44,11 +44,11 @@ class SetSorteoCommand extends Command
                 $sorteo->status = 1;
                 $sorteo->update();
             }
-              $telegram->sendMessage('✔ Horarios Reiniciados Lotto Activo');
-             return 'reset off';
+            $telegram->sendMessage('✔ Horarios Reiniciados Lotto Activo');
+            return 'reset off';
         }
 
-     
+
 
         return 'reset off';
     }
