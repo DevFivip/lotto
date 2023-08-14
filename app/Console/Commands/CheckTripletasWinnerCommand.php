@@ -50,7 +50,7 @@ class CheckTripletasWinnerCommand extends Command
         try {
             $horario = $horarios[$horario_position];
         } catch (\Throwable $th) {
-            $schedules = DB::select("SELECT * FROM `schedules` where sorteo_type_id = ?", [intval($loteria_id)]);
+            $schedules = DB::select("SELECT * FROM `schedules` where sorteo_type_id = ? and id not in (25,26,27,28,29,30,31,32,33,34,35)", [intval($loteria_id)]);
             $lo = $loteria->name;
             $sh = $schedules[$horario_position]->schedule;
             $wachiman->sendMessage("🆘 Error al colocar resultados de la Tripleta $sh $lo");
