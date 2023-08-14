@@ -167,7 +167,7 @@ class TripletaController extends Controller
         if (auth()->user()->role_id == 2) {
             return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
         }
-        
+
         if (auth()->user()->parent_id == 16) {
             return redirect('/tripletas')->withErrors('⚠️ Tripleta desactivada');
         }
@@ -379,7 +379,7 @@ class TripletaController extends Controller
                     // }
 
 
-                    $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->orderBy('id', 'ASC')->get();
+                    $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->whereNotIn('id', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35])->orderBy('id', 'ASC')->get();
 
                     $primerSorteo = $schedules->filter(function ($k, $v) {
 
