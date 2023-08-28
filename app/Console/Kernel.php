@@ -685,6 +685,38 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closeadmin 118 2 145')->timezone('America/Caracas')->at('17:45');
         $schedule->command('sorteo:closeadmin 118 2 146')->timezone('America/Caracas')->at('18:45');
 
+      
+        // CERRAR ANIMALITOS 
+        // GEOR LOTTO ACTIVO
+        // Yairet Rodríguez LOTTO ACTIVO
+
+        $schedule->command('sorteo:closeadmin 349 1 1')->timezone('America/Caracas')->at('08:40');
+        $schedule->command('sorteo:closeadmin 349 1 2')->timezone('America/Caracas')->at('09:40');
+        $schedule->command('sorteo:closeadmin 349 1 3')->timezone('America/Caracas')->at('10:40');
+        $schedule->command('sorteo:closeadmin 349 1 4')->timezone('America/Caracas')->at('11:40');
+        $schedule->command('sorteo:closeadmin 349 1 5')->timezone('America/Caracas')->at('12:40');
+        $schedule->command('sorteo:closeadmin 349 1 6')->timezone('America/Caracas')->at('13:40');
+        $schedule->command('sorteo:closeadmin 349 1 7')->timezone('America/Caracas')->at('14:40');
+        $schedule->command('sorteo:closeadmin 349 1 8')->timezone('America/Caracas')->at('15:40');
+        $schedule->command('sorteo:closeadmin 349 1 9')->timezone('America/Caracas')->at('16:40');
+        $schedule->command('sorteo:closeadmin 349 1 10')->timezone('America/Caracas')->at('17:40');
+        $schedule->command('sorteo:closeadmin 349 1 11')->timezone('America/Caracas')->at('18:40');
+
+        // GEOR LA GRANJITA
+        // Yairet Rodríguez LA GRANJITA
+        $schedule->command('sorteo:closeadmin 349 2 135')->timezone('America/Caracas')->at('07:40');
+        $schedule->command('sorteo:closeadmin 349 2 136')->timezone('America/Caracas')->at('08:40');
+        $schedule->command('sorteo:closeadmin 349 2 137')->timezone('America/Caracas')->at('09:40');
+        $schedule->command('sorteo:closeadmin 349 2 138')->timezone('America/Caracas')->at('10:40');
+        $schedule->command('sorteo:closeadmin 349 2 139')->timezone('America/Caracas')->at('11:40');
+        $schedule->command('sorteo:closeadmin 349 2 140')->timezone('America/Caracas')->at('12:40');
+        $schedule->command('sorteo:closeadmin 349 2 141')->timezone('America/Caracas')->at('13:40');
+        $schedule->command('sorteo:closeadmin 349 2 142')->timezone('America/Caracas')->at('14:40');
+        $schedule->command('sorteo:closeadmin 349 2 143')->timezone('America/Caracas')->at('15:40');
+        $schedule->command('sorteo:closeadmin 349 2 144')->timezone('America/Caracas')->at('16:40');
+        $schedule->command('sorteo:closeadmin 349 2 145')->timezone('America/Caracas')->at('17:40');
+        $schedule->command('sorteo:closeadmin 349 2 146')->timezone('America/Caracas')->at('18:40');
+
 
 
         // reiniciar todos los limites

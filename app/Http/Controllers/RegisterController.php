@@ -265,7 +265,7 @@ class RegisterController extends Controller
         $horario = Schedule::with('type')->find($horario_id);
         $exchange = Exchange::where('moneda_id', $moneda)->first();
         $validacionHorario = AnimalitoScheduleLimit::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->first();
-        $validacionUserAdminHorario = UserAnimalitoSchedule::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', auth()->user()->parent_id)->first();
+        $validacionUserAdminHorario = UserAnimalitoSchedule::where('animal_id', $animal_id)->where('schedule_id', $horario_id)->where('user_id', auth()->user()->parent_id)->orWhere('user_id', auth()->user()->id)->first();
 
         $err = [];
 
