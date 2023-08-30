@@ -48,7 +48,7 @@ class CloseAnimalsScheduleByAdmin extends Command
 
 
         foreach ($animals as $animal_id) {
-            $limit = 1;
+            $limit = 0.05;
             // dd($animal_id);
             // return 0;
             // validar si ya existe el registro 
