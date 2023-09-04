@@ -658,17 +658,17 @@ class Kernel extends ConsoleKernel
         // NENECIO LOTTO ACTIVO
         // GRABIELA GOMEZ LOTTO ACTIVO
 
-        $schedule->command('sorteo:closeadmin 118 1 1')->timezone('America/Caracas')->at('08:50');
-        $schedule->command('sorteo:closeadmin 118 1 2')->timezone('America/Caracas')->at('09:50');
-        $schedule->command('sorteo:closeadmin 118 1 3')->timezone('America/Caracas')->at('10:50');
-        $schedule->command('sorteo:closeadmin 118 1 4')->timezone('America/Caracas')->at('11:50');
-        $schedule->command('sorteo:closeadmin 118 1 5')->timezone('America/Caracas')->at('12:50');
-        $schedule->command('sorteo:closeadmin 118 1 6')->timezone('America/Caracas')->at('13:50');
-        $schedule->command('sorteo:closeadmin 118 1 7')->timezone('America/Caracas')->at('14:50');
-        $schedule->command('sorteo:closeadmin 118 1 8')->timezone('America/Caracas')->at('15:50');
-        $schedule->command('sorteo:closeadmin 118 1 9')->timezone('America/Caracas')->at('16:50');
-        $schedule->command('sorteo:closeadmin 118 1 10')->timezone('America/Caracas')->at('17:50');
-        $schedule->command('sorteo:closeadmin 118 1 11')->timezone('America/Caracas')->at('18:50');
+        // $schedule->command('sorteo:closeadmin 118 1 1')->timezone('America/Caracas')->at('08:50');
+        // $schedule->command('sorteo:closeadmin 118 1 2')->timezone('America/Caracas')->at('09:50');
+        // $schedule->command('sorteo:closeadmin 118 1 3')->timezone('America/Caracas')->at('10:50');
+        // $schedule->command('sorteo:closeadmin 118 1 4')->timezone('America/Caracas')->at('11:50');
+        // $schedule->command('sorteo:closeadmin 118 1 5')->timezone('America/Caracas')->at('12:50');
+        // $schedule->command('sorteo:closeadmin 118 1 6')->timezone('America/Caracas')->at('13:50');
+        // $schedule->command('sorteo:closeadmin 118 1 7')->timezone('America/Caracas')->at('14:50');
+        // $schedule->command('sorteo:closeadmin 118 1 8')->timezone('America/Caracas')->at('15:50');
+        // $schedule->command('sorteo:closeadmin 118 1 9')->timezone('America/Caracas')->at('16:50');
+        // $schedule->command('sorteo:closeadmin 118 1 10')->timezone('America/Caracas')->at('17:50');
+        // $schedule->command('sorteo:closeadmin 118 1 11')->timezone('America/Caracas')->at('18:50');
 
         // NENECIO LA GRANJITA
         // GRABIELA GOMEZ LA GRANJITA
