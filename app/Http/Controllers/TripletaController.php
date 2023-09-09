@@ -336,7 +336,7 @@ class TripletaController extends Controller
             if (isset($data['total']) && isset($data['detalles']) && isset($data['moneda']) && !!count($data['detalles'])) {
 
                 $tripleta = Tripleta::create([
-                    'code' => Str::random(5),
+                    'code' => Str::random(8),
                     'caja_id' => $caja->id,
                     'user_id' => $user->id,
                     'admin_id' => $user->parent_id,
