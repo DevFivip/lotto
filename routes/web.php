@@ -5,8 +5,10 @@ use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CajaRegisterController;
 use App\Http\Controllers\CashAdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Hipismo\RaceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\QuinelaController;
+use App\Http\Controllers\QuinelaRegisterController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ScheduleController;
@@ -47,7 +49,11 @@ Route::middleware('verifyUserStatus')->group(function () {
     Route::resource('/payments', PaymentController::class);
     Route::resource('/schedules', ScheduleController::class);
 
-    Route::resource('/quinelas', QuinelaController::class);
+    //! disable mientras termino hipismo modulo 
+    // Route::resource('/quinelas-maker', QuinelaController::class);
+    // Route::get('/quinelas/select', [QuinelaRegisterController::class, 'select']);
+    // Route::get('/quinelas/create_new/{id}', [QuinelaRegisterController::class, 'create_new']);
+    // Route::resource('/quinelas', QuinelaRegisterController::class);
 
     Route::resource('/resultados', ResultController::class);
     Route::resource('/cash-admins', CashAdminController::class);
@@ -118,8 +124,53 @@ Route::delete('/register/delete/{code}/{codigo_eliminacion}', [App\Http\Controll
 // Route::get('/scrap', [App\Http\Controllers\ScrappingController::class, 'scrap']);
 // Route::post('/send-results-complement', [App\Http\Controllers\ScrappingController::class, 'getResult']);
 
-
-
 Route::get('/schedules-admin', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'index']);
 Route::get('/schedules-admin/{id}/limits', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'edit']);
 Route::post('/schedules-admin/save', [App\Http\Controllers\UserAnimalitoScheduleController::class, 'update']);
+
+//! disable mientras termino hipismo modulo 
+// Route::prefix('clientes')->group(function () {
+//     Route::get('/auth', [App\Http\Controllers\CustomerZone\CustomerZoneController::class, 'auth']);
+//     Route::post('/auth', [App\Http\Controllers\CustomerZone\CustomerZoneController::class, 'login']);
+//     Route::get('/dashboard', [App\Http\Controllers\CustomerZone\CustomerZoneController::class, 'dashboard']);
+//     Route::get('/quinelas/{quinela_id}', [App\Http\Controllers\CustomerZone\QuinelaController::class, 'index']);
+// });
+
+
+Route::prefix('hipismo')->group(function () {
+    Route::get('/hipodromos', [App\Http\Controllers\Hipismo\HipodromoController::class, 'index'])->name('hipismo.hipodromos.index');
+    Route::get('/hipodromos/create', [App\Http\Controllers\Hipismo\HipodromoController::class, 'create'])->name('hipismo.hipodromos.create');
+    Route::post('/hipodromos', [App\Http\Controllers\Hipismo\HipodromoController::class, 'store'])->name('hipismo.hipodromos.store');
+    Route::get('/hipodromos/{id}/edit', [App\Http\Controllers\Hipismo\HipodromoController::class, 'edit'])->name('hipismo.hipodromos.edit');
+    Route::post('/hipodromos/{id}', [App\Http\Controllers\Hipismo\HipodromoController::class, 'update'])->name('hipismo.hipodromos.update');
+    Route::delete('/hipodromos/{id}', [App\Http\Controllers\Hipismo\HipodromoController::class, 'disable'])->name('hipismo.hipodromos.disable');
+
+    Route::resource('/races', RaceController::class, [
+        'names' => [
+            'index' => 'hipismo.races.index',
+            'create' => 'hipismo.races.create',
+            'store' => 'hipismo.races.store',
+            'show' => 'hipismo.races.show',
+            'edit' => 'hipismo.races.edit',
+            'update' => 'hipismo.races.update',
+            'destroy' => 'hipismo.races.destroy',
+        ]
+    ]);
+
+    Route::get('/races/{id}/setting', [App\Http\Controllers\Hipismo\RaceController::class, 'setting'])->name('hipismo.hipodromos.setting');
+    Route::delete('/fixture/{id}', [App\Http\Controllers\Hipismo\FixtureRaceController::class, 'delete'])->name('hipismo.fixtures.delete');
+    Route::post('/fixture/save', [App\Http\Controllers\Hipismo\FixtureRaceController::class, 'save'])->name('hipismo.fixtures.save');
+
+    Route::get('/fixture_race_horses/{race_id}', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'show'])->name('hipismo.horses.show');
+    Route::post('/fixture_race_horses/save', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'save'])->name('hipismo.horses.save');
+    Route::post('/fixture_race_horses/{horse_id}/disable', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'disable'])->name('hipismo.horses.disable');
+    Route::delete('/fixture_race_horses/{horse_id}/remove', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'delete'])->name('hipismo.horses.delete');
+    Route::get('/fixture_race_horses/get/{race_id}', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'get'])->name('hipismo.horses.get');
+
+    Route::get('/taquilla', [App\Http\Controllers\Hipismo\TaquillaController::class, 'create'])->name('hipismo.taquilla.create');
+    Route::post('/taquilla/remate/save', [App\Http\Controllers\Hipismo\TaquillaController::class, 'rematesave'])->name('hipismo.taquilla.rematesave');
+    Route::get('/taquilla/remate/getRemateCodes/{fixture_race_id}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'getRemateCodes'])->name('hipismo.taquilla.getrematecodes');
+    Route::get('/taquilla/remate/view/{code}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'remateView'])->name('hipismo.taquilla.remateview');
+
+    Route::get('/', [App\Http\Controllers\Hipismo\TaquillaController::class, 'dashboard'])->name('hipismo.taquilla.dashboard');
+});

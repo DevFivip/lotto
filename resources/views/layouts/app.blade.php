@@ -150,8 +150,14 @@ $l = $_SERVER['REQUEST_URI']
                         @endif
 
                         @if(auth()->user()->id == 16)
-                        <li class="nav-item d-block d-sm-none">
+                        <!-- <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/animals">Animales</a>
+                        </li> -->
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/">Hipisimo Reporte</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/taquilla">Hipisimo Taquilla</a>
                         </li>
                         @endif
 
