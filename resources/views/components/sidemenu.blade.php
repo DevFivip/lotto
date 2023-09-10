@@ -1,4 +1,4 @@
-<div class="list-group" x-data="{openBingo:'{{strpos(Route::currentRouteName(),"bingo")}}',openAnimalitos:'{{ strpos(Route::currentRouteName(),"tickets")}}',openTripletas:'{{ strpos(Route::currentRouteName(),"tripletas")}}',openWallet:'{{ strpos(Route::currentRouteName(),"wallets")}}'}">
+<div class="list-group" x-data="{openBingo:'{{strpos(Route::currentRouteName(),"bingo")}}',openAnimalitos:'{{ strpos(Route::currentRouteName(),"tickets")}}',openTripletas:'{{ strpos(Route::currentRouteName(),"tripletas")}}',openHipismo:'{{ strpos(Route::currentRouteName(),"hipismo")}}',openQuinelas:'{{ strpos(Route::currentRouteName(),"quinelas")}}',openWallet:'{{ strpos(Route::currentRouteName(),"wallets")}}'}">
     <a href="/home" class="list-group-item list-group-item-action"> Inicio</a>
     @if(auth()->user()->role_id == 3)
 
@@ -14,6 +14,14 @@
         <span style="margin-left: 2vh;">
             <a href="/tripletas/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tripletas.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
             <a href="/tripletas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tripletas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
+        </span>
+    </template>
+
+    <a href="#" class="list-group-item list-group-item-action" @click="openQuinelas =! openQuinelas"> Quinelas</a>
+    <template x-if="openQuinelas">
+        <span style="margin-left: 2vh;">
+            <a href="/quinelas/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
+            <a href="/quinelas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
         </span>
     </template>
 
@@ -52,6 +60,12 @@
             <a href="/tripletas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tripletas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
         </span>
     </template>
+    <template x-if="openQuinelas">
+        <span style="margin-left: 2vh;">
+            <a href="/quinelas/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
+            <a href="/quinelas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
+        </span>
+    </template>
     @endif
     <a href="/cajas" class="list-group-item list-group-item-action">Cajas</a>
     <!-- <a href="/caja-registers" class="list-group-item list-group-item-action">Cajas Register</a> -->
@@ -62,7 +76,17 @@
     @if(auth()->user()->id == 16)
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     @endif
+    
     @if(auth()->user()->role_id == 1)
+    <a href="#" class="list-group-item list-group-item-action" @click="openHipismo =! openHipismo">Hipismo</a>
+    <template x-if="openHipismo">
+        <span style="margin-left: 2vh;">
+            <a href="/hipismo" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.dashboard') active @endif"> <i class="fa-solid fa-arrow-right"></i> Dashboard</a>
+            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla</a>
+            <a href="/hipismo/hipodromos" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.hipodromos.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Hipodromos</a>
+            <a href="/hipismo/races" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.races.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Carreras</a>
+        </span>
+    </template>
 
     <a href="/cash-admins" class="list-group-item list-group-item-action">Cajas Administrativas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>
