@@ -269,7 +269,7 @@ class TicketController extends Controller
 
             $_schedules = Schedule::where('status', 1)->get();
 
-            if (auth()->user()->id == 588 || auth()->user()->id == 6) { // bloquear usuarios por horario de animalito
+            if (auth()->user()->id == 589 || auth()->user()->id == 588 || auth()->user()->id == 6) { // bloquear usuarios por horario de animalito
                 $horaActual = Carbon::now();
                 $minutoActual = $horaActual->minute;
                 $__schedules = [];
