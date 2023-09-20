@@ -269,7 +269,7 @@ class TicketController extends Controller
 
             $_schedules = Schedule::where('status', 1)->get();
 
-            if (auth()->user()->id == 589 || auth()->user()->id == 588 || auth()->user()->id == 6) { // bloquear usuarios por horario de animalito
+            if (auth()->user()->id == 589 || auth()->user()->id == 588 || auth()->user()->id == 6 || auth()->user()->parent_id == 464) { // bloquear usuarios por horario de animalito
                 $horaActual = Carbon::now();
                 $minutoActual = $horaActual->minute;
                 $__schedules = [];
@@ -285,6 +285,48 @@ class TicketController extends Controller
                     if ($key == 1 || $key == 2) { // identificar las loterias
                         // Verificar si el minuto actual está entre 1 y 40
                         if ($minutoActual >= 0 && $minutoActual <= 40) {
+                            // $new = array_splice($value, 0, 1);
+                            // // dd($value);
+                            // $__schedules[$key] = $value;
+                            // return "La hora actual está entre el minuto 1 y el minuto 40.";
+                        } else {
+                            $new = array_splice($value, 0, 1);
+                            // dd($value);
+                            $__schedules[$key] = $value;
+                            // return "La hora actual no está entre el minuto 1 y el minuto 40.";
+                        }
+                    }
+                }
+                $schedules = [];
+                // dd($__schedules[1]);
+                foreach ($__schedules as $key => $value) {
+
+                    foreach ($value as $kk => $vv) {
+                        array_push($schedules, $vv);
+                    }
+                }
+                // dd(schedules)
+                // $schedules = $__schedules;
+            } else {
+                $schedules = $_schedules;
+            }
+
+            if (auth()->user()->parent_id == 2) { // bloquear usuarios por horario de animalito
+                $horaActual = Carbon::now();
+                $minutoActual = $horaActual->minute;
+                $__schedules = [];
+
+                foreach ($_schedules as $v) {
+                    if (!isset($__schedules[$v['sorteo_type_id']])) {
+                        $__schedules[$v['sorteo_type_id']] = [];
+                    }
+                    array_push($__schedules[$v['sorteo_type_id']], $v);
+                }
+
+                foreach ($__schedules  as $key => $value) {
+                    if ($key == 1 || $key == 2) { // identificar las loterias
+                        // Verificar si el minuto actual está entre 1 y 40
+                        if ($minutoActual >= 0 && $minutoActual <= 50) {
                             // $new = array_splice($value, 0, 1);
                             // // dd($value);
                             // $__schedules[$key] = $value;
