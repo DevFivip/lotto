@@ -15,6 +15,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
+use Carbon\Carbon;
+
 class TicketController extends Controller
 {
 
@@ -225,7 +227,7 @@ class TicketController extends Controller
         $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
         $animalitos = Animal::with('type')->get();
         $user = auth()->user();
-        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos','user'));
+        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos', 'user'));
     }
 
     public function create()
@@ -261,10 +263,55 @@ class TicketController extends Controller
                 // dd(auth());
                 $sorteos = SorteosType::whereIn('id', auth()->user()->sorteos)->where('status', 1)->get();
             }
+
             $resource = $this->resource;
             $animals = Animal::with('type')->get();
 
-            $schedules = Schedule::where('status', 1)->get();
+            $_schedules = Schedule::where('status', 1)->get();
+
+            if (auth()->user()->id == 588 || auth()->user()->id == 6) { // bloquear usuarios por horario de animalito
+                $horaActual = Carbon::now();
+                $minutoActual = $horaActual->minute;
+                $__schedules = [];
+
+                foreach ($_schedules as $v) {
+                    if (!isset($__schedules[$v['sorteo_type_id']])) {
+                        $__schedules[$v['sorteo_type_id']] = [];
+                    }
+                    array_push($__schedules[$v['sorteo_type_id']], $v);
+                }
+
+                foreach ($__schedules  as $key => $value) {
+                    if ($key == 1 || $key == 2) { // identificar las loterias
+                        // Verificar si el minuto actual está entre 1 y 40
+                        if ($minutoActual >= 0 && $minutoActual <= 40) {
+                            // $new = array_splice($value, 0, 1);
+                            // // dd($value);
+                            // $__schedules[$key] = $value;
+                            // return "La hora actual está entre el minuto 1 y el minuto 40.";
+                        } else {
+                            $new = array_splice($value, 0, 1);
+                            // dd($value);
+                            $__schedules[$key] = $value;
+                            // return "La hora actual no está entre el minuto 1 y el minuto 40.";
+                        }
+                    }
+                }
+                $schedules = [];
+                // dd($__schedules[1]);
+                foreach ($__schedules as $key => $value) {
+
+                    foreach ($value as $kk => $vv) {
+                        array_push($schedules, $vv);
+                    }
+                }
+                // dd(schedules)
+                // $schedules = $__schedules;
+            } else {
+                $schedules = $_schedules;
+            }
+
+            // dd($schedules);
 
             $payments = Payment::where('status', '1')->get();
             $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
