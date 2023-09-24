@@ -157,7 +157,10 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/hipismo/">Hipisimo Reporte</a>
                         </li>
                         <li class="nav-item d-block d-sm-none">
-                            <a class="nav-link" href="/hipismo/taquilla">Hipisimo Taquilla</a>
+                            <a class="nav-link" href="/hipismo/taquilla">Hipisimo Remate Taquilla</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/taquilla">Hipisimo Remate Banca</a>
                         </li>
                         @endif
 

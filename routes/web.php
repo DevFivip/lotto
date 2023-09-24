@@ -164,13 +164,17 @@ Route::prefix('hipismo')->group(function () {
     Route::get('/fixture_race_horses/{race_id}', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'show'])->name('hipismo.horses.show');
     Route::post('/fixture_race_horses/save', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'save'])->name('hipismo.horses.save');
     Route::post('/fixture_race_horses/{horse_id}/disable', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'disable'])->name('hipismo.horses.disable');
+    Route::post('/fixture_race_horses/{horse_id}/remate_winner', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'remateWinner'])->name('hipismo.horses.rematewinner');
     Route::delete('/fixture_race_horses/{horse_id}/remove', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'delete'])->name('hipismo.horses.delete');
     Route::get('/fixture_race_horses/get/{race_id}', [App\Http\Controllers\Hipismo\FixtureRaceHorseController::class, 'get'])->name('hipismo.horses.get');
 
     Route::get('/taquilla', [App\Http\Controllers\Hipismo\TaquillaController::class, 'create'])->name('hipismo.taquilla.create');
+    Route::get('/taquilla-banca', [App\Http\Controllers\Hipismo\TaquillaController::class, 'banca'])->name('hipismo.taquilla.banca.create');
+    Route::get('/taquilla-banca/getcomming/races/{hipodromo_id}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'getCommingRaces'])->name('hipismo.taquilla.banca.getcommingrace');
     Route::post('/taquilla/remate/save', [App\Http\Controllers\Hipismo\TaquillaController::class, 'rematesave'])->name('hipismo.taquilla.rematesave');
     Route::get('/taquilla/remate/getRemateCodes/{fixture_race_id}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'getRemateCodes'])->name('hipismo.taquilla.getrematecodes');
     Route::get('/taquilla/remate/view/{code}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'remateView'])->name('hipismo.taquilla.remateview');
+    Route::get('/taquilla/remate/edit/{code}', [App\Http\Controllers\Hipismo\TaquillaController::class, 'remateEdit'])->name('hipismo.taquilla.remateedit');
 
     Route::get('/', [App\Http\Controllers\Hipismo\TaquillaController::class, 'dashboard'])->name('hipismo.taquilla.dashboard');
 });

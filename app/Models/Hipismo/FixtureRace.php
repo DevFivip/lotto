@@ -18,6 +18,10 @@ class FixtureRace extends Model
         "hipodromo_id"
     ];
 
+    public function remates()
+    {
+        return $this->hasMany(HipismoRemateHead::class);
+    }
     public function race()
     {
         return $this->belongsTo(Race::class);

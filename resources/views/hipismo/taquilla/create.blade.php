@@ -10,15 +10,7 @@
             <div class="card shadow">
                 <div class="card-header d-none d-sm-block ">Ticket Hipodromo</div>
                 <div class="card-body">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item">
-                            <button class="nav-link active">Remate</button>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <button class="nav-link">Banca</button>
-                        </li> -->
-                    </ul>
-
+    
                     <div class="row mt-2" x-show="!!!remate.remateSelected" x-transition:enter.duration.500ms x-transition:leave.duration.50ms>
                         <div class="col-12 col-md-12">
                             <div class="list-group">
@@ -43,24 +35,33 @@
                                     <div class="col-4 d-flex align-items-center">
                                         <span><strong class="badge rounded-pill bg-info" x-text="horse.horse_number">1</strong>&nbsp;<span x-text="horse.horse_name"></span> <span x-show="!horse.status">(RETIRADO)</span></span>
                                     </div>
-                                    <div class="col-3 d-flex align-items-center">
+                                    <div class="col-4 d-flex align-items-center">
                                         <div>
-                                            <label for="">Monto:</label>
-                                            <input type="number" step="0.00" class="form-control" x-model="horse.monto" x-bind:disabled="!horse.status">
+                                            <label for="">Pagado | Monto</label>
+                                            <div class="input-group">
+                                                <div class="input-group-text">
+                                                    <input class="form-check-input mt-0" type="checkbox" x-model="horse.status_pago">
+                                                </div>
+                                                <input type="number" step="0.00" class="form-control" style="height:30px" x-model="horse.monto" x-bind:disabled="!horse.status">
+                                            </div>
+                                            <!-- <label for="">%:</label>
+                                            <input type="number" step="0.00" class="form-control" style="height:30px" x-model="horse.pay_porcent" x-bind:disabled="!horse.status"> -->
                                         </div>
                                     </div>
-                                    <div class="col-3 d-flex align-items-center">
+                                    <div class="col-4 d-flex align-items-center">
                                         <div>
                                             <label for="">Cliente:</label>
-                                            <input type="text" step="0.00" class="form-control" x-model="horse.cliente" x-bind:disabled="!horse.status">
+                                            <input type="text" step="0.00" style="height:30px" class="form-control" x-model="horse.cliente" x-bind:disabled="!horse.status">
+                                            <!-- <label for="">Premio:</label>
+                                            <input type="number" step="0.00" style="height:30px" class="form-control" x-model="horse.monto * horse.pay_porcent" disabled="true"> -->
                                         </div>
                                     </div>
-                                    <div class="col-1 d-flex align-items-center">
+                                    <!-- <div class="col-1 d-flex align-items-center">
                                         <div>
                                             <label for="">&nbsp;</label>
                                             <button class="btn btn-primary align-middle"><i class="fa-solid fa-print" x-bind:disabled="!horse.status"></i></button>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </template>
 
@@ -83,7 +84,7 @@
                                         <template x-for="(code, index) in remate.listCodes" :key="index" class="g-2">
                                             <input type="radio" x-bind:id="code.code" x-bind:value="code.code" x-model="remate.remateEditSelected">
                                         </template>&nbsp;<span x-show="remate.remateEditSelected" x-text="`${remate.remateEditSelected}`"></span> <a href="#" x-show="remate.remateEditSelected" @click="closeEditMode()"> [CANCELAR EDICIÓN]</a> <br>
-                                        <span><strong>Total:</strong> <span x-text="`Bs. ${(Math.round(remate.total * 100) / 100).toFixed(2)}`"></span> <strong> Premio:</strong><span x-text="`Bs. ${(Math.round(remate.premio * 100) / 100).toFixed(2)}`"></span> <strong> Banca:</strong><span x-text="`Bs. ${(Math.round(remate.banca * 100) / 100).toFixed(2)}`"></span></span>
+                                        <span><strong>Total:</strong> <span x-text="`Bs. ${(Math.round(remate.total * 100) / 100).toFixed(2)}`"></span> <strong> Premio:</strong><input type="number" x-model="remate.premio"></span>
                                     </div>
 
                                     <div class="d-grid gap-1 mt-1">
@@ -91,6 +92,8 @@
                                         </button>
                                         <button class="btn btn-danger" @click="cancelar()"><i class="fa-solid fa-close"></i> Cancelar</button>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -159,6 +162,7 @@
                         v.moneda_id = 1
                         return v;
                     })
+                    console.log(this.remate)
                     this.handleBtnSave = true;
                     let body = await fetch('/hipismo/taquilla/remate/save', {
                         method: 'POST',
@@ -166,7 +170,7 @@
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
                         },
-                        body: JSON.stringify(this.remate.remateHorses)
+                        body: JSON.stringify(this.remate)
                     })
                     res = await body.json()
                     if (res.valid) {
@@ -211,7 +215,7 @@
                 }
             },
             viewRemate: async function(code) {
-                if(!!!code){
+                if (!!!code) {
                     return false
                 }
                 this.handleBtnSave = true;
@@ -224,12 +228,14 @@
                 })
                 let res = await body.json()
                 if (res.valid) {
-                    console.log(res.data)
+                    console.log('THIS', res.data)
                     const rem = res.data.map((v) => {
                         v.status = v.horse.status;
                         v.horse_number = v.horse.horse_number;
                         v.horse_name = v.horse.horse_name;
                         v.jockey_name = v.horse.jockey_name;
+                        v.status_pago = !!v.status_pago == 1
+                        
                         return v
                     });
                     this.remate.remateHorses = rem;

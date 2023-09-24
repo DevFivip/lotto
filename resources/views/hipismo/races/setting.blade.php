@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center" x-data="amount()">
+        <div class="col-md-2 d-none d-sm-block">
+            @include('components.sidemenu')
+        </div>
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Ajustes de la Carrera - {{$race->name}} - {{$race->hipodromo->name}} </div>

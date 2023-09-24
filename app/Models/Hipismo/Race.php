@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Race extends Model
 {
     use HasFactory;
+    
     public $fillable = [
         'name',
         'race_day',

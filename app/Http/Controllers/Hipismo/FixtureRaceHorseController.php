@@ -35,6 +35,14 @@ class FixtureRaceHorseController extends Controller
         $horse->update();
         return response()->json(['valid' => true, 'message' => 'actualizado']);
     }
+ 
+    public function remateWinner($horse_id)
+    {
+        $horse = FixtureRaceHorse::find($horse_id);
+        $horse->remate_winner =  !$horse->remate_winner;
+        $horse->update();
+        return response()->json(['valid' => true, 'message' => 'actualizado']);
+    }
 
     public function delete($horse_id)
     {

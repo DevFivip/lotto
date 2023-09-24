@@ -82,7 +82,8 @@
     <template x-if="openHipismo">
         <span style="margin-left: 2vh;">
             <a href="/hipismo" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.dashboard') active @endif"> <i class="fa-solid fa-arrow-right"></i> Dashboard</a>
-            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla</a>
+            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Remates</a>
+            <a href="/hipismo/taquilla-banca" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.banca.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Banca</a>
             <a href="/hipismo/hipodromos" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.hipodromos.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Hipodromos</a>
             <a href="/hipismo/races" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.races.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Carreras</a>
         </span>

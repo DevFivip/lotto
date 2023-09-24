@@ -3,7 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center" x-data="amount()">
-        <div class="col-md-8">
+        <div class="col-md-2 d-none d-sm-block">
+            @include('components.sidemenu')
+        </div>
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Ajustes de la Carrera {{$race->race->name}} Nro {{$race->race_number}} - {{$race->hipodromo->name}} </div>
                 <div class="card-body">
@@ -61,6 +64,7 @@
                             <div class="col-12 col-md-2">
                                 <template x-if="!!horse.id">
                                     <div>
+                                        <button @click="remateWinner($event,horse.id)" x-bind:class="{ 'btn btn-warning': !!horse.remate_winner, 'btn btn-danger': !horse.remate_winner }"><span x-text="horse.remate_winner?'🏅':'⏱️'"></span></button>
                                         <button @click="disable($event,horse.id)" x-bind:class="{ 'btn btn-warning': !!horse.status, 'btn btn-danger': !horse.status }"><i x-bind:class="{ 'fa fa-check': !!horse.status, 'fa-solid fa-x': !horse.status }"></i></button>
                                         <button @click="removeHorse($event,index,horse.id)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                     </div>
@@ -140,6 +144,26 @@
                 e.preventDefault();
                 this.handleBtnSave = true;
                 let body = await fetch('/hipismo/fixture_race_horses/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
+                    },
+                    body: JSON.stringify(this._horses)
+                })
+                res = await body.json()
+
+                if (res.valid) {
+                    this.toast(res.message, 5000);
+                    location.reload()
+                } else {
+                    this.toast(res.message, 5000);
+                }
+            },
+            remateWinner: async function(e, horse_id) {
+                e.preventDefault();
+                this.handleBtnSave = true;
+                let body = await fetch(`/hipismo/fixture_race_horses/${horse_id}/remate_winner`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

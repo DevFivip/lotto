@@ -15,6 +15,7 @@ class FixtureRaceHorse extends Model
         "status",
         "fixture_race_id",
         "place",
+        "remate_winner",
     ];
 
 
