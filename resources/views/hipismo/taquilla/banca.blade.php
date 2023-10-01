@@ -27,7 +27,7 @@
                                     <div class="list-group">
                                         <template x-for="_race in commingRaces.fixtures">
                                             <div>
-                                                <a @click="getHorsesFromRace(_race.id)" class="list-group-item list-group-item-action" x-data="timer(_race.start_time)">
+                                                <a @click="getHorsesFromRace(_race.id)" class="list-group-item list-group-item-action" x-data="timer(_race.start_time)"  x-show="time().diff > 1">
                                                     <strong class="badge rounded-pill bg-primary" x-text="`Carrera Nro ${_race.race_number}`"></strong>
                                                     <span class="badge rounded-pill bg-success">
                                                         <i class="fa-regular fa-clock"></i>
