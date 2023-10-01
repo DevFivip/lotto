@@ -154,9 +154,9 @@
             watchPlaces: function() {
                 console.log('CHANGE')
                 // verificar 1er lugar
-                verif1 = this._horses.filter((v) => v.place === 1);
-                verif2 = this._horses.filter((v) => v.place === 2);
-                verif3 = this._horses.filter((v) => v.place === 3);
+                verif1 = this._horses.filter((v) => Number(v.place) === 1);
+                verif2 = this._horses.filter((v) => Number(v.place) === 2);
+                verif3 = this._horses.filter((v) => Number(v.place) === 3);
                 // console.log(verif1)
                 console.log(verif1);
                 this.banca.ganador.combinacion = verif1[0].horse_number;
