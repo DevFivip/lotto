@@ -115,7 +115,7 @@ $l = $_SERVER['REQUEST_URI']
                         </li>
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/hipismo/taquilla">+ Ticket Banca - Hipismo <span class="badge bg-secondary">New</span>
-                                < /a>
+                                </a>
                         </li>
 
                         <li class="nav-item d-block d-sm-none">
