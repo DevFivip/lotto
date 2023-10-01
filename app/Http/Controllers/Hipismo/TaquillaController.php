@@ -330,12 +330,14 @@ class TaquillaController extends Controller
         if (auth()->user()->role_id == 3) {
             $bancas = HipismoBanca::leftJoin('hipismo_banca_resultados as t2', 'hipismo_bancas.combinacion', '=', 't2.combinacion')
                 ->where('hipismo_bancas.user_id', '=', auth()->user()->id)
+                ->where('t2.admin_id', '=', auth()->user()->parent_id)
                 ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
                 ->with(['fixtureRace' => function ($f) {
                     $f->with('hipodromo');
                 }])
                 ->orderBy('id','desc')
-                ->paginate(50);
+                ->paginate();
+                // dd($bancas);
         }
 
         return view('hipismo.dashboard', compact('remates', 'total', 'pagado', 'hipodromos', 'bancas', 'bancas_totales'));
