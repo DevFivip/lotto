@@ -132,30 +132,27 @@
 <script type="text/javascript">
     function amount() {
         let resultados = @json($resultados);
-         console.log({resultados})
 
         let res1 = resultados?.filter((v) => Number(v.apuesta_type) == 1);
         let res2 = resultados?.filter((v) => Number(v.apuesta_type) == 2);
         let res3 = resultados?.filter((v) => Number(v.apuesta_type) == 3);
 
-        console.log(res1,res2,res3)
-
         let horses = @json($horses);
-        console.log(horses);
+
         let race_id = @json($race_id);
         return {
             banca: {
                 ganador: {
                     combinacion: '',
-                    win: res1[0]?.win
+                    total: parseFloat(res1[0]?.win)
                 },
                 perfecta: {
                     combinacion: '',
-                    win: res2[0]?.win
+                    total: parseFloat(res2[0]?.win)
                 },
                 trifecta: {
                     combinacion: '',
-                    win: res3[0]?.win
+                    total: parseFloat(res3[0]?.win)
                 },
             },
             _horses: horses,
