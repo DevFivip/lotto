@@ -132,6 +132,7 @@
 <script type="text/javascript">
     function amount() {
         let resultados = @json($resultados);
+        console.log(resultados)
         let horses = @json($horses);
         console.log(horses);
         let race_id = @json($race_id);
