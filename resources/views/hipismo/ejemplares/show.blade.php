@@ -132,12 +132,13 @@
 <script type="text/javascript">
     function amount() {
         let resultados = @json($resultados);
-        // console.log({resultados})
+         console.log({resultados})
 
         let res1 = resultados?.filter((v) => Number(v.apuesta_type) == 1);
         let res2 = resultados?.filter((v) => Number(v.apuesta_type) == 2);
         let res3 = resultados?.filter((v) => Number(v.apuesta_type) == 3);
 
+        console.log(res1,res2,res3)
 
         let horses = @json($horses);
         console.log(horses);
