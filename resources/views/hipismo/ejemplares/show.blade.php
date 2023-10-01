@@ -45,7 +45,6 @@
                             <div class="col-6 col-md-3">
                                 <label for="" class="col-form-label">Jockey</label>
                                 <input type="text" x-model="horse.jockey_name" class="form-control">
-
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="row g-1">
@@ -53,12 +52,6 @@
                                         <label for="" class="col-form-label">Posición</label>
                                         <input type="number" x-model="horse.place" class="form-control">
                                     </div>
-                                    <template x-if="horse.place == 1">
-                                        <div class="col-6 col-md-6">
-                                            <label for="" class="col-form-label">Win</label>
-                                            <input type="number" step="0.00" x-model="horse.win" class="form-control">
-                                        </div>
-                                    </template>
                                 </div>
                             </div>
                             <div class="col-12 col-md-2">
@@ -79,11 +72,58 @@
                     <div class="row mb-0">
                         <div class="col-md-6">
                             <button class="btn btn-primary" @click="addItem()"> Agregar Ejemplar</button>
-                            <button @click="save($event)" class="btn btn-primary">
+                            <button @click="save($event)" class="btn btn-success">
                                 {{ __('Guardar Cambios') }}
                             </button>
                         </div>
                     </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="alert alert-success">
+                                <strong>Atención!</strong> <span>antes de rellenar el siguiente formulario complete el listado de posición de los ejemplares</span>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div x-init="watchPlaces()">
+                        <div class="row">
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Ganador Combinación</label>
+                                <input type="text" disabled x-model="banca.ganador.combinacion" class="form-control">
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Ganador Total</label>
+                                <input type="number" x-model="banca.ganador.total" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Perfecta Combinación</label>
+                                <input disabled="text" x-model="banca.perfecta.combinacion" class="form-control">
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Perfecta Total</label>
+                                <input type="number" x-model="banca.perfecta.total" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Trifecta Combinación</label>
+                                <input disabled type="text" x-model="banca.trifecta.combinacion" class="form-control">
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <label for="" class="col-form-label">Trifecta Total</label>
+                                <input type="number" x-model="banca.trifecta.total" class="form-control">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success mt-1" @click="guardarCombinaciones($event)"><i class="fa fa-save"></i> Guardar Combinación</button>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -91,10 +131,57 @@
 </div>
 <script type="text/javascript">
     function amount() {
+        let resultados = @json($resultados);
         let horses = @json($horses);
         let race_id = @json($race_id);
         return {
+            banca: {
+                ganador: {
+                    combinacion: '',
+                    win: ''
+                },
+                perfecta: {
+                    combinacion: '',
+                    win: ''
+                },
+                trifecta: {
+                    combinacion: '',
+                    win: ''
+                },
+            },
             _horses: horses,
+            watchPlaces: function() {
+                console.log('CHANGE')
+                // verificar 1er lugar
+                verif1 = this._horses.filter((v) => v.place === 1);
+                verif2 = this._horses.filter((v) => v.place === 2);
+                verif3 = this._horses.filter((v) => v.place === 3);
+                // console.log(verif1)
+                this.banca.ganador.combinacion = verif1[0].horse_number;
+                this.banca.perfecta.combinacion = `${verif1[0].horse_number}-${verif2[0].horse_number}`;
+                this.banca.trifecta.combinacion = `${verif1[0].horse_number}-${verif2[0].horse_number}-${verif3[0].horse_number}`;
+
+            },
+            guardarCombinaciones: async function(e) {
+                e.preventDefault();
+                let body = await fetch('/hipismo/fixture_race_horses/combinacion-save/' + race_id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
+                    },
+                    body: JSON.stringify(this.banca)
+                })
+                res = await body.json()
+
+                if (res.valid) {
+                    this.toast(res.message, 5000);
+                    // location.reload()
+                } else {
+                    this.toast(res.message, 5000);
+                }
+            },
+
             addItem: function() {
                 let count = this._horses.length + 1
                 const horse = {
@@ -123,7 +210,6 @@
                         location.reload();
                     }
                 }
-
             },
             removeHorseNoSave: function(e, i) {
                 e.preventDefault();
