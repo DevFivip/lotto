@@ -133,6 +133,7 @@
     function amount() {
         let resultados = @json($resultados);
         let horses = @json($horses);
+        console.log(horses);
         let race_id = @json($race_id);
         return {
             banca: {
