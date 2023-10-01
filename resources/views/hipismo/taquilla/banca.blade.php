@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-12" style="height:800px;" x-show="!!hipodromo.horseSelected" x-transition:enter.duration.200ms x-transition:leave.duration.50ms>
+                        <div class="col-12 col-md-12" style="height:1000px;" x-show="!!hipodromo.horseSelected" x-transition:enter.duration.200ms x-transition:leave.duration.50ms>
                             <div class="row mt-2">
                                 <div class="col-12 col-md-12">
                                     <table class="table">
