@@ -33,7 +33,7 @@ class FixtureRaceHorseController extends Controller
         try {
             $data = $req->all();
             // buscar
-            if (auth()->user()->role_id === 2) {
+            if (auth()->user()->role_id == 2) {
                 $ganador = HipismoBancaResultado::where('admin_id', auth()->user()->id)->where('fixture_race_id', $race_id)->where('apuesta_type', 1)->first();
                 if ($ganador == null) {
                     //?create
