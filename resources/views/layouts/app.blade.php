@@ -117,7 +117,6 @@ $l = $_SERVER['REQUEST_URI']
                             <a class="nav-link" href="/hipismo/taquilla-banca">+ Ticket Banca - Hipismo <span class="badge bg-primary">Nuevo</span>
                                 </a>
                         </li>
-
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tickets">Listado de Animalitos</a>
                         </li>
@@ -171,6 +170,9 @@ $l = $_SERVER['REQUEST_URI']
                         </li>
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/hipismo/taquilla">Hipisimo Remate Banca</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/races">Hipisimo Carreras</a>
                         </li>
                         @endif
 
