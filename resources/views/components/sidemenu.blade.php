@@ -17,11 +17,22 @@
         </span>
     </template>
 
-    <a href="#" class="list-group-item list-group-item-action" @click="openQuinelas =! openQuinelas"> Quinelas</a>
+    <!-- <a href="#" class="list-group-item list-group-item-action" @click="openQuinelas =! openQuinelas"> Quinelas</a>
     <template x-if="openQuinelas">
         <span style="margin-left: 2vh;">
             <a href="/quinelas/create" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Nuevo</a>
             <a href="/quinelas" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='quinelas.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
+        </span>
+    </template> -->
+
+    <a href="#" class="list-group-item list-group-item-action" @click="openHipismo =! openHipismo">Hipismo</a>
+    <template x-if="openHipismo">
+        <span style="margin-left: 2vh;">
+            <a href="/hipismo" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.dashboard') active @endif"> <i class="fa-solid fa-arrow-right"></i> Dashboard</a>
+            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Remates</a>
+            <a href="/hipismo/taquilla-banca" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.banca.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Banca</a>
+            <!-- <a href="/hipismo/hipodromos" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.hipodromos.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Hipodromos</a> -->
+            <!-- <a href="/hipismo/races" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.races.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Carreras</a> -->
         </span>
     </template>
 
@@ -53,6 +64,16 @@
             <a href="/tickets" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='tickets.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Listado</a>
         </span>
     </template>
+    <a href="#" class="list-group-item list-group-item-action" @click="openHipismo =! openHipismo">Hipismo</a>
+    <template x-if="openHipismo">
+        <span style="margin-left: 2vh;">
+            <a href="/hipismo" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.dashboard') active @endif"> <i class="fa-solid fa-arrow-right"></i> Dashboard</a>
+            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Remates</a>
+            <a href="/hipismo/taquilla-banca" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.banca.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Banca</a>
+            <a href="/hipismo/hipodromos" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.hipodromos.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Hipodromos</a>
+            <a href="/hipismo/races" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.races.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Carreras</a>
+        </span>
+    </template>
     <a href="#" class="list-group-item list-group-item-action" @click="openTripletas =! openTripletas"> Tripletas</a>
     <template x-if="openTripletas">
         <span style="margin-left: 2vh;">
@@ -76,18 +97,8 @@
     @if(auth()->user()->id == 16)
     <a href="/animals" class="list-group-item list-group-item-action">Animales</a>
     @endif
-    
+
     @if(auth()->user()->role_id == 1)
-    <a href="#" class="list-group-item list-group-item-action" @click="openHipismo =! openHipismo">Hipismo</a>
-    <template x-if="openHipismo">
-        <span style="margin-left: 2vh;">
-            <a href="/hipismo" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.dashboard') active @endif"> <i class="fa-solid fa-arrow-right"></i> Dashboard</a>
-            <a href="/hipismo/taquilla" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Remates</a>
-            <a href="/hipismo/taquilla-banca" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.taquilla.banca.create') active @endif"> <i class="fa-solid fa-arrow-right"></i> Taquilla Banca</a>
-            <a href="/hipismo/hipodromos" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.hipodromos.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Hipodromos</a>
-            <a href="/hipismo/races" class="list-group-item list-group-item-action @if(Route::currentRouteName()=='hipismo.races.index') active @endif"> <i class="fa-solid fa-arrow-right"></i> Carreras</a>
-        </span>
-    </template>
 
     <a href="/cash-admins" class="list-group-item list-group-item-action">Cajas Administrativas</a>
     <a href="/customers" class="list-group-item list-group-item-action">Clientes</a>

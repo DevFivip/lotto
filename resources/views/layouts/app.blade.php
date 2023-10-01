@@ -110,12 +110,22 @@ $l = $_SERVER['REQUEST_URI']
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tripletas/create">+ Ticket Tripletas</a>
                         </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/taquilla">+ Remate - Hipismo <span class="badge bg-secondary">Nuevo</span></a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/hipismo/taquilla">+ Ticket Banca - Hipismo <span class="badge bg-secondary">New</span>
+                                < /a>
+                        </li>
 
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tickets">Listado de Animalitos</a>
                         </li>
                         <li class="nav-item d-block d-sm-none">
                             <a class="nav-link" href="/tripletas">Listado de Tripletas</a>
+                        </li>
+                        <li class="nav-item d-block d-sm-none">
+                            <a class="nav-link" href="/tripletas">Listado Hipismo</a>
                         </li>
 
                         <li class="nav-item d-block d-sm-none">
