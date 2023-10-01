@@ -36,10 +36,11 @@ class TaquillaController extends Controller
     public function print($banca_id)
     {
 
-        $banca = HipismoBanca::with(['fixturerace' => function ($f) {
-            $f->with('race','hipodromo');
-        },
-        'user'
+        $banca = HipismoBanca::with([
+            'fixturerace' => function ($f) {
+                $f->with('race', 'hipodromo');
+            },
+            'user'
         ])->find($banca_id);
         return view('hipismo.taquilla.print', compact('banca'));
     }
@@ -133,7 +134,7 @@ class TaquillaController extends Controller
         return response()->json([
             'valid' => true,
             'message' => 'Guardado correctamente',
-            'data'=>$banc,
+            'data' => $banc,
         ], 200);
     }
 
@@ -313,7 +314,7 @@ class TaquillaController extends Controller
                 ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
                 ->with(['fixtureRace' => function ($f) {
                     $f->with('hipodromo');
-                }])->orderBy('id','desc')
+                }])->orderBy('id', 'desc')
                 ->paginate(50);
         }
 
@@ -323,7 +324,7 @@ class TaquillaController extends Controller
                 ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
                 ->with(['fixtureRace' => function ($f) {
                     $f->with('hipodromo');
-                }])->orderBy('id','desc')
+                }])->orderBy('id', 'desc')
                 ->paginate(50);
         }
 
@@ -335,9 +336,9 @@ class TaquillaController extends Controller
                 ->with(['fixtureRace' => function ($f) {
                     $f->with('hipodromo');
                 }])
-                ->orderBy('id','desc')
+                ->orderBy('id', 'desc')
                 ->paginate();
-                // dd($bancas);
+            // dd($bancas);
         }
 
         return view('hipismo.dashboard', compact('remates', 'total', 'pagado', 'hipodromos', 'bancas', 'bancas_totales'));
