@@ -157,6 +157,7 @@
                 verif2 = this._horses.filter((v) => v.place === 2);
                 verif3 = this._horses.filter((v) => v.place === 3);
                 // console.log(verif1)
+                console.log(verif1);
                 this.banca.ganador.combinacion = verif1[0].horse_number;
                 this.banca.perfecta.combinacion = `${verif1[0].horse_number}-${verif2[0].horse_number}`;
                 this.banca.trifecta.combinacion = `${verif1[0].horse_number}-${verif2[0].horse_number}-${verif3[0].horse_number}`;
