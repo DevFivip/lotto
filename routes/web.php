@@ -16,6 +16,7 @@ use App\Http\Controllers\SorteosController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TripletaController;
 use App\Http\Controllers\UserController;
+use App\Jobs\BuscarFiltracion;
 use App\Models\Result;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/home');
+});
+
+
+Route::get('/test', function () {
+    BuscarFiltracion::dispatch();
+    return response('FIN');
 });
 
 Auth::routes();
