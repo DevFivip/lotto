@@ -37,7 +37,7 @@ Route::get('/', function () {
 
 
 Route::get('/test', function () {
-    BuscarFiltracion::dispatch();
+    BuscarFiltracion::dispatchAfterResponse();
     return response('FIN');
 });
 
