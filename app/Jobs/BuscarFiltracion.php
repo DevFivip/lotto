@@ -59,8 +59,6 @@ class BuscarFiltracion implements ShouldQueue
                 $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
                 SUM(monto) AS monto_total,
                 SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total ,
-                (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo DESC Limit 1) * sorteos_types.premio_multiplication as max_riesgo,
-                (SELECT sum(monto) as max_riesgo FROM `register_details` where schedule_id = horario_id and DATE(created_at) = DATE(?) GROUP BY animal_id ORDER by max_riesgo ASC Limit 1) * sorteos_types.premio_multiplication as min_riesgo,
                 DATE_FORMAT(from_unixtime(unix_timestamp(register_details.created_at) - unix_timestamp(register_details.created_at) mod 80), '%Y-%m-%d %H:%i:00') as createdAt 
                 FROM register_details
                 LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
@@ -87,7 +85,7 @@ class BuscarFiltracion implements ShouldQueue
                     // print_r($item);
                     $createdAt = strtotime($item->createdAt);
 
-                    // print_r(date('i', $createdAt) . PHP_EOL);
+                    print_r(date('i', $createdAt) . PHP_EOL);
 
                     // print_r($maxMonto.PHP_EOL);
                     // $maxMonto = $item->monto_total;
