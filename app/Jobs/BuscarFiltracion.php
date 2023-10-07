@@ -54,7 +54,7 @@ class BuscarFiltracion implements ShouldQueue
             $animals = Animal::select('id', 'nombre', 'number')->where('sorteo_type_id', $loteria_id)->get();
 
             foreach ($animals as $animalito) {
-                
+
                 $number = $animalito->number;
                 $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
                 SUM(monto) AS monto_total,
@@ -84,9 +84,10 @@ class BuscarFiltracion implements ShouldQueue
                 // Iterar sobre los registros
                 foreach ($data as $index => $item) {
 
+                    print_r($item);
                     $createdAt = strtotime($item['createdAt']);
 
-                    print_r(date('i', $createdAt) . PHP_EOL);
+                    // print_r(date('i', $createdAt) . PHP_EOL);
 
                     // print_r($maxMonto.PHP_EOL);
                     // $maxMonto = $item['monto_total'];
