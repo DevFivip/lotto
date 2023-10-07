@@ -84,24 +84,24 @@ class BuscarFiltracion implements ShouldQueue
                 // Iterar sobre los registros
                 foreach ($data as $index => $item) {
 
-                    print_r($item);
-                    $createdAt = strtotime($item['createdAt']);
+                    // print_r($item);
+                    $createdAt = strtotime($item->createdAt);
 
                     // print_r(date('i', $createdAt) . PHP_EOL);
 
                     // print_r($maxMonto.PHP_EOL);
-                    // $maxMonto = $item['monto_total'];
+                    // $maxMonto = $item->monto_total;
                     // Verificar si el minuto es mayor a 30 y si el monto_total es mayor al máximo actual
-                    // if (date('i', $createdAt) > 30 && floatval($item['monto_total']) < floatval($maxMonto)) {
+                    // if (date('i', $createdAt) > 30 && floatval($item->monto_total) < floatval($maxMonto)) {
 
-                    if (date('i', $createdAt) > 30 && floatval($item['monto_total']) > $maxMonto) {
+                    if (date('i', $createdAt) > 30 && floatval($item->monto_total) > $maxMonto) {
                         // Actualizar el monto máximo y el índice del registro seleccionado
-                        // $maxMonto = floatval($item['monto_total']);
+                        // $maxMonto = floatval($item->monto_total);
                         $selectedIndex = $index;
                     }
 
-                    if (floatval($item['monto_total']) > floatval($maxMonto)) {
-                        $maxMonto = floatval($item['monto_total']);
+                    if (floatval($item->monto_total) > floatval($maxMonto)) {
+                        $maxMonto = floatval($item->monto_total);
                     }
                 }
 
