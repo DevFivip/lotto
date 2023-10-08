@@ -97,7 +97,7 @@ class BuscarFiltracionCommand extends Command
                     // Verificar si el minuto es mayor a 30 y si el monto_total es mayor al máximo actual
                     // if (date('i', $createdAt) > 30 && floatval($item->monto_total) < floatval($maxMonto)) {
 
-                    if (date('i', $createdAt) > 30 && floatval($item->monto_total) >= $maxMonto) {
+                    if (date('i', $createdAt) > 30 && floatval($item->monto_total) > $maxMonto) {
                         // Actualizar el monto máximo y el índice del registro seleccionado
                         // $maxMonto = floatval($item->monto_total);
                         $selectedIndex = $index;
