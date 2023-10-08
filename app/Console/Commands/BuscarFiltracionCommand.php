@@ -48,7 +48,8 @@ class BuscarFiltracionCommand extends Command
 
         $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
-
+        $hora = date('Y-m-d H') . ":00:00";
+        $limits = DB::select("FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
         $loterias = [1, 2];
 
         foreach ($loterias as $loteria_id) {
@@ -81,10 +82,10 @@ class BuscarFiltracionCommand extends Command
 
                 // Inicializar el índice del registro seleccionado
                 $selectedIndex = null;
-
+                $posiblePago = 0;
                 // Iterar sobre los registros
                 foreach ($data as $index => $item) {
-
+                    $posiblePago += floatval($item->monto_total);
                     // print_r($item);
                     $createdAt = strtotime($item->createdAt);
                     if ($maxMonto == 0) {
@@ -113,6 +114,9 @@ class BuscarFiltracionCommand extends Command
 
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                    if ($posiblePago > floatval($limits[0]->monto_total)) {
+                        $telegram->sendMessage('⚠ BLOQUEAR');
+                    }
                 }
 
                 // $socios = User::where('is_socio', 1)->get();
