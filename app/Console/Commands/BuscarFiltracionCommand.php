@@ -89,7 +89,9 @@ class BuscarFiltracionCommand extends Command
 
                     // print_r($item);
                     $createdAt = strtotime($item->createdAt);
-                    $maxMonto = floatval($item->monto_total);
+                    if ($maxMonto == 0) {
+                        $maxMonto = floatval($item->monto_total);
+                    }
                     // print_r(date('i', $createdAt) . PHP_EOL);
 
                     // print_r($maxMonto.PHP_EOL);
@@ -106,8 +108,6 @@ class BuscarFiltracionCommand extends Command
                     if (floatval($item->monto_total) > floatval($maxMonto)) {
                         $maxMonto = floatval($item->monto_total);
                     }
-
-                    
                 }
 
                 // Obtener el registro seleccionado usando el índice
