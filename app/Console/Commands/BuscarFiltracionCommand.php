@@ -72,7 +72,7 @@ class BuscarFiltracionCommand extends Command
                 and schedule = ?
                 and register_details.animal_id = ?
                 and register_details.moneda_id = 1
-                group by createdAt", [$created_at, $created_at, $created_at, $loteria_id, $schedule, $number]);
+                group by createdAt", [$created_at, $loteria_id, $schedule, $number]);
 
 
                 $data = $jugadas;
