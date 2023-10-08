@@ -45,7 +45,6 @@ class BuscarFiltracionCommand extends Command
     public function handle()
     {
         $telegram = new Telegram();
-        $wachiman = new Wachiman();
 
         $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
@@ -113,7 +112,7 @@ class BuscarFiltracionCommand extends Command
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
                 if ($selectedRecord) {
-                    $wachiman->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                    $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                 }
 
                 // $socios = User::where('is_socio', 1)->get();
