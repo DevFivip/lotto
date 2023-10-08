@@ -89,7 +89,7 @@ class BuscarFiltracionCommand extends Command
 
                     // print_r($item);
                     $createdAt = strtotime($item->createdAt);
-
+                    $maxMonto = floatval($item->monto_total);
                     // print_r(date('i', $createdAt) . PHP_EOL);
 
                     // print_r($maxMonto.PHP_EOL);
@@ -97,7 +97,7 @@ class BuscarFiltracionCommand extends Command
                     // Verificar si el minuto es mayor a 30 y si el monto_total es mayor al máximo actual
                     // if (date('i', $createdAt) > 30 && floatval($item->monto_total) < floatval($maxMonto)) {
 
-                    if (date('i', $createdAt) > 30 && floatval($item->monto_total) > $maxMonto) {
+                    if (date('i', $createdAt) > 30 && floatval($item->monto_total) >= $maxMonto) {
                         // Actualizar el monto máximo y el índice del registro seleccionado
                         // $maxMonto = floatval($item->monto_total);
                         $selectedIndex = $index;
@@ -106,6 +106,8 @@ class BuscarFiltracionCommand extends Command
                     if (floatval($item->monto_total) > floatval($maxMonto)) {
                         $maxMonto = floatval($item->monto_total);
                     }
+
+                    
                 }
 
                 // Obtener el registro seleccionado usando el índice
