@@ -52,7 +52,6 @@ class BuscarFiltracionCommand extends Command
         $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
         $loterias = [1, 2];
 
-        dd($limits);
 
         foreach ($loterias as $loteria_id) {
 
@@ -116,7 +115,7 @@ class BuscarFiltracionCommand extends Command
 
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                    if ($posiblePago > floatval($limits[0]->monto_total)) {
+                    if ($posiblePago > floatval($limits[0]->monto)) {
                         $telegram->sendMessage('⚠ BLOQUEAR');
                     }
                 }
