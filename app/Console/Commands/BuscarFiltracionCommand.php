@@ -52,6 +52,8 @@ class BuscarFiltracionCommand extends Command
         $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
         $loterias = [1, 2];
 
+        dd($limits);
+
         foreach ($loterias as $loteria_id) {
 
             $s = Schedule::where('sorteo_type_id', $loteria_id)->where('status', 1)->orderBy('id', 'asc')->first();
