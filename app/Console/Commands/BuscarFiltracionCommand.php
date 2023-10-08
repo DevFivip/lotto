@@ -48,6 +48,7 @@ class BuscarFiltracionCommand extends Command
         $wachiman = new Wachiman();
 
         $telegram->sendMessage('Se esta ejecutando el Inspector');
+        $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
 
         $loterias = [1, 2];
@@ -73,7 +74,6 @@ class BuscarFiltracionCommand extends Command
                 and register_details.animal_id = ?
                 and register_details.moneda_id = 1
                 group by createdAt", [$created_at, $created_at, $created_at, $loteria_id, $schedule, $number]);
-
 
 
                 $data = $jugadas;
@@ -131,6 +131,9 @@ class BuscarFiltracionCommand extends Command
                 //         info('se actualizo un registro');
                 //     }
                 // }
+
+
+                $telegram->sendMessage('Analisis de ' . $animalito->nombre . ' Loteria ' . $loteria_id . ' ' .  $maxMonto);
             }
         }
 
