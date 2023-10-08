@@ -48,7 +48,6 @@ class BuscarFiltracionCommand extends Command
         $wachiman = new Wachiman();
 
         $telegram->sendMessage('Se esta ejecutando el Inspector');
-        $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
 
         $loterias = [1, 2];
