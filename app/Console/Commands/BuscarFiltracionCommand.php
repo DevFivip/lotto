@@ -49,7 +49,7 @@ class BuscarFiltracionCommand extends Command
         $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
         $hora = date('Y-m-d H') . ":00:00";
-        $limits = DB::select("FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
+        $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
         $loterias = [1, 2];
 
         foreach ($loterias as $loteria_id) {
