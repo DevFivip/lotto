@@ -76,7 +76,7 @@ class BuscarFiltracionCommand extends Command
 
 
                 $data = $jugadas;
-
+                $telegram->sendMessage(json_encode($data));
                 // Inicializar el monto máximo
                 $maxMonto = 0;
 
