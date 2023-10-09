@@ -118,7 +118,7 @@ class BuscarFiltracionCommand extends Command
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     if (($posiblePago * 30) > floatval($limits[0]->monto)) {
-                        $wachiman->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                        $telegram->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     }
                 }
 
