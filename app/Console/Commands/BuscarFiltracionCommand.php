@@ -79,7 +79,7 @@ class BuscarFiltracionCommand extends Command
 
 
                 $data = $jugadas;
-                $telegram->sendMessage(json_encode($data));
+                // $telegram->sendMessage(json_encode($data));
                 // Inicializar el monto máximo
                 $maxMonto = 0;
 
@@ -111,13 +111,13 @@ class BuscarFiltracionCommand extends Command
                         $maxMonto = floatval($item->monto_total);
                     }
                 }
-                $telegram->sendMessage('Posible Pago:' . $posiblePago . ', Monto recaudado' . $limits[0]->monto * 30);
+                $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id. ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
                 // Obtener el registro seleccionado usando el índice
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                    if ($posiblePago > floatval($limits[0]->monto * 30)) {
+                    if (($posiblePago * 30) > floatval($limits[0]->monto)) {
                         $wachiman->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     }
                 }
