@@ -56,7 +56,7 @@ class BuscarFiltracionCommand extends Command
 
         foreach ($loterias as $loteria_id) {
 
-            $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? and admin_id in (?) and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, implode(',', $u->pluck('id')->toArray()), $loteria_id]);
+            $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? and admin_id in (?) and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, $loteria_id]);
             $s = Schedule::where('sorteo_type_id', $loteria_id)->where('status', 1)->orderBy('id', 'asc')->first();
             $schedule = $s->schedule;
             $animals = Animal::select('id', 'nombre', 'number')->where('sorteo_type_id', $loteria_id)->get();
@@ -66,16 +66,16 @@ class BuscarFiltracionCommand extends Command
                 $number = $animalito->id;
                 $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
                 SUM(monto) AS monto_total,
-                SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total ,
+             
                 DATE_FORMAT(from_unixtime(unix_timestamp(register_details.created_at) - unix_timestamp(register_details.created_at) mod 80), '%Y-%m-%d %H:%i:00') as createdAt 
                 FROM register_details
-                LEFT JOIN sorteos_types ON register_details.sorteo_type_id = sorteos_types.id
+             
                 WHERE DATE(register_details.created_at) = DATE(?)
                 and sorteo_type_id = ?
                 and schedule = ?
                 and register_details.animal_id = ?
                 and register_details.moneda_id = 1
-                group by createdAt", [$created_at, $loteria_id, $schedule, $number]);
+                group by createdAt", [$hora, $loteria_id, $schedule, $number]);
 
 
                 $data = $jugadas;
@@ -111,19 +111,38 @@ class BuscarFiltracionCommand extends Command
                         $maxMonto = floatval($item->monto_total);
                     }
                 }
-                $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id. ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
+
+                $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id . ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
                 // Obtener el registro seleccionado usando el índice
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                    if (($posiblePago * 30) > floatval($limits[0]->monto)) {
+                    if (($posiblePago * 30) > 2640) {
+
                         $telegram->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                        // $socios = User::where('is_socio', 1)->get();
+                        // $limit = 0.1;
+                        // foreach ($socios as $socio) {
+
+                        //     $fund  = UserAnimalitoSchedule::where('schedule_id', $s->id)->where('animal_id', $animalito->id)->where('user_id', $socio->id)->first();
+
+                        //     if ($fund == null) {
+
+                        //         UserAnimalitoSchedule::create(['user_id' => $socio->id, 'schedule_id' => $s->id, 'animal_id' => $animalito->id, 'limit' => $limit]);
+                        //         info('hubo un registro');
+                        //     } else {
+                        //         $fund->limit = $limit;
+                        //         $fund->update();
+                        //         info('se actualizo un registro');
+                        //     }
+                        // }
                     }
                 }
 
                 // $socios = User::where('is_socio', 1)->get();
                 // $limit = 0.1;
+
                 // foreach ($socios as $socio) {
 
                 //     $fund  = UserAnimalitoSchedule::where('schedule_id', $s->id)->where('animal_id', $animalito->id)->where('user_id', $socio->id)->first();
@@ -138,9 +157,6 @@ class BuscarFiltracionCommand extends Command
                 //         info('se actualizo un registro');
                 //     }
                 // }
-
-
-                $telegram->sendMessage('Analisis de ' . $animalito->nombre . ' Loteria ' . $loteria_id . ' ' .  $maxMonto);
             }
         }
 
