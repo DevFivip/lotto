@@ -8,6 +8,7 @@ use App\Http\Libs\Telegram;
 use App\Http\Libs\Wachiman;
 use App\Models\Animal;
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 
@@ -45,13 +46,14 @@ class BuscarFiltracionCommand extends Command
     public function handle()
     {
         $telegram = new Telegram();
-
+        $wachiman = new Wachiman();
         $telegram->sendMessage('Se esta ejecutando el Inspector');
         $created_at = date('Y-m-d');
         $hora = date('Y-m-d H') . ":00:00";
-        $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? ORDER BY `id` DESC", [$hora]);
-        $loterias = [1, 2];
+        $u = User::where('is_socio', 1)->get();
+        $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? and admin_id in (?) ORDER BY `id` DESC", [$hora, implode(',', $u->pluck('id')->toArray())]);
 
+        $loterias = [1, 2];
 
         foreach ($loterias as $loteria_id) {
 
@@ -61,7 +63,7 @@ class BuscarFiltracionCommand extends Command
 
             foreach ($animals as $animalito) {
 
-                $number = $animalito->number;
+                $number = $animalito->id;
                 $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
                 SUM(monto) AS monto_total,
                 SUM(IF(register_details.winner = 1, (monto * sorteos_types.premio_multiplication) , 0 )) AS premio_total ,
@@ -116,7 +118,7 @@ class BuscarFiltracionCommand extends Command
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     if ($posiblePago > floatval($limits[0]->monto * 30)) {
-                        $telegram->sendMessage('⚠ BLOQUEAR');
+                        $wachiman->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     }
                 }
 
