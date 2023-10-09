@@ -202,9 +202,10 @@
                                             <li><a class="dropdown-item" x-bind:href="'/print/{{$ticket->code}}?timezone='+timezone">Ver Ticket</a></li>
                                             <li><a class="dropdown-item" x-bind:href="'/tickets-repeat?code={{$ticket->code}}'">Repetir Ticket</a></li>
                                             <li><button class="dropdown-item" @click="handlePrintDirect('{{$ticket->code}}')">Direct Print</button></li>
-                                    
+                                            
+                                            @if($show_delete)
                                             <li><button class="dropdown-item" @click="handleDelete('{{$ticket->code}}')">Eliminar</button></li>
-                                        
+                                            @endif
 
                                             @if($ticket->has_winner == 1 && $ticket->total_premios_pendientes > 0)
                                             <li><a class="dropdown-item" href="/tickets/pay/{{$ticket->code}}">Pagar</a></li>

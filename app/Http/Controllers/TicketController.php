@@ -227,17 +227,28 @@ class TicketController extends Controller
         $monedas = Moneda::whereIn('id', auth()->user()->monedas)->get();
         $animalitos = Animal::with('type')->get();
         $user = auth()->user();
+        $show_delete = false;
+
+
+
+
 
         switch ($user->role_id) {
             case 3:
                 $admin = User::where('id', $user->parent_id)->where('is_socio', 1)->first();
+                if (!$admin) {
+                    $show_delete = true;
+                } else {
+                    $show_delete = false;
+                }
                 break;
             default:
-                $admin = $user;
+                $show_delete = true;
+                // $admin = $user;
                 break;
         }
 
-        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos', 'user', 'admin'));
+        return view('tickets.index', compact('tickets', 'monedas', 'filter', 'usuarios', 'animalitos', 'user', 'show_delete'));
     }
 
     public function create()
