@@ -118,7 +118,7 @@ class BuscarFiltracionCommand extends Command
 
                 if ($selectedRecord) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                    if (($posiblePago * 30) > 3600) {
+                    if (($posiblePago * 30) > 2600) {
 
                         $telegram->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                         // $socios = User::where('is_socio', 1)->get();
