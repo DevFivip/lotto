@@ -51,12 +51,12 @@ class BuscarFiltracionCommand extends Command
         $created_at = date('Y-m-d');
         $hora = date('Y-m-d H') . ":00:00";
         $u = User::where('is_socio', 1)->get();
-        $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? and admin_id in (?) ORDER BY `id` DESC", [$hora, implode(',', $u->pluck('id')->toArray())]);
 
         $loterias = [1, 2];
 
         foreach ($loterias as $loteria_id) {
 
+            $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ? and admin_id in (?) and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, implode(',', $u->pluck('id')->toArray()), $loteria_id]);
             $s = Schedule::where('sorteo_type_id', $loteria_id)->where('status', 1)->orderBy('id', 'asc')->first();
             $schedule = $s->schedule;
             $animals = Animal::select('id', 'nombre', 'number')->where('sorteo_type_id', $loteria_id)->get();
@@ -111,7 +111,7 @@ class BuscarFiltracionCommand extends Command
                         $maxMonto = floatval($item->monto_total);
                     }
                 }
-
+                $telegram->sendMessage('Posible Pago:' . $posiblePago . ', Monto recaudado' . $limits[0]->monto * 30);
                 // Obtener el registro seleccionado usando el índice
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
