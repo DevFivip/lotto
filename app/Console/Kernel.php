@@ -749,7 +749,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('sorteo:closeadmin 583 2 145')->timezone('America/Caracas')->at('17:40');
         // $schedule->command('sorteo:closeadmin 583 2 146')->timezone('America/Caracas')->at('18:40');
 
-        $schedule->command('sorteo:filtracion')->cron('30-59/2 7-21 * * *');
+        $schedule->command('sorteo:filtracion')->cron('30-59/2 11-21 * * *');
 
         // reiniciar todos los limites
         $schedule->command('sorteo:clearadmin')->timezone('America/Caracas')->at('20:45');
