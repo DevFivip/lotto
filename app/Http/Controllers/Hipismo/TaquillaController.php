@@ -254,90 +254,195 @@ class TaquillaController extends Controller
         //? if (isset($data['fecha_inicio']) && isset($data['fecha_fin'])) {
         //? }
 
-        $hipodromos = Hipodromo::with(["races" => function ($race) use ($date) {
-            $race->where('race_day', '>=', $date . " 00:00:00")->with(['fixtures' => function ($fixture) {
-                return $fixture->with(['remates' => function ($rem) {
-                    return $rem->where('user_id', auth()->user()->id)->with(['remates' => function ($odd) {
-                        return $odd->with(['horse'])->get();
+        if (auth()->user()->role_id == 3) {
+            $user_id = auth()->user()->id;
+
+
+            $hipodromos = Hipodromo::with(["races" => function ($race) use ($date) {
+                $race->where('race_day', '>=', $date . " 00:00:00")->with(['fixtures' => function ($fixture) {
+                    return $fixture->with(['remates' => function ($rem) {
+                        return $rem->where('user_id', auth()->user()->id)->with(['remates' => function ($odd) {
+                            return $odd->with(['horse'])->get();
+                        }])->get();
                     }])->get();
                 }])->get();
             }])->get();
-        }])->get();
 
-        $remates = HipismoRemate::with(['horse'])->where('user_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
-        $totals = HipismoRemateHead::where('user_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
-
-
-        $_remates = $remates->filter(function ($v, $k) {
-            if ($v->horse->status == 1) {
-                return $v;
-            }
-        });
+            $remates = HipismoRemate::with(['horse'])->where('user_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
+            $totals = HipismoRemateHead::where('user_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
 
 
-        $total = $_remates->sum('monto');
-        $pagado = $totals->sum('pagado');
+            $_remates = $remates->filter(function ($v, $k) {
+                if ($v->horse->status == 1) {
+                    return $v;
+                }
+            });
 
 
-        //////////////////////
-        //////////////////////
-        ////////BANCA/////////
-        //////////////////////
-        //////////////////////
-
-        if (auth()->user()->role_id == 3) {
-            $user_id = auth()->user()->id;
-            $bancas_totales = DB::select(DB::raw("SELECT SUM(if(t2.win > 1,t1.total * t2.win,0)) AS premiototal, SUM(total) AS total
-            FROM hipismo_bancas AS t1
-            LEFT JOIN hipismo_banca_resultados AS t2 ON t1.combinacion = t2.combinacion
-            WHERE t1.user_id = :user_id"), ['user_id' => $user_id]);
-        }
-
-        if (auth()->user()->role_id == 2) {
-            $admin_id = auth()->user()->parent_id;
-            $bancas_totales = DB::select(DB::raw("SELECT SUM(if(t2.win > 1,t1.total * t2.win,0)) AS premiototal, SUM(total) AS total
-            FROM hipismo_bancas AS t1
-            LEFT JOIN hipismo_banca_resultados AS t2 ON t1.combinacion = t2.combinacion
-            WHERE t1.admin_id = :admin_id"), ['admin_id' => $admin_id]);
-        }
-
-        if (auth()->user()->role_id == 1) {
-            $bancas_totales = DB::select(DB::raw("SELECT SUM(if(t2.win > 1,t1.total * t2.win,0)) AS premiototal, SUM(total) AS total
-            FROM hipismo_bancas AS t1
-            LEFT JOIN hipismo_banca_resultados AS t2 ON t1.combinacion = t2.combinacion"));
-        }
+            $total = $_remates->sum('monto');
+            $pagado = $totals->sum('pagado');
 
 
+            $bancas_totales = DB::select("SELECT SUM(if(hipismo_banca_resultados.win > 1,hipismo_bancas.unidades * hipismo_banca_resultados.win,0)) AS premiototal, SUM(total) AS total FROM hipismo_bancas LEFT JOIN hipismo_banca_resultados ON hipismo_bancas.combinacion = hipismo_banca_resultados.combinacion AND hipismo_bancas.admin_id = hipismo_banca_resultados.admin_id WHERE hipismo_bancas.user_id = :user_id", ['user_id' => $user_id]);
 
-        if (auth()->user()->role_id == 1) {
-            $bancas = HipismoBanca::leftJoin('hipismo_banca_resultados as t2', 'hipismo_bancas.combinacion', '=', 't2.combinacion')
-                ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
-                ->with(['fixtureRace' => function ($f) {
-                    $f->with('hipodromo');
-                }])->orderBy('id', 'desc')
-                ->paginate(50);
-        }
-
-        if (auth()->user()->role_id == 2) {
-            $bancas = HipismoBanca::leftJoin('hipismo_banca_resultados as t2', 'hipismo_bancas.combinacion', '=', 't2.combinacion')
-                ->where('hipismo_bancas.admin_id', '=', auth()->user()->id)
-                ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
-                ->with(['fixtureRace' => function ($f) {
-                    $f->with('hipodromo');
-                }])->orderBy('id', 'desc')
-                ->paginate(50);
-        }
-
-        if (auth()->user()->role_id == 3) {
-            $bancas = HipismoBanca::leftJoin('hipismo_banca_resultados as t2', 'hipismo_bancas.combinacion', '=', 't2.combinacion')
+            $bancas = HipismoBanca::select(
+                'hipismo_bancas.id AS id',
+                'hipismo_bancas.total',
+                'hipismo_bancas.admin_id AS tabla1_admin_id',
+                'hipismo_bancas.user_id',
+                'hipismo_bancas.status',
+                'hipismo_bancas.created_at AS tabla1_created_at',
+                'hipismo_bancas.updated_at AS tabla1_updated_at',
+                'hipismo_bancas.code',
+                'hipismo_bancas.fixture_race_id AS fixture_race_id',
+                'hipismo_bancas.moneda_id',
+                'hipismo_bancas.apuesta_type',
+                'hipismo_bancas.combinacion',
+                'hipismo_bancas.unidades',
+                'hipismo_banca_resultados.id AS tabla2_id',
+                'hipismo_banca_resultados.win',
+                'hipismo_banca_resultados.created_at AS tabla2_created_at',
+                'hipismo_banca_resultados.updated_at AS tabla2_updated_at'
+            )
+                ->leftJoin('hipismo_banca_resultados', function ($join) {
+                    $join->on('hipismo_bancas.combinacion', '=', 'hipismo_banca_resultados.combinacion')
+                        ->on('hipismo_bancas.admin_id', '=', 'hipismo_banca_resultados.admin_id');
+                })
                 ->where('hipismo_bancas.user_id', '=', auth()->user()->id)
-                ->where('t2.admin_id', '=', auth()->user()->parent_id)
-                ->select('hipismo_bancas.id', 'hipismo_bancas.fixture_race_id', 'hipismo_bancas.code', 'hipismo_bancas.combinacion', 't2.win', 'hipismo_bancas.total', 'hipismo_bancas.unidades', 'hipismo_bancas.status')
                 ->with(['fixtureRace' => function ($f) {
+                    // dd($f);
                     $f->with('hipodromo');
                 }])
                 ->orderBy('id', 'desc')
-                ->paginate();
+                ->paginate(50);
+        }
+
+        if (auth()->user()->role_id == 2) {
+
+            $hipodromos = Hipodromo::with(["races" => function ($race) use ($date) {
+                $race->where('race_day', '>=', $date . " 00:00:00")->with(['fixtures' => function ($fixture) {
+                    return $fixture->with(['remates' => function ($rem) {
+                        return $rem->where('admin_id', auth()->user()->id)->with(['remates' => function ($odd) {
+                            return $odd->with(['horse'])->get();
+                        }])->get();
+                    }])->get();
+                }])->get();
+            }])->get();
+
+            $remates = HipismoRemate::with(['horse'])->where('admin_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
+            $totals = HipismoRemateHead::where('admin_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
+
+
+            $_remates = $remates->filter(function ($v, $k) {
+                if ($v->horse->status == 1) {
+                    return $v;
+                }
+            });
+
+
+            $total = $_remates->sum('monto');
+            $pagado = $totals->sum('pagado');
+
+
+
+            $admin_id = auth()->user()->id;
+            $bancas_totales = DB::select("SELECT SUM(if(hipismo_banca_resultados.win > 1,hipismo_bancas.unidades * hipismo_banca_resultados.win,0)) AS premiototal, SUM(total) AS total FROM hipismo_bancas LEFT JOIN hipismo_banca_resultados ON hipismo_bancas.combinacion = hipismo_banca_resultados.combinacion AND hipismo_bancas.admin_id = hipismo_banca_resultados.admin_id WHERE hipismo_bancas.admin_id = :admin_id", ['admin_id' => $admin_id]);
+
+            $bancas = HipismoBanca::select(
+                'hipismo_bancas.id AS id',
+                'hipismo_bancas.total',
+                'hipismo_bancas.admin_id AS tabla1_admin_id',
+                'hipismo_bancas.user_id',
+                'hipismo_bancas.status',
+                'hipismo_bancas.created_at AS tabla1_created_at',
+                'hipismo_bancas.updated_at AS tabla1_updated_at',
+                'hipismo_bancas.code',
+                'hipismo_bancas.fixture_race_id AS fixture_race_id',
+                'hipismo_bancas.moneda_id',
+                'hipismo_bancas.apuesta_type',
+                'hipismo_bancas.combinacion',
+                'hipismo_bancas.unidades',
+                'hipismo_banca_resultados.id AS tabla2_id',
+                'hipismo_banca_resultados.win',
+                'hipismo_banca_resultados.created_at AS tabla2_created_at',
+                'hipismo_banca_resultados.updated_at AS tabla2_updated_at'
+            )
+                ->leftJoin('hipismo_banca_resultados', function ($join) {
+                    $join->on('hipismo_bancas.combinacion', '=', 'hipismo_banca_resultados.combinacion')
+                        ->on('hipismo_bancas.admin_id', '=', 'hipismo_banca_resultados.admin_id');
+                })
+                ->where('hipismo_bancas.admin_id', '=', auth()->user()->id)
+                ->with(['fixtureRace' => function ($f) {
+                    // dd($f);
+                    $f->with('hipodromo');
+                }])
+                ->orderBy('id', 'desc')
+                ->paginate(50);
+        }
+
+        if (auth()->user()->role_id == 1) {
+
+            $hipodromos = Hipodromo::with(["races" => function ($race) use ($date) {
+                $race->where('race_day', '>=', $date . " 00:00:00")->with(['fixtures' => function ($fixture) {
+                    return $fixture->with(['remates' => function ($rem) {
+                        return $rem->with(['remates' => function ($odd) {
+                            return $odd->with(['horse'])->get();
+                        }])->get();
+                    }])->get();
+                }])->get();
+            }])->get();
+
+            $remates = HipismoRemate::with(['horse'])->where('created_at',  '>=', $date . " 00:00:00")->get();
+            $totals = HipismoRemateHead::where('user_id', auth()->user()->id)->where('created_at',  '>=', $date . " 00:00:00")->get();
+
+
+            $_remates = $remates->filter(function ($v, $k) {
+                if ($v->horse->status == 1) {
+                    return $v;
+                }
+            });
+
+
+            $total = $_remates->sum('monto');
+            $pagado = $totals->sum('pagado');
+
+
+            $bancas_totales = DB::select(DB::raw("SELECT SUM(if(hipismo_banca_resultados.win > 1,hipismo_bancas.unidades * hipismo_banca_resultados.win,0)) AS premiototal, SUM(total) AS total
+            FROM hipismo_bancas
+            LEFT JOIN hipismo_banca_resultados
+            ON hipismo_bancas.combinacion = hipismo_banca_resultados.combinacion
+                AND hipismo_bancas.admin_id = hipismo_banca_resultados.admin_id"));
+
+            $bancas = HipismoBanca::select(
+                'hipismo_bancas.id AS id',
+                'hipismo_bancas.total',
+                'hipismo_bancas.admin_id AS tabla1_admin_id',
+                'hipismo_bancas.user_id',
+                'hipismo_bancas.status',
+                'hipismo_bancas.created_at AS tabla1_created_at',
+                'hipismo_bancas.updated_at AS tabla1_updated_at',
+                'hipismo_bancas.code',
+                'hipismo_bancas.fixture_race_id AS fixture_race_id',
+                'hipismo_bancas.moneda_id',
+                'hipismo_bancas.apuesta_type',
+                'hipismo_bancas.combinacion',
+                'hipismo_bancas.unidades',
+                'hipismo_banca_resultados.id AS tabla2_id',
+                'hipismo_banca_resultados.win',
+                'hipismo_banca_resultados.created_at AS tabla2_created_at',
+                'hipismo_banca_resultados.updated_at AS tabla2_updated_at'
+            )
+                ->leftJoin('hipismo_banca_resultados', function ($join) {
+                    $join->on('hipismo_bancas.combinacion', '=', 'hipismo_banca_resultados.combinacion')
+                        ->on('hipismo_bancas.admin_id', '=', 'hipismo_banca_resultados.admin_id');
+                })
+                ->with(['fixtureRace' => function ($f) {
+                    // dd($f);
+                    $f->with('hipodromo');
+                }])
+                ->orderBy('id', 'desc')
+                ->paginate(50);
+
             // dd($bancas);
         }
 
