@@ -1,3 +1,11 @@
+<style>
+    * {
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size:smaller;
+  margin: 0;
+}
+</style>
+
 {{$banca->user->taquilla_name}} <br>
 Codigo:{{$banca->code}} <br>
 Fecha:{{$banca->created_at}} <br>
