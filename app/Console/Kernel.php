@@ -755,7 +755,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sorteo:promedio')->cron('01-59/25 11-22 * * *');
 
-        $schedule->command('sorteo:favoritos')->cron('05 11-22 * * *');
+        // $schedule->command('sorteo:favoritos')->cron('05 11-22 * * *');
 
         // reiniciar todos los limites
         $schedule->command('sorteo:clearadmin')->timezone('America/Caracas')->at('20:45');
