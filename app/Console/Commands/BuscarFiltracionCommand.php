@@ -120,7 +120,7 @@ class BuscarFiltracionCommand extends Command
                     }
                 }
 
-                // $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id . ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
+                $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id . ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
                 // Obtener el registro seleccionado usando el índice
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
