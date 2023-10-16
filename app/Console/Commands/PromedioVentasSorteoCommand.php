@@ -69,11 +69,11 @@ class PromedioVentasSorteoCommand extends Command
             switch ($loteria_id) {
                 case 1:
                     Config::createOrUpdate('PROMEDIO_LOTTO_ACTIVO', $promedio);
-                    $telegram->sendMessage('PROMEDIO_LOTTO_ACTIVO' . number_format($promedio, 2, ",", "."));
+                    $telegram->sendMessage('PROMEDIO_LOTTO_ACTIVO ' . number_format($promedio, 2, ",", "."));
                     break;
                 case 2:
                     Config::createOrUpdate('PROMEDIO_LA_GRANJITA', $promedio);
-                    $telegram->sendMessage('PROMEDIO_LA_GRANJITA' . number_format($promedio, 2, ",", "."));
+                    $telegram->sendMessage('PROMEDIO_LA_GRANJITA ' . number_format($promedio, 2, ",", "."));
                     break;
 
                 default:
