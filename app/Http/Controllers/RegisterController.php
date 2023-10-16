@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\AnimalitoScheduleLimit;
 use App\Models\Caja;
 use App\Models\Exchange;
+use App\Models\FailAnimalitoTry;
 use App\Models\Register;
 use App\Models\RegisterDetail;
 use App\Models\Schedule;
@@ -284,6 +285,7 @@ class RegisterController extends Controller
         }
 
         if ($horario->status == 0) {
+            // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
             array_push($err, '⛔ El sorteo ' . $horario->schedule . ' de ' . $horario->type->name . ' ya no se encuantra disponible ⛔');
         }
 
@@ -316,11 +318,13 @@ class RegisterController extends Controller
         // error_log($validacionHorario->limit);
 
         if ($resp[1] > $validacionHorario->limit) {
+            // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
             array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
 
         if ($resp[2] > $validacionHorario->limit) {
+            FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
             array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
         }
 
@@ -354,11 +358,12 @@ class RegisterController extends Controller
         //
         if ($limit_personal != 0) {
             if (($resp[2] +  $actual_monto) > floatval($limit_personal)) {
-
+                FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
                 array_push($err, ' ' . ' Tu limite de venta por sorteo (' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ') excede lo estipulado, intente para otro horario, Error 1003 no authorizado');
             }
         }
         if (($resp[1] +  $actual_monto) > $validacionHorario->limit) {
+            // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
             array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excede lo estipulado, intente para otro horario, Error 1004 no authorizado');
         }
 
@@ -390,14 +395,17 @@ class RegisterController extends Controller
             // error_log(json_encode($validacionUserAdminHorario));
 
             if ($validacionUserAdminHorario->limit == 0) {
+                FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
                 array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excedió el limite Administrativo, intente para otro horario');
             }
 
             if ($resp[1] > $validacionUserAdminHorario->limit) {
+                FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
                 array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido el limite Administrativo, intente para otro horario');
             }
 
             if ($resp[2] > $validacionUserAdminHorario->limit) {
+                FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
                 array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido el limite Administrativo, intente para otro horario');
             }
         }

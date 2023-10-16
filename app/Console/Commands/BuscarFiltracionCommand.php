@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use App\Http\Libs\Telegram;
 use App\Http\Libs\Wachiman;
 use App\Models\Animal;
+use App\Models\AnimalitoScheduleLimit;
+use App\Models\Config;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -46,30 +48,36 @@ class BuscarFiltracionCommand extends Command
     public function handle()
     {
         $telegram = new Telegram();
-        $wachiman = new Wachiman();
+        // $wachiman = new Wachiman();
         $telegram->sendMessage('Se esta ejecutando el Inspector');
-        $created_at = date('Y-m-d');
+        // $created_at = date('Y-m-d');
         $hora = date('Y-m-d H') . ":00:00";
-        $u = User::where('is_socio', 1)->get();
+        // $u = User::where('is_socio', 1)->get();
 
         $loterias = [1, 2];
 
         foreach ($loterias as $loteria_id) {
+            switch ($loteria_id) {
+                case 1:
+                    $config = Config::where('name', 'PROMEDIO_LOTTO_ACTIVO')->first();
+                    break;
+                case 2:
+                    $config = Config::where('name', 'PROMEDIO_LA_GRANJITA')->first();
+                    break;
+            }
 
-            $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ?  and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, $loteria_id]);
+            // $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ?  and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, $loteria_id]);
             $s = Schedule::where('sorteo_type_id', $loteria_id)->where('status', 1)->orderBy('id', 'asc')->first();
             $schedule = $s->schedule;
-            $animals = Animal::select('id', 'nombre', 'number')->where('sorteo_type_id', $loteria_id)->get();
+            $animals = Animal::select('id', 'nombre', 'number', 'limit_cant')->where('sorteo_type_id', $loteria_id)->get();
 
             foreach ($animals as $animalito) {
 
                 $number = $animalito->id;
                 $jugadas = DB::select("SELECT schedule_id as horario_id, schedule, count(*) as jugadas,
                 SUM(monto) AS monto_total,
-             
                 DATE_FORMAT(from_unixtime(unix_timestamp(register_details.created_at) - unix_timestamp(register_details.created_at) mod 80), '%Y-%m-%d %H:%i:00') as createdAt 
                 FROM register_details
-             
                 WHERE DATE(register_details.created_at) = DATE(?)
                 and sorteo_type_id = ?
                 and schedule = ?
@@ -112,51 +120,41 @@ class BuscarFiltracionCommand extends Command
                     }
                 }
 
-                $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id . ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
+                // $telegram->sendMessage($animalito->nombre . ' Loteria ' . $loteria_id . ', Posible Pago:' . $posiblePago * 30 . ', Monto recaudado ' . $limits[0]->monto);
                 // Obtener el registro seleccionado usando el índice
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
-                if ($selectedRecord) {
+                //? cuando se detecta la irregularidad de las jugadas
+                if ($selectedRecord &&  $animalito->limit_cant == 1) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                    if (($posiblePago * 30) > 2600) {
 
-                        $telegram->sendMessage('⚠ BLOQUEAR ' . $animalito->nombre . ' Loteria ' . $loteria_id);
-                        // $socios = User::where('is_socio', 1)->get();
-                        // $limit = 0.1;
-                        // foreach ($socios as $socio) {
+                    if (($posiblePago * 30) > $config->value && $animalito->limit_cant == 1) {
+                        //?
+                        $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
+                        $anim->limit = 0.1;
+                        $anim->update();
+                        //?
+                        $an = Animal::find($animalito->id);
+                        $an->limit_cant = 0;
+                        $an->update();
 
-                        //     $fund  = UserAnimalitoSchedule::where('schedule_id', $s->id)->where('animal_id', $animalito->id)->where('user_id', $socio->id)->first();
-
-                        //     if ($fund == null) {
-
-                        //         UserAnimalitoSchedule::create(['user_id' => $socio->id, 'schedule_id' => $s->id, 'animal_id' => $animalito->id, 'limit' => $limit]);
-                        //         info('hubo un registro');
-                        //     } else {
-                        //         $fund->limit = $limit;
-                        //         $fund->update();
-                        //         info('se actualizo un registro');
-                        //     }
-                        // }
+                        $telegram->sendMessage('⚠ BLOQUEADO ACTIVIDAD INUSUAL ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                     }
                 }
 
-                // $socios = User::where('is_socio', 1)->get();
-                // $limit = 0.1;
+                //? cuando se detecta que el pago sobrepasa al promedio de ventas
+                if ($posiblePago * 30 > $config->value * 1.15 && $animalito->limit_cant == 1) {
+                    //?
+                    $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
+                    $anim->limit = 0.1;
+                    $anim->update();
+                    //?
+                    $an = Animal::find($animalito->id);
+                    $an->limit_cant = 0;
+                    $an->update();
 
-                // foreach ($socios as $socio) {
-
-                //     $fund  = UserAnimalitoSchedule::where('schedule_id', $s->id)->where('animal_id', $animalito->id)->where('user_id', $socio->id)->first();
-
-                //     if ($fund == null) {
-
-                //         UserAnimalitoSchedule::create(['user_id' => $socio->id, 'schedule_id' => $s->id, 'animal_id' => $animalito->id, 'limit' => $limit]);
-                //         info('hubo un registro');
-                //     } else {
-                //         $fund->limit = $limit;
-                //         $fund->update();
-                //         info('se actualizo un registro');
-                //     }
-                // }
+                    $telegram->sendMessage('⚠ BLOQUEADO SOBREPASA EL PROMEDIO DE PAGOS ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                }
             }
         }
 

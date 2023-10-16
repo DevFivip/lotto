@@ -164,8 +164,8 @@
                                                         <td>{{$banca->fixtureRace->hipodromo->name}}</td>
                                                         <td>Carrera {{$banca->fixtureRace->race_number}}</td>
                                                         <td>Unidades {{$banca->unidades}} | Bs. {{ number_format($banca->total,2,',','.') }}</td>
-                                                        <td> Bs. {{ number_format($banca->total * $banca->win,2,',','.') }}</td>
-                                                        <td> Bs. {{ number_format($banca->win,2,',','.') }}</td>
+                                                        <td> Bs. {{ number_format($banca->unidades * $banca->win,2,',','.') }}</td>
+                                                        <td> {{ number_format($banca->win,2,',','.') }}</td>
                                                         <td><button @click="handleOpenPreviewApuesta({{$banca->id}})" class="btn btn-primary btn-sm m-1"> <i class="fa fa-eye"></i></button><button @click="handleDelete({{$banca->id}})" class="m-1 btn btn-danger btn-sm"><i class="fa fa-trash"></i> </button></td>
                                                     </tr>
                                                     @endforeach

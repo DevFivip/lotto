@@ -7,6 +7,7 @@ use App\Models\AnimalitoScheduleLimit;
 use App\Models\Schedule;
 use App\Models\SorteosType;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ResetLimiteLoteriasCommand extends Command
 {
@@ -43,8 +44,9 @@ class ResetLimiteLoteriasCommand extends Command
 
             $horario->limit = $sorteo->limit_max;
             $horario->update();
-
         }
+
+        DB::select('UPDATE animals SET limit_cant = 100 WHERE 1');
 
         $telegram->sendMessage('✅ Se reinicio los limites de ' . $sorteo->name . ' Monto ' . $sorteo->limit_max);
 
