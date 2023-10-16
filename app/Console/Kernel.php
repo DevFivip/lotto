@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckResultsMessageCommand::class,
         Commands\BuscarFiltracionCommand::class,
         Commands\PromedioVentasSorteoCommand::class,
-        Commands\AnimalitosFavoritosBloqueoCommand::class,
+        // Commands\AnimalitosFavoritosBloqueoCommand::class,
     ];
 
     protected function schedule(Schedule $schedule)
