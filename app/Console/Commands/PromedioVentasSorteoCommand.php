@@ -43,8 +43,11 @@ class PromedioVentasSorteoCommand extends Command
     {
         $telegram = new Telegram();
         $loterias = [1, 2];
+        $date = date('Y-m-d', strtotime('-1 day'));
+
+
         // $date = date('Y-m-d');
-        $date = "2022-10-16";
+        // $date = "2022-10-16";
         foreach ($loterias as $loteria_id) {
 
             $res = DB::select("SELECT count(*) as jugadas,
