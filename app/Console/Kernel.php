@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
         Commands\ResetLimiteLoteriasCommand::class,
         Commands\CheckResultsMessageCommand::class,
         Commands\BuscarFiltracionCommand::class,
+        Commands\PromedioVentasSorteoCommand::class,
+        Commands\AnimalitosFavoritosBloqueoCommand::class,
     ];
 
     protected function schedule(Schedule $schedule)
@@ -752,6 +754,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:filtracion')->cron('30-55/2 11-22 * * *');
 
         $schedule->command('sorteo:promedio')->cron('01-59/25 11-22 * * *');
+
+        $schedule->command('sorteo:favoritos')->cron('05 11-22 * * *');
 
         // reiniciar todos los limites
         $schedule->command('sorteo:clearadmin')->timezone('America/Caracas')->at('20:45');
