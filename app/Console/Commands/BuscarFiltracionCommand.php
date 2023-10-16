@@ -125,10 +125,10 @@ class BuscarFiltracionCommand extends Command
                 $selectedRecord = ($selectedIndex !== null) ? $data[$selectedIndex] : null;
 
                 //? cuando se detecta la irregularidad de las jugadas
-                if ($selectedRecord &&  $animalito->limit_cant == 1) {
+                if ($selectedRecord &&  $animalito->limit_cant == 100) {
                     $telegram->sendMessage('⚠ Posible filtración ' . $animalito->nombre . ' Loteria ' . $loteria_id);
 
-                    if (($posiblePago * 30) > $config->value && $animalito->limit_cant == 1) {
+                    if (($posiblePago * 30) > $config->value && $animalito->limit_cant == 100) {
                         //?
                         $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
                         $anim->limit = 0.1;
@@ -143,7 +143,7 @@ class BuscarFiltracionCommand extends Command
                 }
 
                 //? cuando se detecta que el pago sobrepasa al promedio de ventas
-                if ($posiblePago * 30 > $config->value * 1.15 && $animalito->limit_cant == 1) {
+                if ($posiblePago * 30 > $config->value * 1.15 && $animalito->limit_cant == 100) {
                     //?
                     $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
                     $anim->limit = 0.1;
