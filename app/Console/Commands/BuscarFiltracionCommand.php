@@ -66,7 +66,7 @@ class BuscarFiltracionCommand extends Command
                     break;
             }
 
-            // $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ?  and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, $loteria_id]);
+            $limits = DB::select("SELECT count(*) as jugadas, SUM(monto) as monto FROM `register_details` WHERE created_at >= ?  and sorteo_type_id = ? ORDER BY `id` DESC", [$hora, $loteria_id]);
             $s = Schedule::where('sorteo_type_id', $loteria_id)->where('status', 1)->orderBy('id', 'asc')->first();
             $schedule = $s->schedule;
             $animals = Animal::select('id', 'nombre', 'number', 'limit_cant')->where('sorteo_type_id', $loteria_id)->get();
