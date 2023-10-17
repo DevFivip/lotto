@@ -143,17 +143,17 @@ class BuscarFiltracionCommand extends Command
                 }
 
                 //? cuando se detecta que el pago sobrepasa al promedio de ventas
-                if ($posiblePago * 30 > $limits[0]->monto * 1.11 && $animalito->limit_cant == 100) {
+                if ($posiblePago * 30 > $limits[0]->monto * 1.35 && $animalito->limit_cant == 100) {
                     //?
                     $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
-                    $anim->limit = 0.1;
+                    $anim->limit = $limits[0]->monto * 1.50;
                     $anim->update();
                     //?
                     $an = Animal::find($animalito->id);
                     $an->limit_cant = 0;
                     $an->update();
 
-                    $telegram->sendMessage('⚠ BLOQUEADO ACTIVIDAD IRREGULAR Y SOBREPASA EL MONTO RECAUDADO MAS EL 11% de TOLERANCIA ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                    $telegram->sendMessage('⚠ LIMITE AJUSTADO POR ACTIVIDAD IRREGULAR Y SOBREPASA EL MONTO RECAUDADO MAS EL 35% de TOLERANCIA ' . $animalito->nombre . ' Loteria ' . $loteria_id);
                 }
 
                 //? cuando se detecta que el pago sobrepasa al promedio de ventas
