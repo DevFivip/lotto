@@ -146,7 +146,7 @@ class BuscarFiltracionCommand extends Command
                 if ($posiblePago * 30 > $limits[0]->monto * 1.35 && $animalito->limit_cant == 100) {
                     //?
                     $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
-                    $anim->limit = $limits[0]->monto * 1.50;
+                    $anim->limit = (($limits[0]->monto) / 33) * 1.50;
                     $anim->update();
                     //?
                     $an = Animal::find($animalito->id);
