@@ -63,6 +63,7 @@ class PromedioVentasSorteoCommand extends Command
             foreach ($res as $r) {
                 $sum += $r->monto_total;
             }
+            
 
             $promedio = $sum / 11;
 
