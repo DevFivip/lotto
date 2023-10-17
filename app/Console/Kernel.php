@@ -38,17 +38,17 @@ class Kernel extends ConsoleKernel
 
         // LOTTO ACTIVO
 
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('08:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('09:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('10:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('11:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('12:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('13:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('14:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('15:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('16:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('17:59');
-        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('18:59');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('08:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('09:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('10:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('11:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('12:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('13:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('14:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('15:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('16:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('17:55');
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('18:55');
 
         $schedule->command('sorteo:set')->timezone('America/Caracas')->at('03:50'); // reset lotto activo open all
 
