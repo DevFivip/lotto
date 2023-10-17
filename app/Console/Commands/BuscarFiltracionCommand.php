@@ -146,14 +146,14 @@ class BuscarFiltracionCommand extends Command
                 if ($posiblePago * 30 > $limits[0]->monto * 1.35 && $animalito->limit_cant == 100) {
                     //?
                     $anim = AnimalitoScheduleLimit::where('schedule_id',  $s->id)->where('animal_id', $animalito->id)->first();
-                    $anim->limit = ((($posiblePago) / 33) / 30) * 1.35;
+                    $anim->limit = (($posiblePago / 30) / 33) * 1.35;
                     $anim->update();
                     //?
                     $an = Animal::find($animalito->id);
                     $an->limit_cant = 0;
                     $an->update();
 
-                    $telegram->sendMessage('⚠ LIMITE AJUSTADO POR ACTIVIDAD IRREGULAR Y SOBREPASA EL MONTO RECAUDADO MAS EL 35% de TOLERANCIA ' . $animalito->nombre . ' Loteria ' . $loteria_id);
+                    $telegram->sendMessage('⚠ LIMITE AJUSTADO POR ACTIVIDAD IRREGULAR Y SOBREPASA EL MONTO RECAUDADO MAS EL 35% de TOLERANCIA ' . $animalito->nombre . ' Loteria ' . $loteria_id . 'Limit '.$anim->limit);
                 }
 
                 //? cuando se detecta que el pago sobrepasa al promedio de ventas
