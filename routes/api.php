@@ -48,7 +48,7 @@ Route::post('/send-results-complement', function (Request $request) {
 
 Route::post('/send-results-granjita', function (Request $request) {
     $data = $request->all();
-    $schedule = Schedule::where('status', 0)->where('create_at',null)->where('sorteo_type_id', 2)->first();
+    $schedule = Schedule::where('status', 0)->where('created_at',null)->where('sorteo_type_id', 2)->first();
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
     // $output->writeln("<info>$schedule</info>");
     if ($schedule) {
@@ -99,18 +99,18 @@ Route::post('/send-results-lottoactivord', function (Request $request) {
     }
 })->middleware('rate_limit');;
 
-Route::post('/send-results-lottorey', function (Request $request) {
-    $data = $request->all();
-    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 6)->first();
-    // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-    // $output->writeln("<info>$data</info>");
-    if ($schedule) {
-        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 6);
-        return response()->json($response, 200);
-    } else {
-        return response()->json(['valid' => false], 200);
-    }
-})->middleware('rate_limit');;
+// Route::post('/send-results-lottorey', function (Request $request) {
+//     $data = $request->all();
+//     $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 6)->first();
+//     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+//     // $output->writeln("<info>$data</info>");
+//     if ($schedule) {
+//         $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 6);
+//         return response()->json($response, 200);
+//     } else {
+//         return response()->json(['valid' => false], 200);
+//     }
+// })->middleware('rate_limit');;
 
 Route::post('/send-results-chanceanimalitos', function (Request $request) {
 
