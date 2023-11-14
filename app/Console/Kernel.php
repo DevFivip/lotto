@@ -753,7 +753,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sorteo:filtracion')->cron('30-55/2 11-22 * * *');
 
-        $schedule->command('sorteo:promedio')->timezone('America/Caracas')->at('08:05');
+        // $schedule->command('sorteo:promedio')->timezone('America/Caracas')->at('08:05');
 
         // $schedule->command('sorteo:favoritos')->cron('05 11-22 * * *');
 
