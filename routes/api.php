@@ -98,7 +98,7 @@ Route::post('/send-results-lottoactivord', function (Request $request) {
 
 Route::post('/send-results-lottorey', function (Request $request) {
     $data = $request->all();
-    $schedule = Schedule::where('status', 0)->where('sorteo_type_id', 6)->first();
+    $schedule = Schedule::where('status', 0)->where('created_at', null)->where('sorteo_type_id', 6)->first();
     // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
     // $output->writeln("<info>$data</info>");
     if ($schedule) {
