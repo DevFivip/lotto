@@ -50,7 +50,7 @@ Route::post('/send-results-granjita', function (Request $request) {
     $schedule = Schedule::where('status', 0)->where('created_at', null)->where('sorteo_type_id', 2)->orderBy('id', 'DESC')->first();
     // return response()->json($schedule, 200);
     if ($schedule) {
-        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id']-1, 2);
+        $response = ResultController::storeDirectGeneric2($data['numero'], $data['schedule_id'], 2);
         return response()->json($response, 200);
     } else {
         return response()->json(['valid' => false], 200);
