@@ -40,19 +40,19 @@ class CloserHorarioLottoReyCommand extends Command
     public function handle()
     {
         $telegram = new Telegram();
-        $s = Schedule::where('status', 1)->where('sorteo_type_id', 6)->first();
+        $s = Schedule::where('status', 1)->whereNotIn('id', [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58])->where('sorteo_type_id', 6)->first();
         if (!!$s) {
             $s->status = 0;
             $s->update();
-              $telegram->sendMessage('✔ Horario Cerrado '. $s->schedule .' Lotto Rey');
+            $telegram->sendMessage('✔ Horario Cerrado ' . $s->schedule . ' Lotto Rey');
             return $s->schedule . ' ' . 'off';
         } else {
-            $sorteos = Schedule::where('sorteo_type_id', 6)->get();
+            $sorteos = Schedule::whereNotIn('id', [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58])->where('sorteo_type_id', 6)->get();
             foreach ($sorteos as $sorteo) {
                 $sorteo->status = 1;
                 $sorteo->update();
             }
-              $telegram->sendMessage('✔ Horarios Reiniciados Lotto Rey');
+            $telegram->sendMessage('✔ Horarios Reiniciados Lotto Rey');
             return 'reset off';
         }
 

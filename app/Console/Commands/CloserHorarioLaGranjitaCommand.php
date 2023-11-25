@@ -47,7 +47,7 @@ class CloserHorarioLaGranjitaCommand extends Command
             $telegram->sendMessage('✔ Horario Cerrado ' . $s2->schedule . '  La Granjita');
             return $s2->schedule . ' ' . 'off';
         } else {
-            $sorteos2 = Schedule::where('sorteo_type_id', '=', 2)->get();
+            $sorteos2 = Schedule::whereNotIn('id', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35])->where('sorteo_type_id', '=', 2)->get();
             foreach ($sorteos2 as $sorteo2) {
                 $sorteo2->status = 1;
                 $sorteo2->update();

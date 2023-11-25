@@ -117,20 +117,20 @@ class Kernel extends ConsoleKernel
         $schedule->command('sorteo:closelottoactivord')->timezone('America/Caracas')->at('03:55'); // reset lotto activo rd open all
 
 
-        // $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:20');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('09:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('10:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('11:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('12:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('13:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('14:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('15:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('16:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('17:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('18:29');
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('19:29');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('08:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('09:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('10:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('11:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('12:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('13:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('14:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('15:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('16:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('17:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('18:25');
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('19:25');
 
-        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('03:49'); // reset lotto activo rd open all
+        $schedule->command('sorteo:closelottorey')->timezone('America/Caracas')->at('23:51'); // reset lotto rey open all
 
 
         // Chance con Animalitos

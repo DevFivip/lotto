@@ -168,7 +168,7 @@ class TripletaController extends Controller
             return redirect('/tripletas')->withErrors('⚠️ Los Administradores no pueden crear tripletas');
         }
 
-        if (auth()->user()->parent_id == 16 || auth()->user()->parent_id == 265 || auth()->user()->parent_id == 37 || auth()->user()->parent_id == 118) {
+        if (auth()->user()->id == 16  || auth()->user()->parent_id == 16 || auth()->user()->parent_id == 265 || auth()->user()->parent_id == 37 || auth()->user()->parent_id == 118) {
             return redirect('/tripletas')->withErrors('⚠️ Tripleta desactivada');
         }
 
@@ -377,9 +377,9 @@ class TripletaController extends Controller
                     // if (!$valid) {
                     //     return response()->json(["valid" => false, 'messages' => ["La combinación " . $triple['_2do'] . " " . $triple['_3ero'] . " no se encuentra disponible en estos momentos intente mas tarde"]], 403);
                     // }
+                    $sorteoNotIn = [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58];
 
-
-                    $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->whereNotIn('id', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35])->orderBy('id', 'ASC')->get();
+                    $schedules = Schedule::where('sorteo_type_id', $triple['_sorteo_type'])->whereNotIn('id', $sorteoNotIn)->orderBy('id', 'ASC')->get();
 
                     $primerSorteo = $schedules->filter(function ($k, $v) {
 
