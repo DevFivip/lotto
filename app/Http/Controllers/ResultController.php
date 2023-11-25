@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Http\Libs\Telegram;
 use App\Models\Animal;
 use App\Models\Exchange;
@@ -379,7 +380,7 @@ class ResultController extends Controller
 
         $old = Result::where('sorteo_type_id', $sorteo_id)->orderBy('id', 'DESC')->first();
         $animal = Animal::where('sorteo_type_id', $sorteo_id)->where('number', $animal_number)->first();
-        $horarios = Schedule::where('sorteo_type_id', $sorteo_id)->get();
+        $horarios = Schedule::where('sorteo_type_id', $sorteo_id)->whereNotIn('id',Config::BANEDSCHEDULES)->get();
         $hora = $horarios[$schedule_position];
 
         $dt2 = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
