@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Models\Animal;
 use App\Models\Schedule;
 use App\Models\UserAnimalitoSchedule;
@@ -27,7 +28,7 @@ class UserAnimalitoScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = Schedule::where('sorteo_type_id', '!=', 4)->whereNotIn('id', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58])->get();
+        $schedules = Schedule::where('sorteo_type_id', '!=', 4)->whereNotIn('id', Config::BANEDSCHEDULES)->get();
         $resource = $this->resource;
 
         $dt = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('UTC'));
