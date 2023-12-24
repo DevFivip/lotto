@@ -171,7 +171,7 @@ class SetWinnerLottoPlusCommand extends Command
         }
 
         //activar modo automatico para dias no laborables
-        
+
         if(true){
             $win = $this->complete_animal[rand(0, 38)];
             $default = [];
@@ -198,7 +198,7 @@ class SetWinnerLottoPlusCommand extends Command
         }
 
 
-        $telegram->sendMessage('✅ Lotto Plus ganador auto-seteado para las ' . $horario['schedule'] . ' ' . $first['animal'] . ' ' . $first['animal_numero']);
+        // $telegram->sendMessage('✅ Lotto Plus ganador auto-seteado para las ' . $horario['schedule'] . ' ' . $first['animal'] . ' ' . $first['animal_numero']);
         $telegram->sendMessage('https://lotto.fivipsystem.com/lottoloko');
 
 
