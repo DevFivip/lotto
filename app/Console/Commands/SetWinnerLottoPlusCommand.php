@@ -170,6 +170,16 @@ class SetWinnerLottoPlusCommand extends Command
             $default = $first;
         }
 
+        //activar modo automatico para dias no laborables
+        
+        if(true){
+            $win = $this->complete_animal[rand(0, 38)];
+            $default = [];
+            $default['animal_id'] = $win->id;
+        }
+
+
+
         // dd($arr_premiar);
 
         $nextR = NextResult::first();
