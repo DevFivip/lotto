@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckResultsMessageCommand::class,
         Commands\BuscarFiltracionCommand::class,
         Commands\PromedioVentasSorteoCommand::class,
+        Commands\SetLimitCantCommand::class,
         // Commands\AnimalitosFavoritosBloqueoCommand::class,
     ];
 
@@ -752,6 +753,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('sorteo:closeadmin 583 2 146')->timezone('America/Caracas')->at('18:40');
 
         $schedule->command('sorteo:filtracion')->cron('30-55/2 11-22 * * *');
+
+        $schedule->command('sorteo:setlimitcant')->cron('22 11-22 * * *');
 
         // $schedule->command('sorteo:promedio')->timezone('America/Caracas')->at('08:05');
 
