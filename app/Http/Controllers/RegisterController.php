@@ -314,25 +314,27 @@ class RegisterController extends Controller
         ############################
         ############################
 
-        // error_log(json_encode($resp));
-        // error_log($validacionHorario->limit);
 
-        if ($resp[1] > $validacionHorario->limit) {
-            // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
-            array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+
+        if (auth()->user()->parent_id != 16) {
+
+            if ($resp[1] > $validacionHorario->limit) {
+                // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
+                array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+            }
+
+
+            if ($resp[2] > $validacionHorario->limit) {
+                FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
+                array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+            }
+
+            // TODO: validacion de limites por usuarios y por loteria
+            // if ($resp[1] > $validacionHorario->limit) {
+            //     array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
+            // }
+
         }
-
-
-        if ($resp[2] > $validacionHorario->limit) {
-            FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
-            array_push($err, 'Tu Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
-        }
-
-        // TODO: validacion de limites por usuarios y por loteria
-        // if ($resp[1] > $validacionHorario->limit) {
-        //     array_push($err, 'Limite de venta de ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' ha excedido, intente para otro horario');
-        // }
-
 
 
 
