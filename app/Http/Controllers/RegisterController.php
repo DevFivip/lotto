@@ -316,7 +316,7 @@ class RegisterController extends Controller
 
 
 
-        if (auth()->user()->parent_id != 16) {
+        if (auth()->user()->parent_id != 16 || auth()->user()->parent_id != 464) {
 
             if ($resp[1] > $validacionHorario->limit) {
                 // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
@@ -366,7 +366,7 @@ class RegisterController extends Controller
         }
 
 
-        if (auth()->user()->parent_id != 16) {
+        if (auth()->user()->parent_id != 16 || auth()->user()->parent_id != 464) {
             if (($resp[1] +  $actual_monto) > $validacionHorario->limit) {
                 // FailAnimalitoTry::try(auth()->user()->id, $animal_id, $monto, $sorteo_type_id, $moneda, $horario_id);
                 array_push($err, 'El limite de venta de precio ' . ' ' . $animal->nombre . ' ' . 'a las ' . $horario->schedule . ' excede lo estipulado, intente para otro horario, Error 1004 no authorizado');
