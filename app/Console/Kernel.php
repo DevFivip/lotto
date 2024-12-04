@@ -39,6 +39,7 @@ class Kernel extends ConsoleKernel
 
         // LOTTO ACTIVO
 
+        $schedule->command('sorteo:set')->timezone('America/Caracas')->at('07:55');
         $schedule->command('sorteo:set')->timezone('America/Caracas')->at('08:55');
         $schedule->command('sorteo:set')->timezone('America/Caracas')->at('09:55');
         $schedule->command('sorteo:set')->timezone('America/Caracas')->at('10:55');
